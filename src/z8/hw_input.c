@@ -16,7 +16,7 @@ void ISR_T1() {
 
 void HW_init() {
 	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1
-	SET_VECTOR(TIMER0, ISR_T0);
+	//SET_VECTOR(TIMER0, ISR_T0);
 	EI();
 	millis = 0;
 }
