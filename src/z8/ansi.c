@@ -1,11 +1,11 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
-#include <stdio.h>
+#include <sio.h>
 #include "ansi.h"
-#include "util.h"
 
 #define ESC 0x1B
 
+// Set foreground color
 void fgcolor(int foreground) {
   /*  Value      foreground     Value     foreground
       ------------------------------------------------
@@ -26,6 +26,7 @@ void fgcolor(int foreground) {
   printf("%c[%d;%dm", ESC, type, foreground + 30);
 }
 
+// Set background color
 void bgcolor(int background) {
   /* IMPORTANT:   When you first use this function you cannot get back to true white background in HyperTerminal.
      Why is that? Because ANSI does not support true white background (ANSI white is gray to most human eyes).
@@ -48,8 +49,8 @@ void bgcolor(int background) {
   printf("%c[%dm", ESC, background + 40);
 }
 
-void color(int foreground, int background) {
 // combination of fgcolor() and bgcolor() - uses less bandwidth
+void color(int foreground, int background) {
   int type = 22;             // normal text
   if (foreground > 7) {
     type = 1;                // bold text
@@ -58,39 +59,47 @@ void color(int foreground, int background) {
   printf("%c[%d;%d;%dm", ESC, type, foreground + 30, background + 40);
 }
 
-void resetbgcolor() {
 // gray on black text, no underline, no blink, no reverse
+void resetbgcolor() {
   printf("%c[m", ESC);
 }
 
+// Clear screen
 void clrscr() {
   printf("%c[2j", ESC);
 }
 
+// Hides cursor
 void hidecsr() {
   printf("%c[?25l", ESC);
 }
 
+// Clears to end of line
 void clreol() {
   printf("%c[K", ESC);
 }
 
+// Moves cursor to coordinates
 void gotoxy(int x, int y) {
   printf("%c[%d;%df", ESC, y + 1, x + 1);
 }
 
+// Set underline on/off
 void underline(char on) {
   printf("%c[%dm", ESC, on != 0 ? 4 : 24);
 }
 
+// Set cursor blink on/off
 void blink(char on) {
   printf("%c[%dm", ESC, on != 0 ? 5 : 25);
 }
 
+// Reverse foreground and background color
 void reverse(char on) {
   printf("%c[%dm", ESC, on != 0 ? 7 : 27);
 }
 
+// Functions to move cursor n positions
 void up(int n) {
   printf("%c[%dA", ESC, n);
 }
@@ -106,46 +115,8 @@ void left(int n) {
   printf("%c[%dD", ESC, n);
 }
 
+// Prints the char, corresponding to c, n times. Uses int instead of char because of compiler bug when passing char as argument.
 void spacer(int n, int c) {
   int i;
   for (i = 0; i < n; i++) printf("%c", (char) c);
-}
-
-void window(int x1, int y1, int x2, int y2, char *title) {
-  int w = x2 - x1;
-  int h = y2 - y1;
-  int padding = w - util_strlen(title) - 8;
-  int i;
-
-  if (padding < 0) {
-    title[util_strlen(title) + padding] = '\0';
-  }
-
-  reverse(0);
-  gotoxy(x1, y1);
-
-  // print top line
-  printf("%c", 201);  // corner
-  spacer(padding / 2, 205);  // padding
-  printf("%c", 185);  // title start
-  reverse(1);
-  printf("  %s  ", title);
-  reverse(0);
-  printf("%c", 204);  // title end
-  spacer((padding + 1) / 2, 205);  // padding
-  printf("%c", 187);  // corner
-
-  // print sides
-  for (i = 1; i < h - 1; i++) {
-    gotoxy(x1, y1 + i);
-    printf("%c", 186);
-    gotoxy(x2 - 1, y1 + i);
-    printf("%c", 186);
-  }
-
-  // print bottom line
-  gotoxy(x1, y2 - 1);
-  printf("%c", 200);  // corner
-  spacer(w - 2, 205);
-  printf("%c", 188);  // corner
 }
