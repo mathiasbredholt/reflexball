@@ -40,5 +40,5 @@ void hw_time_init() {
 }
 
 unsigned long hw_time_millis() {
-    return millis();
+    return millis;
 }

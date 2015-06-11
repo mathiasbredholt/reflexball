@@ -1,7 +1,6 @@
 #include <sio.h>
 #include "ansi.h"
 #include "util.h"
-#include "graphics.h"
 
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
