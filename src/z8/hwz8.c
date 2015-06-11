@@ -19,7 +19,7 @@ char _LEDtext[LED_MAX_STR_LEN];
 char _display_column, _scroll_index, _scroll_count, _text_index, _LEDinterrupt;
 
 #pragma interrupt
-void ISR_T0() {
+void ISR_T0() { //copied and renamed
     _LEDinterrupt = 1;
     ++_scroll_count;
     // printf("%d\n", (int) _display_column);
@@ -45,11 +45,11 @@ void ISR_T0() {
 // }
 
 #pragma interrupt
-void ISR_T1() {
+void ISR_T1() {//copied and renamed
     ++millis;
 }
 
-void HWinit() {
+void HWinit() { //copied and renamed
     init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1
     LEDinit();
     SET_VECTOR(TIMER0, ISR_T0);
@@ -77,7 +77,7 @@ void HWinit() {
 
 // Key input handling
 
-char readkey() {    // Returns state of push buttons on bit 0-2
+char readkey() {    // Returns state of push buttons on bit 0-2 //copied and renamed
     char input = 0;
     PFDD |= 0xC0;
     PDDD |= 4;
@@ -87,7 +87,7 @@ char readkey() {    // Returns state of push buttons on bit 0-2
     return input;
 }
 
-void keysListener() {
+void keysListener() { //copied and renamed
     DI();
 
     // TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 1 (cont.)
@@ -117,7 +117,7 @@ void keysListener() {
 }
 
 // Debounces input keys and returns the keys pressed since last call
-char updateKeys(char *lastInput, char *lastKeys) {
+char updateKeys(char *lastInput, char *lastKeys) { //copied and renamed
     char rising;
     char currentInput = readkey();
     if (millis > DEBOUNCE_INTERVAL) {
@@ -130,7 +130,7 @@ char updateKeys(char *lastInput, char *lastKeys) {
     return 0;
 }
 
-char waitForKey() {
+char waitForKey() { //copied and renamed
     int i;
     char oldkeys;
     char keys = readkey();
@@ -147,7 +147,7 @@ char waitForKey() {
     }
 }
 
-void displayColumn(int val, int col, int disp) {
+void displayColumn(int val, int col, int disp) { //copied and renamed
     char clockval;
 
     // Set column
@@ -185,7 +185,7 @@ void displayColumn(int val, int col, int disp) {
     }
 }
 
-void LEDinit() {
+void LEDinit() { //copied and renamed
     //Set direction to out
     PEDD = 0x00;
     PGDD = 0x00;
@@ -221,12 +221,12 @@ void LEDinit() {
     _scroll_count = 0;
 }
 
-void ROMtoRAM(char *dest, rom char *src) {
+void ROMtoRAM(char *dest, rom char *src) { //copied and renamed
     while (*src) *dest++ = *src++;
     *dest = '\0';
 }
 
-void updateVideoBuffer() {
+void updateVideoBuffer() {//copied and renamed
     int i, j;
     for (i = 0; i < 5; ++i) {
         for (j = 0; j < 5; ++j) {
@@ -235,7 +235,7 @@ void updateVideoBuffer() {
     }
 }
 
-void LEDsetString(char *str) {
+void LEDsetString(char *str) {//copied and renamed
     int i;
     for (i = 0; i < util_strlen(str) + 8; ++i) {
         // Copy string, padding with 4 spaces
@@ -244,7 +244,7 @@ void LEDsetString(char *str) {
     _LEDtext[util_strlen(str) + 8] = '\0';
 }
 
-void LEDupdate() {
+void LEDupdate() { //copied and renamed
     int i;
     if (_LEDinterrupt) {
         _LEDinterrupt = 0;
