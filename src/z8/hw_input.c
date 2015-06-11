@@ -68,7 +68,7 @@ void HW_keysListener() {
 // Debounces input keys and returns the keys pressed since last call
 char HW_updateKeys(char *lastInput, char *lastKeys) {
 	char rising;
-	char currentInput = readkey();
+	char currentInput = HW_readkey();
 	if (millis > DEBOUNCE_INTERVAL) {
 		millis = 0;
 		*lastKeys = *lastInput & currentInput;
@@ -82,13 +82,13 @@ char HW_updateKeys(char *lastInput, char *lastKeys) {
 char HW_waitForKey() {
 	int i;
 	char oldkeys;
-	char keys = readkey();
+	char keys = HW_readkey();
 	while (1) {
 		oldkeys = keys;
-		keys = readkey();
+		keys = HW_readkey();
 		if (keys & ~oldkeys) {
 			for (i = 0; i < 25000; ++i) continue;
-			keys = readkey();
+			keys = HW_readkey();
 			if (keys & ~oldkeys) {
 				return keys & ~oldkeys;
 			}
