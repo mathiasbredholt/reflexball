@@ -1,7 +1,6 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
 #include <stdio.h>
-#include "util.h"
 
 #ifndef _ANSI_H_
 #define _ANSI_H_
@@ -39,7 +38,5 @@ void right(int n);
 void left(int n);
 
 void spacer(int n, int c);
-
-void window(int x1, int y1, int x2, int y2, char *title);
 
 #endif
