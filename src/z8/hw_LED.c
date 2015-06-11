@@ -24,6 +24,8 @@ void ISR_T0() {
 
 void LED_init() {
 
+	//initializes the use of the LED screens as well as sets up the 1 kHz timer for the screens and enables interrupts.
+
 	//Set direction to out
 	PEDD = 0x00;
 	PGDD = 0x00;

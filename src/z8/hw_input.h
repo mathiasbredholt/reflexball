@@ -1,7 +1,5 @@
 #include <eZ8.h>             // special encore constants, macros and flash routines
 #include <sio.h>
-#include "charset.h"
-#include "util.h"
 
 #ifndef _HW_INPUT_H_
 #define _H_INPUT_H_
