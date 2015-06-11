@@ -2,9 +2,9 @@
 
 #include <eZ8.h>             // special encore constants, macros and flash routines
 #include <sio.h>
-#include "hw_LED.h"
 #include "charset.h"
 #include "util.h"
+#include "hw_LED.h"
 
 
 #define SCROLL_INTERVAL 30  // ms between change
@@ -64,7 +64,7 @@ void LED_init() {
 	EI();
 }
 
-void LED_displaycolumn(int val, int col, int disp) {
+void LED_displayColumn(int val, int col, int disp) {
 	char clockval;
 
 	// Set column
@@ -125,7 +125,7 @@ void LED_update() {
 	if (_LEDinterrupt) {
 		_LEDinterrupt = 0;
 		for (i = 0; i < 4; ++i) {
-			displayColumn((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
+			LED_displayColumn((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
 		}
 
 		// Change column
@@ -135,7 +135,7 @@ void LED_update() {
 			if (_scroll_index >= 5) {
 				_scroll_index = 0;
 				_text_index >= util_strlen(_LEDtext) - 5 ? _text_index = 0 : ++_text_index;
-				updateVideoBuffer();
+				LED_updateVideoBuffer();
 			}
 			++_scroll_index;
 			_scroll_count = 0;

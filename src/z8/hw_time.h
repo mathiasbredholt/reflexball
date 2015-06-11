@@ -7,6 +7,6 @@
 
 void hw_time_init();
 
-unsigned long hw_time_millis()
+unsigned long hw_time_millis();
 
 #endif  // _HW_TIME_H_
