@@ -6,13 +6,13 @@
 
 int util_strlen(char * str) {
     int i;
-    for (i = 0; str[i] != '\0'; i++);
+    for (i = 0; str[i] != '\0'; i++) continue;
     return i;
 }
 
 void util_printfix(long i) {
     // prints a signed 16.16 fixed point number
-    if ((i & 0x80000000) != 0) { // handle negative numbers
+    if ((i & 0x80000000) != 0) {  // handle negative numbers
         printf("-");
         i = ~i + 1;
     }
