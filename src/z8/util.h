@@ -1,6 +1,6 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
-#include <stdio.h>
+#include <sio.h>
 
 #ifndef _UTIL_H_
 #define _UTIL_H_
