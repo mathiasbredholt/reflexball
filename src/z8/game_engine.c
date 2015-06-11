@@ -4,10 +4,10 @@
 #include "hw_time.h"
 // #include "hw_input.h"
 // #include "hw_LED.h"
-#include "sounds.c"
-#include "levels.c"
-#include "graphics.c"
-#include "physics.c"
+#include "sounds.h"
+#include "levels.h"
+#include "graphics.h"
+#include "physics.h"
 
 #define FRAME_INTERVAL 63;
 
