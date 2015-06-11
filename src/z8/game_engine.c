@@ -2,8 +2,8 @@
 
 #include "game_engine.h"
 #include "hw_time.h"
-#include "hw_input.h"
-#include "hw_LED.h"
+// #include "hw_input.h"
+// #include "hw_LED.h"
 #include "sounds.c"
 #include "levels.c"
 #include "graphics.c"
