@@ -2,7 +2,7 @@
 #include <sio.h>
 
 #ifndef _HW_INPUT_H_
-#define _H_INPUT_H_
+#define _HW_INPUT_H_
 
 void ISR_T1();
 
