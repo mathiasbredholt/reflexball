@@ -6,6 +6,9 @@
 
 #define DEBOUNCE_INTERVAL 10  // ms
 
+Time time;
+unsigned long millis;
+
 #pragma interrupt
 void ISR_T1() {
 	++millis;
