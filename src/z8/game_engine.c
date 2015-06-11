@@ -22,7 +22,7 @@ void game_init() {
 
 void game_update() {
     if ((hw_time_millis() & FRAME_INTERVAL) == FRAME_INTERVAL) {
-        //levels_redraw();
+        // levels_redraw();
         str[0] = ++val;
         gfx_window(0, 0, 20, 20, str);
     }
