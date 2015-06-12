@@ -34,7 +34,6 @@ void game_update() {
 
 void game_init_player() {
 	_strikerX = 128;
-	_strikerY = 92;
 	gfx_draw_striker(_strikerOldX, _strikerX);
 
 	_ballX = 128;
