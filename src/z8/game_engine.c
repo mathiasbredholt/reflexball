@@ -8,7 +8,8 @@
 // #include "sounds.h"
 // #include "physics.h"
 
-char _strikerX, _strikerY, _ballX, _ballY;
+int _strikerOldX, _strikerX;
+int _ballOldX, _ballOldY, _ballX, _ballY;
 char last_key_input = 0;
 char last_keys = 0;
 
@@ -24,7 +25,9 @@ void game_update() {
 		hw_time_set_nextframe(0);
 
 		// phy_simulate();
-		++_ballY;
+		--_ballY;
+		gfx_draw_striker(_strikerOldX, _strikerX);
+		gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
 	}
 	LED_update();
 }
@@ -32,9 +35,9 @@ void game_update() {
 void game_init_player() {
 	_strikerX = 128;
 	_strikerY = 92;
-	gfx_draw_striker(_strikerX, _strikerY);
+	gfx_draw_striker(_strikerOldX, _strikerX);
 
 	_ballX = 128;
 	_ballY = 84;
-	gfx_draw_ball((int) _ballX, (int) _ballY);
+	gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
 }
