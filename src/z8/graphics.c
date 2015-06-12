@@ -23,6 +23,15 @@ void gfx_draw_bounds() {
 	}
 }
 
+void gfx_draw_ball(char x, char y) 	{
+	gotoxy(x, y);
+	printf("%c%c", 219, 219);
+}
+
+void gfx_draw_striker(char x, char y) 	{
+
+}
+
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {
 	int w = x2 - x1;
 	int h = y2 - y1;
