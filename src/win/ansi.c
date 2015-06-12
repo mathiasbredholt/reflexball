@@ -2,11 +2,11 @@
 
 #include <stdio.h>
 #include "ansi.h"
-#include "util.h"
 
 #define ESC 0x1B
 
-void fgcolor(int foreground) {
+// Set foreground color
+void fg_color(int foreground) {
   /*  Value      foreground     Value     foreground
       ------------------------------------------------
         0        Black            8       Dark Gray
@@ -26,13 +26,14 @@ void fgcolor(int foreground) {
   printf("%c[%d;%dm", ESC, type, foreground + 30);
 }
 
-void bgcolor(int background) {
+// Set background color
+void bg_color(int background) {
   /* IMPORTANT:   When you first use this function you cannot get back to true white background in HyperTerminal.
      Why is that? Because ANSI does not support true white background (ANSI white is gray to most human eyes).
                   The designers of HyperTerminal, however, preferred black text on white background, which is why
                   the colors are initially like that, but when the background color is first changed there is no
                   way comming back.
-     Hint:        Use resetbgcolor(); clrscr(); to force HyperTerminal into gray text on black background.
+     Hint:        Use reset_bg_color(); clr_scr(); to force HyperTerminal into gray text on black background.
 
       Value      Color
       ------------------
@@ -48,8 +49,8 @@ void bgcolor(int background) {
   printf("%c[%dm", ESC, background + 40);
 }
 
+// combination of fg_color() and bg_color() - uses less bandwidth
 void color(int foreground, int background) {
-// combination of fgcolor() and bgcolor() - uses less bandwidth
   int type = 22;             // normal text
   if (foreground > 7) {
     type = 1;                // bold text
@@ -58,39 +59,47 @@ void color(int foreground, int background) {
   printf("%c[%d;%d;%dm", ESC, type, foreground + 30, background + 40);
 }
 
-void resetbgcolor() {
 // gray on black text, no underline, no blink, no reverse
+void reset_bg_color() {
   printf("%c[m", ESC);
 }
 
-void clrscr() {
+// Clear screen
+void clr_scr() {
   printf("%c[2j", ESC);
 }
 
-void hidecsr() {
+// Hides cursor
+void hide_scr() {
   printf("%c[?25l", ESC);
 }
 
-void clreol() {
+// Clears to end of line
+void clear_eol() {
   printf("%c[K", ESC);
 }
 
-void gotoxy(int x, int y) {
+// Moves cursor to coordinates
+void go_to_xy(int x, int y) {
   printf("%c[%d;%df", ESC, y + 1, x + 1);
 }
 
+// Set underline on/off
 void underline(char on) {
   printf("%c[%dm", ESC, on != 0 ? 4 : 24);
 }
 
+// Set cursor blink on/off
 void blink(char on) {
   printf("%c[%dm", ESC, on != 0 ? 5 : 25);
 }
 
+// Reverse foreground and background color
 void reverse(char on) {
   printf("%c[%dm", ESC, on != 0 ? 7 : 27);
 }
 
+// Functions to move cursor n positions
 void up(int n) {
   printf("%c[%dA", ESC, n);
 }
@@ -106,46 +115,8 @@ void left(int n) {
   printf("%c[%dD", ESC, n);
 }
 
+// Prints the char, corresponding to c, n times. Uses int instead of char because of compiler bug when passing char as argument.
 void spacer(int n, int c) {
   int i;
   for (i = 0; i < n; i++) printf("%c", (char) c);
-}
-
-void window(int x1, int y1, int x2, int y2, char *title) {
-  int w = x2 - x1;
-  int h = y2 - y1;
-  int padding = w - util_strlen(title) - 8;
-  int i;
-
-  if (padding < 0) {
-    title[util_strlen(title) + padding] = '\0';
-  }
-
-  reverse(0);
-  gotoxy(x1, y1);
-
-  // print top line
-  printf("%c", 201);  // corner
-  spacer(padding / 2, 205);  // padding
-  printf("%c", 185);  // title start
-  reverse(1);
-  printf("  %s  ", title);
-  reverse(0);
-  printf("%c", 204);  // title end
-  spacer((padding + 1) / 2, 205);  // padding
-  printf("%c", 187);  // corner
-
-  // print sides
-  for (i = 1; i < h - 1; i++) {
-    gotoxy(x1, y1 + i);
-    printf("%c", 186);
-    gotoxy(x2 - 1, y1 + i);
-    printf("%c", 186);
-  }
-
-  // print bottom line
-  gotoxy(x1, y2 - 1);
-  printf("%c", 200);  // corner
-  spacer(w - 2, 205);
-  printf("%c", 188);  // corner
 }

@@ -1,28 +1,27 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
 #include <stdio.h>
-#include "util.h"
 
 #ifndef _ANSI_H_
 #define _ANSI_H_
 
 #define ESC 0x1B
 
-void fgcolor(int foreground);
+void fg_color(int foreground);
 
-void bgcolor(int background);
+void bg_color(int background);
 
 void color(int foreground, int background);
 
-void resetbgcolor();
+void reset_bg_color();
 
-void clrscr();
+void clr_scr();
 
-void hidecsr();
+void hide_scr();
 
-void clreol();
+void clear_eol();
 
-void gotoxy(int x, int y);
+void go_to_xy(int x, int y);
 
 void underline(char on);
 
@@ -39,7 +38,5 @@ void right(int n);
 void left(int n);
 
 void spacer(int n, int c);
-
-void window(int x1, int y1, int x2, int y2, char *title);
 
 #endif
