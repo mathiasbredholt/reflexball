@@ -3,6 +3,26 @@
 #include "util.h"
 #include "graphics.h"
 
+#define width 256
+#define height 96
+
+void gfx_draw_bounds() {
+	int i;
+
+	gotoxy(0, 0);
+	printf("%c", 201);  // top left corner
+	spacer(width - 2, 205); // top line
+	printf("%c", 187);
+
+	// print sides
+	for (i = 1; i < height - 1; i++) {
+		gotoxy(0, i);
+		printf("%c", 186);
+		gotoxy(255, i);
+		printf("%c", 186);
+	}
+}
+
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {
 	int w = x2 - x1;
 	int h = y2 - y1;
