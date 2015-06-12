@@ -4,8 +4,8 @@
 #include "util.h"
 #include "hw_time.h"
 
-#ifndef _HW_LED_H_
-#define _HW_LED_H_
+#ifndef _hw_LED_H_
+#define _hw_LED_H_
 
 void LED_init();
 

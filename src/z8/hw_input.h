@@ -2,17 +2,17 @@
 #include <sio.h>
 #include "hw_time.h"
 
-#ifndef _HW_INPUT_H_
-#define _HW_INPUT_H_
+#ifndef _hw_INPUT_H_
+#define _hw_INPUT_H_
 
-void HW_init();
+void hw_init();
 
-void HW_ROMtoRAM(char *dest, rom char *src);
+void hw_ROMtoRAM(char *dest, rom char *src);
 
-char HW_readkey();
+char hw_readkey();
 
-char HW_keys();
+char hw_keys();
 
-char HW_waitForKey();
+char hw_waitForKey();
 
 #endif

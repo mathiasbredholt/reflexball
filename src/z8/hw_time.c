@@ -2,13 +2,13 @@
 
 #include <eZ8.h>
 
-unsigned long millis;
+unsigned long _millis;
 char _nextFrame;
 char _LEDflag;
 
 #pragma interrupt
 void ISR_T0() {
-    ++millis;
+    ++_millis;
     _LEDflag = 1;
 }
 
@@ -41,7 +41,7 @@ void hw_time_init() {
     // Enable timer0
     T0CTL |= 0x80;
 
-	millis = 0;
+	_millis = 0;
 	_nextFrame = 0;
 	_LEDflag = 0;
 
@@ -72,13 +72,13 @@ void hw_time_init() {
     SET_VECTOR(TIMER1, ISR_T1);
     EI();
 
-    millis = 0;
+    _millis = 0;
     _nextFrame = 0;
     _LEDflag = 0;
 }
 
 unsigned long hw_time_millis() {
-    return millis;
+    return _millis;
 }
 
 char hw_time_get_nextframe() {

@@ -10,11 +10,9 @@
 
 int _strikerX, _strikerOldX;
 int _ballX, _ballY, _ballOldX, _ballOldY;
-char last_key_input = 0;
-char last_keys = 0;
 
 void game_init() {
-	HW_init();
+	hw_init();
 	hw_time_init();
 	LED_init();
 	LED_setString("Welcome");
@@ -29,12 +27,12 @@ void game_update() {
 		_ballOldY = _ballY;
 
 		// move striker left
-		if (HW_readkey() & 2) {
+		if (hw_readkey() & 2) {
 			--_strikerX;
 		}
 
 		// move striker right
-		if (HW_readkey() & 1) {
+		if (hw_readkey() & 1) {
 			++_strikerX;
 		}
 

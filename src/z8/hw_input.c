@@ -5,19 +5,19 @@
 
 #define DEBOUNCE_INTERVAL 15  // ms
 
-char debounce_flag, keys, lastInput;
+char _debounce_flag, _keys, _lastInput;
 
-void HW_init() {
+void hw_init() {
 	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1 bør flyttes
-	debounce_flag = 1;
+	_debounce_flag = 1;
 }
 
-void HW_ROMtoRAM(char *dest, rom char *src) {
+void hw_ROMtoRAM(char *dest, rom char *src) {
 	while (*src) *dest++ = *src++;
 	*dest = '\0';
 }
 
-char HW_readkey() {    // Returns state of push buttons on bit 0-2
+char hw_readkey() {    // Returns state of push buttons on bit 0-2
 	char input = 0;
 	PFDD |= 0xC0;
 	PDDD |= 4;
@@ -28,32 +28,32 @@ char HW_readkey() {    // Returns state of push buttons on bit 0-2
 }
 
 // Debounces input keys and returns the keys pressed since last call
-char HW_keys() {
-	char currentInput = HW_readkey();
+char hw_keys() {
+	char currentInput = hw_readkey();
 	if ((hw_time_millis() & DEBOUNCE_INTERVAL) == DEBOUNCE_INTERVAL) {
-		if (debounce_flag) {
-			keys = lastInput & currentInput;
-			lastInput = currentInput;
-			debounce_flag = 0;
+		if (_debounce_flag) {
+			_keys = _lastInput & currentInput;
+			_lastInput = currentInput;
+			_debounce_flag = 0;
 		}
 	} else {
-		debounce_flag = 1;
+		_debounce_flag = 1;
 	}
-	return keys;
+	return _keys;
 }
 
-char HW_waitForKey() {
+char hw_waitForKey() {
 	int i;
 	char oldKeys;
-	char keys = HW_readkey();
+	char _keys = hw_readkey();
 	while (1) {
-		oldKeys = keys;
-		keys = HW_readkey();
-		if (keys & ~oldKeys) {
+		oldKeys = _keys;
+		_keys = hw_readkey();
+		if (_keys & ~oldKeys) {
 			for (i = 0; i < 25000; ++i) continue;
-			keys = HW_readkey();
-			if (keys & ~oldKeys) {
-				return keys & ~oldKeys;
+			_keys = hw_readkey();
+			if (_keys & ~oldKeys) {
+				return _keys & ~oldKeys;
 			}
 		}
 	}

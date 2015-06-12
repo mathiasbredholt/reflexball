@@ -27,7 +27,7 @@ void startTimer();
 
 void stopTimer();
 
-void HWinit();
+void hwinit();
 
 Time getTime();
 

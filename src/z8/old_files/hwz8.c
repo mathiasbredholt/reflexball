@@ -49,7 +49,7 @@ void ISR_T1() {//copied and renamed
     ++millis;
 }
 
-void HWinit() { //copied and renamed
+void hwinit() { //copied and renamed
     init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1
     LEDinit();
     SET_VECTOR(TIMER0, ISR_T0);
