@@ -7,12 +7,12 @@
 
 void hw_init();
 
-void hw_ROMtoRAM(char *dest, rom char *src);
+void hw_ROM_to_RAM(char *dest, rom char *src);
 
-char hw_readkey();
+char hw_read_key();
 
 char hw_keys();
 
-char hw_waitForKey();
+char hw_wait_for_key();
 
 #endif

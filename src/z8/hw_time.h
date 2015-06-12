@@ -9,9 +9,9 @@ void hw_time_init();
 
 unsigned long hw_time_millis();
 
-char hw_time_get_nextframe();
+char hw_time_get_next_frame();
 
-void hw_time_set_nextframe(char val);
+void hw_time_set_next_frame(char val);
 
 char hw_time_get_LEDflag();
 

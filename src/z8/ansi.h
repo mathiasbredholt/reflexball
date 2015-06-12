@@ -7,21 +7,21 @@
 
 #define ESC 0x1B
 
-void fgcolor(int foreground);
+void fg_color(int foreground);
 
-void bgcolor(int background);
+void bg_color(int background);
 
 void color(int foreground, int background);
 
-void resetbgcolor();
+void reset_bg_color();
 
-void clrscr();
+void clr_scr();
 
-void hidecsr();
+void hide_scr();
 
-void clreol();
+void clear_eol();
 
-void gotoxy(int x, int y);
+void go_to_xy(int x, int y);
 
 void underline(char on);
 

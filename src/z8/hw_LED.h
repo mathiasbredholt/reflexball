@@ -9,11 +9,11 @@
 
 void LED_init();
 
-void LED_displaycolumn(int val, int col, int disp);
+void LED_display_column(int val, int col, int disp);
 
-void LED_updateVideoBuffer();
+void LED_update_video_buffer();
 
-void LED_setString(char *str);
+void LED_set_string(char *str);
 
 void LED_update();
 

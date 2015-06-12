@@ -6,7 +6,7 @@
 #define ESC 0x1B
 
 // Set foreground color
-void fgcolor(int foreground) {
+void fg_color(int foreground) {
   /*  Value      foreground     Value     foreground
       ------------------------------------------------
         0        Black            8       Dark Gray
@@ -27,13 +27,13 @@ void fgcolor(int foreground) {
 }
 
 // Set background color
-void bgcolor(int background) {
+void bg_color(int background) {
   /* IMPORTANT:   When you first use this function you cannot get back to true white background in HyperTerminal.
      Why is that? Because ANSI does not support true white background (ANSI white is gray to most human eyes).
                   The designers of HyperTerminal, however, preferred black text on white background, which is why
                   the colors are initially like that, but when the background color is first changed there is no
                   way comming back.
-     Hint:        Use resetbgcolor(); clrscr(); to force HyperTerminal into gray text on black background.
+     Hint:        Use reset_bg_color(); clr_scr(); to force HyperTerminal into gray text on black background.
 
       Value      Color
       ------------------
@@ -49,7 +49,7 @@ void bgcolor(int background) {
   printf("%c[%dm", ESC, background + 40);
 }
 
-// combination of fgcolor() and bgcolor() - uses less bandwidth
+// combination of fg_color() and bg_color() - uses less bandwidth
 void color(int foreground, int background) {
   int type = 22;             // normal text
   if (foreground > 7) {
@@ -60,27 +60,27 @@ void color(int foreground, int background) {
 }
 
 // gray on black text, no underline, no blink, no reverse
-void resetbgcolor() {
+void reset_bg_color() {
   printf("%c[m", ESC);
 }
 
 // Clear screen
-void clrscr() {
+void clr_scr() {
   printf("%c[2j", ESC);
 }
 
 // Hides cursor
-void hidecsr() {
+void hide_scr() {
   printf("%c[?25l", ESC);
 }
 
 // Clears to end of line
-void clreol() {
+void clear_eol() {
   printf("%c[K", ESC);
 }
 
 // Moves cursor to coordinates
-void gotoxy(int x, int y) {
+void go_to_xy(int x, int y) {
   printf("%c[%d;%df", ESC, y + 1, x + 1);
 }
 

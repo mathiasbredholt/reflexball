@@ -28,7 +28,7 @@ void LED_init() {
 	_scroll_count = 0;
 }
 
-void LED_displayColumn(int val, int col, int disp) {
+void LED_display_column(int val, int col, int disp) {
 	char clockval; //LED display clock
 
 	// Set column
@@ -66,7 +66,7 @@ void LED_displayColumn(int val, int col, int disp) {
 	}
 }
 
-void LED_updateVideoBuffer() {
+void LED_update_video_buffer() {
 	int i, j;
 	for (i = 0; i < 5; ++i) {
 		for (j = 0; j < 5; ++j) {
@@ -75,7 +75,7 @@ void LED_updateVideoBuffer() {
 	}
 }
 
-void LED_setString(char *str) {
+void LED_set_string(char *str) {
 	int i;
 	for (i = 0; i < util_strlen(str) + 8; ++i) {
 		// Copy string, padding with 4 spaces
@@ -90,7 +90,7 @@ void LED_update() {
 		hw_time_set_LEDflag(0);
 		++_scroll_count;
 		for (i = 0; i < 4; ++i) {
-			LED_displayColumn((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
+			LED_display_column((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
 		}
 
 		// Change column
@@ -100,7 +100,7 @@ void LED_update() {
 			if (_scroll_index >= 5) {
 				_scroll_index = 0;
 				_text_index >= util_strlen(_LEDtext) - 5 ? _text_index = 0 : ++_text_index;
-				LED_updateVideoBuffer();
+				LED_update_video_buffer();
 			}
 			++_scroll_index;
 			_scroll_count = 0;

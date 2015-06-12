@@ -15,24 +15,24 @@ void game_init() {
 	hw_init();
 	hw_time_init();
 	LED_init();
-	LED_setString("Welcome");
+	LED_set_string("Welcome");
 }
 
 void game_update() {
-	if (hw_time_get_nextframe()) {
-		hw_time_set_nextframe(0);
+	if (hw_time_get_next_frame()) {
+		hw_time_set_next_frame(0);
 
 		_strikerOldX = _strikerX;
 		_ballOldX = _ballX;
 		_ballOldY = _ballY;
 
 		// move striker left
-		if (hw_readkey() & 2) {
+		if (hw_read_key() & 2) {
 			--_strikerX;
 		}
 
 		// move striker right
-		if (hw_readkey() & 1) {
+		if (hw_read_key() & 1) {
 			++_strikerX;
 		}
 

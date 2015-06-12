@@ -12,12 +12,12 @@ void hw_init() {
 	_debounce_flag = 1;
 }
 
-void hw_ROMtoRAM(char *dest, rom char *src) {
+void hw_ROM_to_RAM(char *dest, rom char *src) {
 	while (*src) *dest++ = *src++;
 	*dest = '\0';
 }
 
-char hw_readkey() {    // Returns state of push buttons on bit 0-2
+char hw_read_key() {    // Returns state of push buttons on bit 0-2
 	char input = 0;
 	PFDD |= 0xC0;
 	PDDD |= 4;
@@ -29,7 +29,7 @@ char hw_readkey() {    // Returns state of push buttons on bit 0-2
 
 // Debounces input keys and returns the keys pressed since last call
 char hw_keys() {
-	char currentInput = hw_readkey();
+	char currentInput = hw_read_key();
 	if ((hw_time_millis() & DEBOUNCE_INTERVAL) == DEBOUNCE_INTERVAL) {
 		if (_debounce_flag) {
 			_keys = _lastInput & currentInput;
@@ -42,16 +42,16 @@ char hw_keys() {
 	return _keys;
 }
 
-char hw_waitForKey() {
+char hw_wait_for_key() {
 	int i;
 	char oldKeys;
-	char _keys = hw_readkey();
+	_keys = hw_read_key();
 	while (1) {
 		oldKeys = _keys;
-		_keys = hw_readkey();
+		_keys = hw_read_key();
 		if (_keys & ~oldKeys) {
 			for (i = 0; i < 25000; ++i) continue;
-			_keys = hw_readkey();
+			_keys = hw_read_key();
 			if (_keys & ~oldKeys) {
 				return _keys & ~oldKeys;
 			}

@@ -10,48 +10,48 @@
 void gfx_draw_bounds() {
 	int i;
 
-	hidecsr();
+	hide_scr();
 
-	gotoxy(0, 0);
+	go_to_xy(0, 0);
 	printf("%c", 201);  // top left corner
 	spacer(width - 2, 205); // top line
 	printf("%c", 187);
 
 	// print sides
 	for (i = 1; i < height - 1; i++) {
-		gotoxy(0, i);
+		go_to_xy(0, i);
 		printf("%c", 186);
-		gotoxy(255, i);
+		go_to_xy(255, i);
 		printf("%c", 186);
 	}
 }
 
 void gfx_draw_ball(int oldX, int oldY, int newX, int newY) 	{
 	// Erase old ball
-	gotoxy(oldX, oldY);
+	go_to_xy(oldX, oldY);
 	printf("  ");
 
 	// Draw new ball
-	gotoxy(newX, newY);
+	go_to_xy(newX, newY);
 	printf("%c%c", 219, 219);
 }
 
 void gfx_draw_striker(int oldX, int newX) 	{
 	char dX = (char) newX - (char) oldX;
 	if (dX > 0) {
-		gotoxy(oldX - 5, striker_height);
+		go_to_xy(oldX - 5, striker_height);
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
 		spacer(10, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
-		gotoxy(newX - 5, striker_height);
+		go_to_xy(newX - 5, striker_height);
 		printf("%c", 204);
 		spacer(10, 205);
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
-	
+
 }
 
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {
@@ -65,7 +65,7 @@ void gfx_window(int x1, int y1, int x2, int y2, char *title) {
 	}
 
 	reverse(0);
-	gotoxy(x1, y1);
+	go_to_xy(x1, y1);
 
 	// print top line
 	printf("%c", 201);  // corner
@@ -80,14 +80,14 @@ void gfx_window(int x1, int y1, int x2, int y2, char *title) {
 
 	// print sides
 	for (i = 1; i < h - 1; i++) {
-		gotoxy(x1, y1 + i);
+		go_to_xy(x1, y1 + i);
 		printf("%c", 186);
-		gotoxy(x2 - 1, y1 + i);
+		go_to_xy(x2 - 1, y1 + i);
 		printf("%c", 186);
 	}
 
 	// print bottom line
-	gotoxy(x1, y2 - 1);
+	go_to_xy(x1, y2 - 1);
 	printf("%c", 200);  // corner
 	spacer(w - 2, 205);
 	printf("%c", 188);  // corner

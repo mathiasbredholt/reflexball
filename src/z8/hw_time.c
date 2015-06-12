@@ -41,9 +41,9 @@ void hw_time_init() {
     // Enable timer0
     T0CTL |= 0x80;
 
-	_millis = 0;
-	_nextFrame = 0;
-	_LEDflag = 0;
+    _millis = 0;
+    _nextFrame = 0;
+    _LEDflag = 0;
 
 
     // Setup timer 1 (game loop)
@@ -81,11 +81,11 @@ unsigned long hw_time_millis() {
     return _millis;
 }
 
-char hw_time_get_nextframe() {
+char hw_time_get_next_frame() {
     return _nextFrame;
 }
 
-void hw_time_set_nextframe(char val) {
+void hw_time_set_next_frame(char val) {
     _nextFrame = val;
 }
 
