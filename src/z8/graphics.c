@@ -10,6 +10,8 @@
 void gfx_draw_bounds() {
 	int i;
 
+	hidecsr();
+	
 	gotoxy(0, 0);
 	printf("%c", 201);  // top left corner
 	spacer(width - 2, 205); // top line
