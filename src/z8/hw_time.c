@@ -1,17 +1,13 @@
-// Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
-
 #include <eZ8.h>
 
-unsigned long millis;
+char _nextFrame = 0;
 
 #pragma interrupt
 void ISR_T0() {
-    ++millis;
+    _nextFrame = 1;
 }
 
 void hw_time_init() {
-    millis = 0;
-
     // Setup timer
     // TEN: 0, TPOL: 0, PRES: 0 (1), TMODE: 1 (cont.)
     T0CTL = 0x01;
@@ -39,6 +35,10 @@ void hw_time_init() {
     EI();
 }
 
-unsigned long hw_time_millis() {
-    return millis;
+char hw_time_get_nextframe() {
+    return _nextFrame;
+}
+
+void hw_time_set_nextframe(char val) {
+    _nextFrame = val;
 }
