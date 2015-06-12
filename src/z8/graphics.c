@@ -56,8 +56,9 @@ void gfx_draw_striker(int oldX, int newX) 	{
 
 void gfx_draw_bar(int x, int y) {
 	go_to_xy(x, y);
-	color(5, 3);
-	spacer(4, 32);
+	reverse(1);
+	spacer(8, 32);
+	reverse(0);
 }
 
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {
