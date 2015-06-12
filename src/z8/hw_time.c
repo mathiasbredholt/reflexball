@@ -1,6 +1,7 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
 #include <eZ8.h>
+#include <sio.h>  // MOVE! 
 
 unsigned long millis;
 
@@ -10,6 +11,7 @@ void ISR_T0() {
 }
 
 void hw_time_init() {
+	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1   // MOVE!
     millis = 0;
 
     // Setup timer
