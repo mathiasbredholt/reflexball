@@ -8,8 +8,8 @@
 // #include "sounds.h"
 // #include "physics.h"
 
-int _strikerOldX, _strikerX;
-int _ballOldX, _ballOldY, _ballX, _ballY;
+int _strikerX, _strikerOldX;
+int _ballX, _ballY, _ballOldX, _ballOldY;
 char last_key_input = 0;
 char last_keys = 0;
 
@@ -23,6 +23,23 @@ void game_init() {
 void game_update() {
 	if (hw_time_get_nextframe()) {
 		hw_time_set_nextframe(0);
+
+		_strikerOldX = _strikerX;
+		_ballOldX = _ballX;
+		_ballOldY = _ballY;
+
+		HW_updateKeys(&last_key_input, &last_keys);
+
+		// move striker left
+		if (last_keys & 1) {
+			--_strikerX;
+		}
+
+		// move striker right
+		if (last_keys & 2) {
+			++_strikerX;
+		}
+
 
 		// phy_simulate();
 		--_ballY;
@@ -38,5 +55,6 @@ void game_init_player() {
 
 	_ballX = 128;
 	_ballY = 84;
+
 	gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
 }

@@ -5,6 +5,7 @@
 
 #define width 256
 #define height 96
+#define striker_height 92
 
 void gfx_draw_bounds() {
 	int i;
@@ -23,13 +24,23 @@ void gfx_draw_bounds() {
 	}
 }
 
-void gfx_draw_ball(int x, int y) 	{
-	gotoxy(x, y);
+void gfx_draw_ball(int oldX, int oldY, int newX, int newY) 	{
+	// Erase old ball
+	gotoxy(oldX, oldY);
+	printf("  ");
+
+	// Draw new ball
+	gotoxy(newX, newY);
 	printf("%c%c", 219, 219);
 }
 
-void gfx_draw_striker(int x, int y) 	{
-
+void gfx_draw_striker(int oldX, int newX) 	{
+	gotoxy(oldX - 3, striker_height);
+	spacer(8, (int) ' ');
+	gotoxy(newX - 3, striker_height);
+	printf("%c", 204);
+	spacer(6, 205);
+	printf("%c", 185);
 }
 
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {
