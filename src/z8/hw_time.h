@@ -13,4 +13,8 @@ char hw_time_get_nextframe();
 
 void hw_time_set_nextframe(char val);
 
+char hw_time_get_LEDflag();
+
+void hw_time_set_LEDflag(char val);
+
 #endif  // _HW_TIME_H_

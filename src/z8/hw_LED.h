@@ -2,6 +2,7 @@
 #include <sio.h>
 #include "charset.h"
 #include "util.h"
+#include "hw_time.h"
 
 #ifndef _HW_LED_H_
 #define _HW_LED_H_

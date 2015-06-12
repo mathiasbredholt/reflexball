@@ -1,3 +1,4 @@
+#include <sio.h>
 #include "game_engine.h"
 #include "hw_time.h"
 #include "hw_input.h"
@@ -8,11 +9,14 @@
 // #include "physics.h"
 
 char _strikerX, _strikerY, _ballX, _ballY;
+char last_key_input = 0;
+char last_keys = 0;
 
 void game_init() {
+	HW_init();
 	hw_time_init();
 	LED_init();
-	HW_init();
+	LED_setString("Welcome");
 }
 
 void game_update() {
@@ -21,9 +25,8 @@ void game_update() {
 
 		// phy_simulate();
 		++_ballY;
-
-		LED_update();
 	}
+	LED_update();
 }
 
 void game_init_player() {

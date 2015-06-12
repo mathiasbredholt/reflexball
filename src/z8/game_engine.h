@@ -1,5 +1,6 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
+#include <sio.h>
 #include "hw_time.h"
 #include "hw_input.h"
 #include "hw_LED.h"

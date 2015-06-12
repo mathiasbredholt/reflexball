@@ -23,12 +23,12 @@ void gfx_draw_bounds() {
 	}
 }
 
-void gfx_draw_ball(char x, char y) 	{
+void gfx_draw_ball(int x, int y) 	{
 	gotoxy(x, y);
 	printf("%c%c", 219, 219);
 }
 
-void gfx_draw_striker(char x, char y) 	{
+void gfx_draw_striker(int x, int y) 	{
 
 }
 

@@ -1,8 +1,6 @@
 #include <eZ8.h>             // special encore constants, macros and flash routines
 #include <sio.h>
 #include "hw_input.h"
-#include "charset.h"
-#include "util.h"
 #include "hw_time.h"
 
 #define DEBOUNCE_INTERVAL 15  // ms

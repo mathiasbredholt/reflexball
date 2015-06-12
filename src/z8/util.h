@@ -1,6 +1,7 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
 
 #include <sio.h>
+#include "lut.h"
 
 #ifndef _UTIL_H_
 #define _UTIL_H_

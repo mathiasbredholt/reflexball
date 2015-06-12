@@ -4,8 +4,8 @@
 #include <sio.h>
 #include "charset.h"
 #include "util.h"
-#include "hw_LED.h"
 #include "hw_time.h"
+#include "hw_LED.h"
 
 
 #define SCROLL_INTERVAL 30  // ms between change
@@ -14,10 +14,15 @@
 
 char _video_buffer[5][6];
 char _LEDtext[LED_MAX_STR_LEN];
-char _display_column, _scroll_index, _scroll_count, _text_index, _LEDinterrupt;
+char _display_column, _scroll_index, _scroll_count, _text_index;
 
 void LED_init() {
 // 'resets' the LED displays.
+
+	//Set data direction
+	PEDD = 0x00;
+	PGDD = 0x00;
+
 	_display_column = 0;
 	_scroll_index = 0;
 	_scroll_count = 0;
@@ -81,10 +86,10 @@ void LED_setString(char *str) {
 
 void LED_update() {
 	int i;
-	if (hw_time_millis() & LED_REFRESH_RATE == LED_REFRESH_RATE) {
+	if (hw_time_get_LEDflag()) {
+		hw_time_set_LEDflag(0);
 		++_scroll_count;
 		for (i = 0; i < 4; ++i) {
-
 			LED_displayColumn((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
 		}
 
