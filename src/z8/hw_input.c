@@ -31,7 +31,7 @@ char HW_readkey() {    // Returns state of push buttons on bit 0-2
 char HW_updateKeys(char *lastInput, char *lastKeys) {
 	char rising;
 	char currentInput = HW_readkey();
-	if (hw_time_millis() & DEBOUNCE_INTERVAL == DEBOUNCE_INTERVAL) {
+	if ((hw_time_millis() & DEBOUNCE_INTERVAL) == DEBOUNCE_INTERVAL) {
 		if (debounce_flag) {
 			*lastKeys = *lastInput & currentInput;
 			rising = currentInput & ~*lastInput;
