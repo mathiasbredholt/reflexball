@@ -7,7 +7,6 @@
 #ifndef _HW_LED_H_
 #define _HW_LED_H_
 
-
 void LED_init();
 
 void LED_displaycolumn(int val, int col, int disp);

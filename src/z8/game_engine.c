@@ -22,8 +22,6 @@ void game_init() {
 
 void game_update() {
 	if (hw_time_get_nextframe()) {
-		char rising;
-
 		hw_time_set_nextframe(0);
 
 		_strikerOldX = _strikerX;
