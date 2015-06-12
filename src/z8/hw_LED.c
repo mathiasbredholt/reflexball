@@ -5,67 +5,26 @@
 #include "charset.h"
 #include "util.h"
 #include "hw_LED.h"
+#include "hw_time.h"
 
 
 #define SCROLL_INTERVAL 30  // ms between change
 #define LED_MAX_STR_LEN 128
+#define LED_REFRESH_RATE 1 // 1st bit of millis, 1 kHz.
 
 char _video_buffer[5][6];
 char _LEDtext[LED_MAX_STR_LEN];
 char _display_column, _scroll_index, _scroll_count, _text_index, _LEDinterrupt;
 
-
-#pragma interrupt
-void ISR_T0() {
-	_LEDinterrupt = 1;
-	++_scroll_count;
-	// printf("%d\n", (int) _display_column);
-}
-
 void LED_init() {
-
-	//initializes the use of the LED screens as well as sets up the 1 kHz timer for the screens and enables interrupts.
-
-	//Set direction to out
-	PEDD = 0x00;
-	PGDD = 0x00;
-
-	// TEN: 0, TPOL: 0, PRES: 0 (1), TMODE: 1 (cont.)
-	T0CTL = 0x01;
-	//T0CTL = 0x39;
-
-	// Begin timer at 0
-	T0H = 0;
-	T0L = 0;
-
-	// End timer at 1843 (1 kHz)
-	T0RH = 0x48;
-	T0RL = 0x00;
-	//T0RH = 0xFF;
-	//T0RL = 0xFF;
-
-	// Enable TIMER0 interrupt
-	IRQ0 |= 0x20;
-
-	// Set priority to LOW
-	IRQ0ENH &= ~0x20;
-	IRQ0ENL |= 0x20;
-
-	// Enable timer0
-	T0CTL |= 0x80;
-
-	// Set update flag to 0
-	_LEDinterrupt = 0;
+// 'resets' the LED displays.
 	_display_column = 0;
 	_scroll_index = 0;
 	_scroll_count = 0;
-
-	SET_VECTOR(TIMER0, ISR_T0);
-	EI();
 }
 
 void LED_displayColumn(int val, int col, int disp) {
-	char clockval;
+	char clockval; //LED display clock
 
 	// Set column
 	PEOUT &= ~(1 << (4 - col));
@@ -122,8 +81,7 @@ void LED_setString(char *str) {
 
 void LED_update() {
 	int i;
-	if (_LEDinterrupt) {
-		_LEDinterrupt = 0;
+	if (hw_time_millis() & LED_REFRESH_RATE == LED_REFRESH_RATE) {
 		for (i = 0; i < 4; ++i) {
 			LED_displayColumn((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
 		}

@@ -5,20 +5,10 @@
 #include "util.h"
 #include "hw_time.h"
 
-#define DEBOUNCE_INTERVAL 10  // ms
-
-unsigned long millis;
-
-#pragma interrupt
-void ISR_T1() {
-	++millis;
-}
+#define DEBOUNCE_INTERVAL 15  // ms
 
 void HW_init() {
 	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1
-	//SET_VECTOR(TIMER0, ISR_T0);
-	EI();
-	millis = 0;
 }
 
 void HW_ROMtoRAM(char *dest, rom char *src) {
@@ -36,41 +26,11 @@ char HW_readkey() {    // Returns state of push buttons on bit 0-2
 	return input;
 }
 
-void HW_keysListener() {
-	DI();
-
-	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 1 (cont.)
-	T1CTL = 0x39;
-
-	// Begin timer at 0
-	T1H = 0;
-	T1L = 0;
-
-	// End timer at 144, 1 kHz
-	T1RH = 0x00;
-	T1RL = 0x90;
-
-	// Enable TIMER1 interrupt
-	IRQ0 |= 0x40;
-
-	// Set priority to HIGH
-	IRQ0ENH |= 0x40;
-	IRQ0ENL |= 0x40;
-
-	// Enable TIMER1
-	T1CTL |= 0x80;
-
-	SET_VECTOR(TIMER1, ISR_T1);
-
-	EI();
-}
-
 // Debounces input keys and returns the keys pressed since last call
 char HW_updateKeys(char *lastInput, char *lastKeys) {
 	char rising;
 	char currentInput = HW_readkey();
-	if (millis > DEBOUNCE_INTERVAL) {
-		millis = 0;
+	if (hw_time_millis() & DEBOUNCE_INTERVAL == DEBOUNCE_INTERVAL) {
 		*lastKeys = *lastInput & currentInput;
 		rising = currentInput & ~*lastInput;
 		*lastInput = currentInput;
@@ -81,16 +41,16 @@ char HW_updateKeys(char *lastInput, char *lastKeys) {
 
 char HW_waitForKey() {
 	int i;
-	char oldkeys;
+	char oldKeys;
 	char keys = HW_readkey();
 	while (1) {
-		oldkeys = keys;
+		oldKeys = keys;
 		keys = HW_readkey();
-		if (keys & ~oldkeys) {
+		if (keys & ~oldKeys) {
 			for (i = 0; i < 25000; ++i) continue;
 			keys = HW_readkey();
-			if (keys & ~oldkeys) {
-				return keys & ~oldkeys;
+			if (keys & ~oldKeys) {
+				return keys & ~oldKeys;
 			}
 		}
 	}
