@@ -11,7 +11,7 @@ void gfx_draw_bounds() {
 	int i;
 
 	hidecsr();
-	
+
 	gotoxy(0, 0);
 	printf("%c", 201);  // top left corner
 	spacer(width - 2, 205); // top line
@@ -37,12 +37,21 @@ void gfx_draw_ball(int oldX, int oldY, int newX, int newY) 	{
 }
 
 void gfx_draw_striker(int oldX, int newX) 	{
-	gotoxy(oldX - 3, striker_height);
-	spacer(8, (int) ' ');
-	gotoxy(newX - 3, striker_height);
-	printf("%c", 204);
-	spacer(6, 205);
-	printf("%c", 185);
+	char dX = (char) newX - (char) oldX;
+	if (dX > 0) {
+		gotoxy(oldX - 5, striker_height);
+		spacer(dX, (int) ' ');
+		printf("%c", 204);
+		spacer(10, 205);
+		printf("%c", 185);
+	} else if (dX < 0) {
+		gotoxy(newX - 5, striker_height);
+		printf("%c", 204);
+		spacer(10, 205);
+		printf("%c", 185);
+		spacer(-dX, (int) ' ');
+	}
+	
 }
 
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {

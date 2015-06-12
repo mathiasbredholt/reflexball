@@ -22,27 +22,27 @@ void game_init() {
 
 void game_update() {
 	if (hw_time_get_nextframe()) {
+		char rising;
+
 		hw_time_set_nextframe(0);
 
 		_strikerOldX = _strikerX;
 		_ballOldX = _ballX;
 		_ballOldY = _ballY;
 
-		HW_updateKeys(&last_key_input, &last_keys);
-
 		// move striker left
-		if (last_keys & 1) {
+		if (HW_readkey() & 2) {
 			--_strikerX;
 		}
 
 		// move striker right
-		if (last_keys & 2) {
+		if (HW_readkey() & 1) {
 			++_strikerX;
 		}
 
 
 		// phy_simulate();
-		--_ballY;
+		//--_ballY;
 		gfx_draw_striker(_strikerOldX, _strikerX);
 		gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
 	}

@@ -9,12 +9,16 @@ char _LEDflag;
 #pragma interrupt
 void ISR_T0() {
     ++millis;
+    _LEDflag = 1;
+}
+
+#pragma interrupt
+void ISR_T1() {
     _nextFrame = 1;
-	_LEDflag = 1;
 }
 
 void hw_time_init() {
-    // Setup timer
+    // Setup timer 0 (millis)
     // TEN: 0, TPOL: 0, PRES: 0 (1), TMODE: 1 (cont.)
     T0CTL = 0x01;
     // T0CTL = 0x39;
@@ -37,12 +41,40 @@ void hw_time_init() {
     // Enable timer0
     T0CTL |= 0x80;
 
-    SET_VECTOR(TIMER0, ISR_T0);
-    EI();
-
 	millis = 0;
 	_nextFrame = 0;
 	_LEDflag = 0;
+
+
+    // Setup timer 1 (game loop)
+    // TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 1 (cont.)
+    T1CTL = 0x39;
+
+    // Begin timer at 0
+    T1H = 0;
+    T1L = 0;
+
+    // End timer at 4777 (30 Hz)
+    T1RH = 0x12;
+    T1RL = 0xA9;
+
+    // Enable TIMER0 interrupt
+    IRQ0 |= 0x40;
+
+    // Set priority to LOW
+    IRQ0ENH &= ~0x40;
+    IRQ0ENL |= 0x40;
+
+    // Enable timer1
+    T1CTL |= 0x80;
+
+    SET_VECTOR(TIMER0, ISR_T0);
+    SET_VECTOR(TIMER1, ISR_T1);
+    EI();
+
+    millis = 0;
+    _nextFrame = 0;
+    _LEDflag = 0;
 }
 
 unsigned long hw_time_millis() {

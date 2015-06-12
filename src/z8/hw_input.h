@@ -11,7 +11,7 @@ void HW_ROMtoRAM(char *dest, rom char *src);
 
 char HW_readkey();
 
-char HW_updateKeys(char *lastInput, char *lastKeys);
+char HW_keys();
 
 char HW_waitForKey();
 
