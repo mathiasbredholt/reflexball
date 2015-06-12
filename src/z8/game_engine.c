@@ -1,16 +1,18 @@
 #include "game_engine.h"
 #include "hw_time.h"
-// #include "hw_input.h"
-// #include "hw_LED.h"
-// #include "sounds.h"
-// #include "levels.h"
+#include "hw_input.h"
+#include "hw_LED.h"
+#include "levels.h"
 #include "graphics.h"
+// #include "sounds.h"
 // #include "physics.h"
 
 char _strikerX, _strikerY, _ballX, _ballY;
 
 void game_init() {
 	hw_time_init();
+	LED_init();
+	HW_init();
 }
 
 void game_update() {
@@ -19,6 +21,8 @@ void game_update() {
 
 		// phy_simulate();
 		++_ballY;
+
+		LED_update();
 	}
 }
 
