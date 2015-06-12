@@ -24,6 +24,10 @@ void game_update() {
 	if (hw_time_get_nextframe()) {
 		hw_time_set_nextframe(0);
 
+		_strikerOldX = _strikerX;
+		_ballOldX = _ballX;
+		_ballOldY = _ballY;
+
 		HW_updateKeys(&last_key_input, &last_keys);
 
 		// move striker left
@@ -35,6 +39,7 @@ void game_update() {
 		if (last_keys & 2) {
 			++_strikerX;
 		}
+
 
 		// phy_simulate();
 		--_ballY;
@@ -50,5 +55,6 @@ void game_init_player() {
 
 	_ballX = 128;
 	_ballY = 84;
+
 	gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
 }
