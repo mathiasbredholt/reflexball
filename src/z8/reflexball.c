@@ -1,5 +1,5 @@
 #include "game_engine.h"
-#include "levels.c"
+#include "levels.h"
 
 void main() {
 	game_init();
@@ -7,6 +7,7 @@ void main() {
 	game_init_player();
 
 	while (1) {
+		//LED_update();
 		game_update();
 	}
 }
