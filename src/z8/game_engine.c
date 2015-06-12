@@ -56,5 +56,5 @@ void game_init_player() {
 	_ballX = 128;
 	_ballY = 84;
 
-	gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
+	gfx_draw_ball(_ballX, _ballY, _ballX, _ballY);
 }
