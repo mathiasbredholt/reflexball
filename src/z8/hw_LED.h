@@ -6,7 +6,6 @@
 #ifndef _HW_LED_H_
 #define _HW_LED_H_
 
-void ISR_T0();
 
 void LED_init();
 
