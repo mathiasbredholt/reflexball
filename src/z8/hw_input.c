@@ -5,8 +5,11 @@
 
 #define DEBOUNCE_INTERVAL 15  // ms
 
+char debounce_flag;
+
 void HW_init() {
-	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1
+	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1 bør flyttes
+	debounce_flag = 1;
 }
 
 void HW_ROMtoRAM(char *dest, rom char *src) {
@@ -29,10 +32,15 @@ char HW_updateKeys(char *lastInput, char *lastKeys) {
 	char rising;
 	char currentInput = HW_readkey();
 	if (hw_time_millis() & DEBOUNCE_INTERVAL == DEBOUNCE_INTERVAL) {
-		*lastKeys = *lastInput & currentInput;
-		rising = currentInput & ~*lastInput;
-		*lastInput = currentInput;
-		return rising;
+		if (debounce_flag) {
+			*lastKeys = *lastInput & currentInput;
+			rising = currentInput & ~*lastInput;
+			*lastInput = currentInput;
+			debounce_flag = 0;
+			return rising;
+		}
+	} else {
+		debounce_flag = 1;
 	}
 	return 0;
 }
