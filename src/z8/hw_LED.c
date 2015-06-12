@@ -82,7 +82,9 @@ void LED_setString(char *str) {
 void LED_update() {
 	int i;
 	if (hw_time_millis() & LED_REFRESH_RATE == LED_REFRESH_RATE) {
+		++_scroll_count;
 		for (i = 0; i < 4; ++i) {
+
 			LED_displayColumn((int) * (&_video_buffer[i][0] + _display_column + _scroll_index), (int) _display_column, i);
 		}
 
