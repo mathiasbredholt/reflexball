@@ -1,9 +1,11 @@
 // EDITED FOR USE IN WINDOWS
 #ifdef __win32__
 #include <conio.h>
+
+void hw_init() {}
 #endif
 
-#ifdef __unix__
+#ifdef __APPLE__
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,8 +58,6 @@ void hw_init() {
 	set_conio_terminal_mode();
 }
 #endif
-
-void hw_init() {}
 
 // void hw_ROM_to_RAM(char *dest, rom char *src) {}
 

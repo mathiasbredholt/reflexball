@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "game_engine.h"
 // #include "hw_time.h"
 #include "hw_input.h"
@@ -34,14 +33,12 @@ void game_update() {
 	// printf("%d\n", (int) key);
 
 	// move striker left
-	if (key & 2) {
-		_strikerX -= 256;
-	}
+	if (key & 2) _strikerX -= 256;
 
 	// move striker right
-	if (key & 1) {
-		_strikerX += 256;
-	}
+	if (key & 1) _strikerX += 256;
+
+	if (key & 4) lvl_create_menu();
 
 	// Calculate new ball position
 	phy_simulate(&_ballPos, &_ballVel);
@@ -68,5 +65,5 @@ void game_init_player() {
 }
 
 void game_wait_for_input() {
-
+	hw_wait_for_key();
 }

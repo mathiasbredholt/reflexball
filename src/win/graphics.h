@@ -13,6 +13,6 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX);
 
 void gfx_draw_bar(int x, int y, int color);
 
-void gfx_window(int x1, int y1, int x2, int y2, char *title);
+void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw);
 
 #endif
