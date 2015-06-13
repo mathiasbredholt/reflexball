@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "game_engine.h"
 // #include "hw_time.h"
-// #include "hw_input.h"
+#include "hw_input.h"
 // #include "hw_LED.h"
 #include "levels.h"
 #include "graphics.h"
@@ -19,6 +19,8 @@ void game_init() {
 }
 
 void game_update() {
+	char key;
+
 	// if (hw_time_get_next_frame()) {
 	// 	hw_time_set_next_frame(0);
 
@@ -26,15 +28,18 @@ void game_update() {
 	_ballOldX = _ballX;
 	_ballOldY = _ballY;
 
-	// move striker left
-	// if (hw_read_key() & 2) {
-	// 	--_strikerX;
-	// }
+	key = hw_read_key();
+	// printf("%d\n", (int) key);
 
-	// // move striker right
-	// if (hw_read_key() & 1) {
-	// 	++_strikerX;
-	// }
+	// move striker left
+	if (key & 2) {
+		--_strikerX;
+	}
+
+	// move striker right
+	if (key & 1) {
+		++_strikerX;
+	}
 
 
 	// phy_simulate();

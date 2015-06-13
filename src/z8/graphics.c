@@ -27,10 +27,11 @@ void gfx_draw_bounds() {
 }
 
 void gfx_draw_ball(int oldX, int oldY, int newX, int newY) 	{
-	// Erase old ball
-	go_to_xy(oldX, oldY);
-	printf("  ");
-
+	if ((char) oldX != (char) newX || (char) oldY != (char) newY) {
+		// Erase old ball
+		go_to_xy(oldX, oldY);
+		printf("  ");
+	}
 	// Draw new ball
 	go_to_xy(newX, newY);
 	printf("%c%c", 219, 219);
