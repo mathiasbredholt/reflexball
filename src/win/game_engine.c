@@ -66,3 +66,7 @@ void game_init_player() {
 
 	gfx_draw_ball(_ballPos, _ballPos);
 }
+
+void game_wait_for_input() {
+
+}

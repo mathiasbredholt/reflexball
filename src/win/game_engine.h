@@ -18,4 +18,6 @@ void game_update();
 
 void game_init_player();
 
+void game_wait_for_input();
+
 #endif  // _GAME_ENGINE_H_

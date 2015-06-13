@@ -67,10 +67,13 @@ char hw_read_key() {    // Returns state of push buttons on bit 0-2
 			// arrow right
 			input = 1;
 			break;
-			//} else {
-			// Any other key is 3rd key
-			//	input = 4;
-			//}
+		//} else {
+		// Any other key is 3rd key
+		//	input = 4;
+		//}
+		default:
+			input = 4;
+			break;
 		}
 	}
 	return input;
