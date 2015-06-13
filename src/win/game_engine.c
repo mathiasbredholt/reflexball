@@ -1,7 +1,7 @@
 #include "game_engine.h"
-// #include "hw_time.h"
+#include "hw_time.h"
 #include "hw_input.h"
-// #include "hw_LED.h"
+#include "hw_LED.h"
 #include "levels.h"
 #include "graphics.h"
 #include "util.h"
@@ -22,30 +22,28 @@ void game_init() {
 void game_update() {
 	char key;
 
-	// if (hw_time_get_next_frame()) {
-	// 	hw_time_set_next_frame(0);
+	if (hw_time_get_next_frame()) {
+		hw_time_set_next_frame(0);
 
-	_strikerOldX = _strikerX;
-	_ballOldPos = _ballPos;
+		_strikerOldX = _strikerX;
+		_ballOldPos = _ballPos;
 
-	key = hw_read_key();
-	// key = 0;
-	// printf("%d\n", (int) key);
+		key = hw_read_key();
 
-	// move striker left
-	if (key & 2) _strikerX -= 256;
+		// move striker left
+		if (key & 2) _strikerX -= 256;
 
-	// move striker right
-	if (key & 1) _strikerX += 256;
+		// move striker right
+		if (key & 1) _strikerX += 256;
 
-	if (key & 4) lvl_create_menu();
+		if (key & 4) lvl_create_menu();
 
-	// Calculate new ball position
-	phy_simulate(&_ballPos, &_ballVel);
+		// Calculate new ball position
+		phy_simulate(&_ballPos, &_ballVel);
 
-	gfx_draw_striker(_strikerOldX, _strikerX);
-	gfx_draw_ball(_ballOldPos, _ballPos);
-	// }
+		gfx_draw_striker(_strikerOldX, _strikerX);
+		gfx_draw_ball(_ballOldPos, _ballPos);
+	}
 	// LED_update();
 }
 

@@ -110,8 +110,8 @@ void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw) {
 		printf("%c", 188);  // corner
 	}
 	else {
-		go_to_xy(x1, y1);
-		for (int i = 0; i < h; ++i) {
+		for (i = 0; i < h; ++i) {
+			go_to_xy(x1, y1 + i);
 			spacer(w, 32);
 		}
 	}
