@@ -2,7 +2,7 @@
 #define GCC
 #endif
 
-#ifdef __WIN32__
+#ifdef __win32__
 #define GCC
 #endif
 

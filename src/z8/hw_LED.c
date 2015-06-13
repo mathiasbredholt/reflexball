@@ -1,5 +1,5 @@
 // Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
-#ifndef __WIN32__
+#ifndef __win32__
 #ifndef __APPLE__
 
 #include <eZ8.h>             // special encore constants, macros and flash routines
@@ -113,7 +113,7 @@ void LED_update() {
 #endif
 #endif
 
-#ifdef __WIN32__
+#ifdef __win32__
 void LED_init();
 
 void LED_display_column(int val, int col, int disp);
