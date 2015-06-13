@@ -1,11 +1,3 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __win32__
-#define GCC
-#endif
-
 // game_engine.c
 
 #include "game_engine.h"
@@ -18,7 +10,7 @@
 #include "physics.h"
 // #include "sounds.h"
 
-int _strikerX, _strikerOldX;
+unsigned int _strikerX, _strikerOldX;
 TVector_8_8 _ballPos, _ballOldPos;
 TVector_0_7 _ballVel;
 
@@ -30,7 +22,7 @@ void game_init() {
 }
 
 void game_update() {
-	char key;
+	char key, i;
 
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
@@ -49,26 +41,28 @@ void game_update() {
 		if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
-		phy_simulate(&_ballPos, &_ballVel);
+		for (i = 0; i < 3; ++i) {
+			phy_simulate(&_ballPos, &_ballVel);
+		}
 
 		gfx_draw_striker(_strikerOldX, _strikerX);
 		gfx_draw_ball(_ballOldPos, _ballPos);
-
-		LED_update();
 	}
+	LED_update();
 }
 
 void game_init_player() {
 	_strikerX = 128 << 8;
 	gfx_draw_striker(_strikerOldX, _strikerX);
 
-	_ballPos.x = 128 << 8;
+	_ballPos.x = 30 << 8;
 	_ballPos.y = 84 << 8;
 
 	_ballVel.x = 0;
-	_ballVel.y = 128;
+	_ballVel.y = -32;
 
-	phy_set_ball_speed(1);
+	phy_set_ball_speed(2);
+	phy_set_striker(&_strikerX, 12);
 
 	gfx_draw_ball(_ballPos, _ballPos);
 }
