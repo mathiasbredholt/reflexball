@@ -5,11 +5,13 @@
 #include "hw_LED.h"
 #include "levels.h"
 #include "graphics.h"
+#include "util.h"
 // #include "sounds.h"
-// #include "physics.h"
+#include "physics.h"
 
-int _strikerX, _strikerOldX;
-int _ballX, _ballY, _ballOldX, _ballOldY;
+unsigned int _strikerX, _strikerOldX;
+TVector_8_8 _ballPos, _ballOldPos;
+TVector_0_7 _ballVel;
 
 void game_init() {
 	hw_init();
@@ -23,34 +25,38 @@ void game_update() {
 		hw_time_set_next_frame(0);
 
 		_strikerOldX = _strikerX;
-		_ballOldX = _ballX;
-		_ballOldY = _ballY;
+		_ballOldPos = _ballPos;
 
 		// move striker left
 		if (hw_read_key() & 2) {
-			--_strikerX;
+			_strikerX -= 256;
 		}
 
 		// move striker right
 		if (hw_read_key() & 1) {
-			++_strikerX;
+			_strikerX += 256;
 		}
 
+		// Calculate new ball position
+		phy_simulate(&_ballPos, &_ballVel);
 
-		// phy_simulate();
-		//--_ballY;
 		gfx_draw_striker(_strikerOldX, _strikerX);
-		gfx_draw_ball(_ballOldX, _ballOldY, _ballX, _ballY);
+		gfx_draw_ball(_ballOldPos, _ballPos);
 	}
 	LED_update();
 }
 
 void game_init_player() {
-	_strikerX = 128;
+	_strikerX = 128 << 8;
 	gfx_draw_striker(_strikerOldX, _strikerX);
 
-	_ballX = 128;
-	_ballY = 84;
+	_ballPos.x = 128 << 8;
+	_ballPos.y = 84 << 8;
 
-	gfx_draw_ball(_ballX, _ballY, _ballX, _ballY);
+	_ballVel.x = 0;
+	_ballVel.y = 128;
+
+	phy_set_ball_speed(1);
+
+	gfx_draw_ball(_ballPos, _ballPos);
 }

@@ -1,0 +1,12 @@
+*.obj
+*.lod
+*.map
+*.wsp
+*.zdsproj
+*.asmsw
+*.ccsw
+*.linkcmd
+*.mak
+*.asm
+*.lst
+*.exe
