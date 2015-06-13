@@ -26,25 +26,18 @@ void gfx_draw_bounds() {
 	}
 }
 
-void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
-	unsigned char newX = (unsigned char) (newPos.x >> 8);
-	unsigned char newY = (unsigned char) (newPos.y >> 8);
-	unsigned char oldX = (unsigned char) (oldPos.x >> 8);
-	unsigned char oldY = (unsigned char) (oldPos.y >> 8);
-
-	if (oldX != newX || oldY != newY) {
+void gfx_draw_ball(int oldX, int oldY, int newX, int newY) 	{
+	if ((char) oldX != (char) newX || (char) oldY != (char) newY) {
 		// Erase old ball
-		go_to_xy((int) oldX, (int) oldY);
+		go_to_xy(oldX, oldY);
 		printf("  ");
 	}
 	// Draw new ball
-	go_to_xy((int) newX, (int) newY);
+	go_to_xy(newX, newY);
 	printf("%c%c", 219, 219);
 }
 
-void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
-	oldX >>= 8;
-	newX >>= 8;
+void gfx_draw_striker(int oldX, int newX) 	{
 	char dX = (char) newX - (char) oldX;
 	if (dX > 0) {
 		go_to_xy(oldX - 5, striker_height);
@@ -59,6 +52,7 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
+
 }
 
 void gfx_draw_bar(int x, int y) {

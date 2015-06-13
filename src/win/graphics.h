@@ -7,9 +7,9 @@
 
 void gfx_draw_bounds();
 
-void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos);
+void gfx_draw_ball(int oldX, int oldY, int newX, int newY);
 
-void gfx_draw_striker(unsigned int oldX, unsigned int newX);
+void gfx_draw_striker(int oldX, int newX);
 
 void gfx_draw_bar(int x, int y);
 
