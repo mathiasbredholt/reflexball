@@ -25,6 +25,13 @@ long util_expand(long i) {
     return i << 2;
 }
 
+TVector_8_8 util_expand_vector(TVector_0_7 v) {
+    TVector_8_8 v2;
+    v2.x = (unsigned int) (v.x << 1);
+    v2.y = (unsigned int) (v.y << 1);
+    return v2;
+}
+
 signed short util_sin(int x) {
     return SIN[x & 0x1FF];
 }
@@ -38,8 +45,8 @@ signed short util_cos(int x) {
 //     v.y = 20;
 // }
 
-void util_rotate(TVector *v, int angle) {
-    long temp = v->x;
+void util_rotate(TVector_0_7 *v, int angle) {
+    int temp = v->x;
     v->x = v->x * util_cos(angle) - v->y * util_sin(angle);
     v->y = temp * util_sin(angle) + v->y * util_cos(angle);
 }
