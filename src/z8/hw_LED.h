@@ -1,5 +1,5 @@
 #ifndef __APPLE__
-#ifndef __win32__
+#ifndef __WIN32__
 
 #include <eZ8.h>             // special encore constants, macros and flash routines
 #include <sio.h>
