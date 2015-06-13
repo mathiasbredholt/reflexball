@@ -9,7 +9,7 @@ void mySleep(int sleepMs) {
 
 #endif
 
-#ifdef __win32__
+#ifdef __WIN32__
 #define GCC
 
 #include <windows.h>
