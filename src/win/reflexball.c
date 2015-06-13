@@ -9,7 +9,6 @@ int main() {
 	game_init_player();
 
 	while (1) {
-		for (i = 0; i < 100000; ++i) continue;
 		game_update();
 	}
 

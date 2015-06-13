@@ -61,11 +61,13 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 	}
 }
 
-void gfx_draw_bar(int x, int y) {
+void gfx_draw_bar(int x, int y, int color) {
 	go_to_xy(x, y);
-	reverse(1);
-	spacer(8, 32);
-	reverse(0);
+	fg_color(color + 1);
+	spacer(10, 178);
+	go_to_xy(x, y + 1);
+	spacer(10, 178);
+	fg_color(15);
 }
 
 void gfx_window(int x1, int y1, int x2, int y2, char *title) {

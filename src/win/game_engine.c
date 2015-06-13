@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "game_engine.h"
 // #include "hw_time.h"
-#include "hw_input.h"
+// #include "hw_input.h"
 // #include "hw_LED.h"
 #include "levels.h"
 #include "graphics.h"
@@ -29,7 +29,8 @@ void game_update() {
 	_strikerOldX = _strikerX;
 	_ballOldPos = _ballPos;
 
-	key = hw_read_key();
+	// key = hw_read_key();
+	key = 0;
 	// printf("%d\n", (int) key);
 
 	// move striker left
