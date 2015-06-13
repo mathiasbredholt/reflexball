@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 // #include "hw_time.h"
-// #include "hw_input.h"
+#include "hw_input.h"
 // #include "hw_LED.h"
 #include "levels.h"
 #include "graphics.h"

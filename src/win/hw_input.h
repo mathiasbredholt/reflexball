@@ -1,6 +1,7 @@
 // EDITED FOR USE IN WINDOWS
 
-#include <conio.h> // Provides getch() and kbhit()
+#include <curses.h> // Provides getch() and kbhit()
+
 
 #ifndef _hw_INPUT_H_
 #define _hw_INPUT_H_

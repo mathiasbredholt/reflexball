@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "game_engine.h"
 // #include "hw_time.h"
-// #include "hw_input.h"
+#include "hw_input.h"
 // #include "hw_LED.h"
 #include "levels.h"
 #include "graphics.h"
@@ -14,7 +14,7 @@ TVector_8_8 _ballPos, _ballOldPos;
 TVector_0_7 _ballVel;
 
 void game_init() {
-	// hw_init();
+	hw_init();
 	// hw_time_init();
 	// LED_init();
 	// LED_set_string("Welcome");
@@ -29,8 +29,8 @@ void game_update() {
 	_strikerOldX = _strikerX;
 	_ballOldPos = _ballPos;
 
-	// key = hw_read_key();
-	key = 0;
+	key = hw_read_key();
+	// key = 0;
 	// printf("%d\n", (int) key);
 
 	// move striker left
