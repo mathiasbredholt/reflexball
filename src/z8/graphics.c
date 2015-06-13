@@ -43,9 +43,10 @@ void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
 }
 
 void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
+	char dX ;
 	oldX >>= 8;
 	newX >>= 8;
-	char dX = (char) newX - (char) oldX;
+	dX = (char) newX - (char) oldX;
 	if (dX > 0) {
 		go_to_xy(oldX - 5, striker_height);
 		spacer(dX, (int) ' ');

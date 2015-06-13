@@ -22,6 +22,7 @@ void game_init() {
 
 void game_update() {
 	if (hw_time_get_next_frame()) {
+		int i;
 		hw_time_set_next_frame(0);
 
 		_strikerOldX = _strikerX;
@@ -38,7 +39,11 @@ void game_update() {
 		}
 
 		// Calculate new ball position
-		phy_simulate(&_ballPos, &_ballVel);
+		for (i = 0; i < 3; ++i) {
+			phy_simulate(&_ballPos, &_ballVel);
+		}
+
+		//printf("%u,   %u\n", _ballPos.x>>8, _ballPos.y>>8);
 
 		gfx_draw_striker(_strikerOldX, _strikerX);
 		gfx_draw_ball(_ballOldPos, _ballPos);
@@ -50,13 +55,14 @@ void game_init_player() {
 	_strikerX = 128 << 8;
 	gfx_draw_striker(_strikerOldX, _strikerX);
 
-	_ballPos.x = 128 << 8;
+	_ballPos.x = 30 << 8;
 	_ballPos.y = 84 << 8;
 
 	_ballVel.x = 0;
-	_ballVel.y = 128;
+	_ballVel.y = -32;
 
-	phy_set_ball_speed(1);
+	phy_set_ball_speed(2);
+	phy_set_striker(&_strikerX, 12);
 
 	gfx_draw_ball(_ballPos, _ballPos);
 }
