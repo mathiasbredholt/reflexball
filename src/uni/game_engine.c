@@ -11,6 +11,7 @@
 // #include "sounds.h"
 
 unsigned int _strikerX, _strikerOldX;
+int _strikerSize;
 TVector_8_8 _ballPos, _ballOldPos;
 TVector_0_7 _ballVel;
 
@@ -19,6 +20,7 @@ void game_init() {
 	hw_time_init();
 	LED_init();
 	LED_set_string("Welcome");
+	_strikerSize = 48;
 }
 
 void game_update() {
@@ -33,10 +35,10 @@ void game_update() {
 		key = hw_read_key();
 
 		// move striker left
-		if (key & 2) _strikerX -= 512;
+		if (key & 2 && _strikerX > (_strikerSize + 1) << 7) _strikerX -= 512;
 
 		// move striker right
-		if (key & 1) _strikerX += 512;
+		if (key & 1 && _strikerX >> 8 < 254 - ((_strikerSize >> 1) + 1)) _strikerX += 512;
 
 		if (key & 4) lvl_create_menu();
 
@@ -53,7 +55,6 @@ void game_update() {
 
 void game_init_player() {
 	_strikerX = 128 << 8;
-	gfx_draw_striker(_strikerOldX, _strikerX);
 
 	_ballPos.x = 128 << 8;
 	_ballPos.y = 90 << 8;
@@ -62,8 +63,10 @@ void game_init_player() {
 	_ballVel.y = -32;
 
 	phy_set_ball_speed(2);
-	phy_set_striker(&_strikerX, 24);
+	phy_set_striker(&_strikerX, _strikerSize);
+	gfx_set_striker_size(_strikerSize);
 
+	gfx_draw_striker(_strikerOldX, _strikerX);
 	gfx_draw_ball(_ballPos, _ballPos);
 }
 

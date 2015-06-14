@@ -24,6 +24,8 @@
 #define height 96
 #define striker_height 92
 
+int _strikerSize;
+
 void gfx_draw_bounds() {
 	int i;
 
@@ -74,15 +76,15 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 	newX >>= 8;
 	dX = (char) newX - (char) oldX;
 	if (dX > 0) {
-		go_to_xy(oldX - 5, striker_height);
+		go_to_xy(oldX - (_strikerSize >> 1) + 1, striker_height);
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
-		spacer(10, 205);
+		spacer(_strikerSize - 2, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
-		go_to_xy(newX - 5, striker_height);
+		go_to_xy(newX - (_strikerSize >> 1) + 1, striker_height);
 		printf("%c", 204);
-		spacer(10, 205);
+		spacer(_strikerSize - 2, 205);
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
@@ -92,12 +94,30 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 #endif
 }
 
+void gfx_change_striker_size(unsigned int x, int size) {
+	x >>= 8;
+
+	go_to_xy(x - (_strikerSize >> 1) + 1, striker_height);
+	spacer(_strikerSize, (int) ' ');
+
+	_strikerSize = size;
+	go_to_xy(x - (_strikerSize >> 1) + 1, striker_height);
+	printf("%c", 204);
+	spacer(_strikerSize - 2, 205);
+	printf("%c", 185);
+}
+
+void gfx_set_striker_size(int size) {
+	_strikerSize = size;
+}
+
 void gfx_draw_bars() {
 	int numberOfBars = 15;
 	int i, j;
 
 	for (i = 0; i < numberOfBars; ++i) {
-		fg_color(i);
+		fg_color(1);	// For ´testing
+		//fg_color(i);
 		for (j = 0; j < numberOfBars; ++j) {
 			go_to_xy(10 + j * 16, 4 + i * 4);
 			spacer(10, 178);
@@ -105,6 +125,19 @@ void gfx_draw_bars() {
 			spacer(10, 178);
 		}
 	}
+
+	fg_color(15);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_erase_bar(int x, int y) {
+	//go_to_xy(10 + j * 16, 4 + i * 4);
+	//spacer(10, 178);
+	//go_to_xy(10 + j * 16, 5 + i * 4);
+	//spacer(10, 178);
 
 	fg_color(15);
 

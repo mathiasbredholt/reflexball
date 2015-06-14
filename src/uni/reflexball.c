@@ -18,8 +18,8 @@ void main() {
 	game_init();
 //	intro_play();
 //	game_wait_for_input();
-	lvl_create_lvl1();
 	game_init_player();
+	lvl_create_lvl1();
 
 	while (1) {
 		game_update();
