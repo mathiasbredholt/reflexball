@@ -55,10 +55,10 @@ void game_init_player() {
 	_strikerX = 128 << 8;
 	gfx_draw_striker(_strikerOldX, _strikerX);
 
-	_ballPos.x = 30 << 8;
-	_ballPos.y = 84 << 8;
+	_ballPos.x = 128 << 8;
+	_ballPos.y = 90 << 8;
 
-	_ballVel.x = 0;
+	_ballVel.x = -32;
 	_ballVel.y = -32;
 
 	phy_set_ball_speed(2);

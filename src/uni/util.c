@@ -50,3 +50,29 @@ void util_rotate(TVector_0_7 *v, int angle) {
     v->x = v->x * util_cos(angle) - v->y * util_sin(angle);
     v->y = temp * util_sin(angle) + v->y * util_cos(angle);
 }
+
+int shift_fix_int_right(int x, int shift) {
+    // Also works for negative numbers by filling in with the sign bit
+    int i;
+    int msb = x >> 15;
+    x >>= shift;
+    if (msb) {
+        for (i = 0; i < shift; ++i) {
+            x |= 0x8000 >> i;
+        }
+    }
+    return x;
+}
+
+int shift_fix_char_right(char x, char shift) {
+    // Also works for negative numbers by filling in with the sign bit. Returns an int, which can be typecasted back to char if neccesary.
+    char i;
+    char msb = x >> 7;
+    int y = (int) (x >> shift);
+    if (msb) {
+        for (i = 0; i < shift + 8; ++i) {
+            y |= 0x8000 >> i;
+        }
+    }
+    return y;
+}

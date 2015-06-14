@@ -28,6 +28,7 @@ void gfx_draw_bounds() {
 	int i;
 
 	hide_scr();
+	clr_scr();
 
 	go_to_xy(0, 0);
 	printf("%c", 201);  // top left corner
