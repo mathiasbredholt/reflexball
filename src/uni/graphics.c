@@ -134,10 +134,10 @@ void gfx_draw_bars() {
 }
 
 void gfx_erase_bar(int x, int y) {
-	//go_to_xy(10 + j * 16, 4 + i * 4);
-	//spacer(10, 178);
-	//go_to_xy(10 + j * 16, 5 + i * 4);
-	//spacer(10, 178);
+	go_to_xy(10 + x * 16, 4 + y * 4);
+	spacer(10, ' ');
+	go_to_xy(10 + x * 16, 5 + y * 4);
+	spacer(10, ' ');
 
 	fg_color(15);
 
