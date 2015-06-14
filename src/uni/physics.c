@@ -1,6 +1,19 @@
+#ifdef __APPLE__
+#define GCC
+#endif
+
+#ifdef __WIN32__
+#define GCC
+#endif
+
+#ifndef GCC
+
+#include <sio.h>
+
+#endif
+
 #include "physics.h"
 #include "util.h"
-#include <sio.h>
 
 char ballSpeed;
 unsigned int * strikerPos;
