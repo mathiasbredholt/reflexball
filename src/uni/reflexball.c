@@ -10,11 +10,14 @@
 
 #include "game_engine.h"
 #include "levels.h"
+#include "intro.h"
 
 #ifndef GCC
 
 void main() {
 	game_init();
+	intro_play();
+	game_wait_for_input();
 	lvl_create_lvl1();
 	game_init_player();
 
@@ -31,6 +34,8 @@ void main() {
 
 int main() {
 	game_init();
+	intro_play();
+	game_wait_for_input();
 	lvl_create_lvl1();
 	game_init_player();
 

@@ -42,6 +42,10 @@ void gfx_draw_bounds() {
 		go_to_xy(255, i);
 		printf("%c", 186);
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
@@ -58,6 +62,10 @@ void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
 	// Draw new ball
 	go_to_xy((int) newX, (int) newY);
 	printf("%c%c", 219, 219);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
@@ -78,6 +86,10 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_draw_bar(int x, int y, int color) {
@@ -87,6 +99,10 @@ void gfx_draw_bar(int x, int y, int color) {
 	go_to_xy(x, y + 1);
 	spacer(10, 178);
 	fg_color(15);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw) {
@@ -134,4 +150,8 @@ void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw) {
 			spacer(w, 32);
 		}
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }

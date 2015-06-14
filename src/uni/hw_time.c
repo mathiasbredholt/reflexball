@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 void mySleep(int sleepMs) {
-    usleep(sleepMs);
+    usleep(sleepMs * 1000);
 }
 
 #endif
@@ -130,7 +130,7 @@ void hw_time_init() {};
 unsigned long hw_time_millis() { return 0; };
 
 char hw_time_get_next_frame() {
-    mySleep(75);
+    mySleep(30);
     return 1;
 };
 
