@@ -92,12 +92,20 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 #endif
 }
 
-void gfx_draw_bar(int x, int y, int color) {
-	go_to_xy(x, y);
-	fg_color(color + 1);
-	spacer(10, 178);
-	go_to_xy(x, y + 1);
-	spacer(10, 178);
+void gfx_draw_bars() {
+	int numberOfBars = 15;
+	int i, j;
+
+	for (i = 0; i < numberOfBars; ++i) {
+		fg_color(i);
+		for (j = 0; j < numberOfBars; ++j) {
+			go_to_xy(10 + j * 16, 4 + i * 4);
+			spacer(10, 178);
+			go_to_xy(10 + j * 16, 5 + i * 4);
+			spacer(10, 178);
+		}
+	}
+
 	fg_color(15);
 
 #ifdef GCC
