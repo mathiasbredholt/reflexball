@@ -33,15 +33,15 @@ void game_update() {
 		key = hw_read_key();
 
 		// move striker left
-		if (key & 2) _strikerX -= 256;
+		if (key & 2) _strikerX -= 512;
 
 		// move striker right
-		if (key & 1) _strikerX += 256;
+		if (key & 1) _strikerX += 512;
 
 		if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
-		for (i = 0; i < 4; ++i) {
+		for (i = 0; i < 6; ++i) {
 			phy_simulate(&_ballPos, &_ballVel);
 		}
 
@@ -62,7 +62,7 @@ void game_init_player() {
 	_ballVel.y = -32;
 
 	phy_set_ball_speed(2);
-	phy_set_striker(&_strikerX, 12);
+	phy_set_striker(&_strikerX, 24);
 
 	gfx_draw_ball(_ballPos, _ballPos);
 }

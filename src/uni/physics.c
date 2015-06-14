@@ -32,25 +32,25 @@ void phy_simulate(TVector_8_8 *pos, TVector_0_7 *vel) {
 	} else if (y == 91 && x > (*strikerPos >> 8) - strikerWidth - 1 && x < (*strikerPos >> 8) + strikerWidth + 1) {
 		sp = (unsigned char) (*strikerPos >> 8);
 		vel->y = -vel->y;
-		printf("vel_x=%d, vel_y=%d,  sw=%d,   sw>>2=%d,  x=%d,  sp=%d,   l >= %d, ml >= %d, c > %d, mr > %d", (int) vel->x, (int) vel->y, strikerWidth, strikerWidth >> 2, (int) x, (int) sp, (int) (x + strikerWidth - (strikerWidth >> 2) - 1), (int) (x + strikerWidth - (strikerWidth >> 1) - 1), (int) (x - strikerWidth + (strikerWidth >> 1) - 1), (int) (x - strikerWidth + (strikerWidth >> 2) - 1));
+		//printf("vel_x=%d, vel_y=%d,  sw=%d,   sw>>2=%d,  x=%d,  sp=%d,   l >= %d, ml >= %d, c > %d, mr > %d", (int) vel->x, (int) vel->y, strikerWidth, strikerWidth >> 2, (int) x, (int) sp, (int) (x + strikerWidth - (strikerWidth >> 2) - 1), (int) (x + strikerWidth - (strikerWidth >> 1) - 1), (int) (x - strikerWidth + (strikerWidth >> 1) - 1), (int) (x - strikerWidth + (strikerWidth >> 2) - 1));
 		if (x <= sp - strikerWidth + (strikerWidth >> 2) + 1) {
 			// Far left
-			printf("  left");
+			//printf("  left");
 			util_rotate(vel, -43);	// ~30 deg
 		} else if (x <= sp - strikerWidth + (strikerWidth >> 1) + 1) {
 			// Middle left
-			printf("  middle left");
+			//printf("  middle left");
 			util_rotate(vel, -21);	// ~15 deg
 		} else if (x < sp + strikerWidth - (strikerWidth >> 1) + 1) {
 			// Center
-			printf("  center");
+			//printf("  center");
 		} else if (x < sp + strikerWidth - (strikerWidth >> 2) + 1) {
 			// Middle right
-			printf("  middle right");
+			//printf("  middle right");
 			util_rotate(vel, 21);	// ~15 deg
 		} else {
 			// Far right
-			printf("  right");
+			//printf("  right");
 			util_rotate(vel, 43);	// ~30 deg
 		}
 	} else if (y > 94) {
