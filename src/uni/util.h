@@ -1,9 +1,8 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-#define FIX8_SHIFT 8
-#define FIX8_MULT(a,b) ( (a)*(b) >> FIX8_SHIFT)
-#define FIX8_DIV(a,b) ( ((a) << FIX8_SHIFT) / (b))
+#define FIX8_8_MULT(a,b) ( (a)*(b) >> 8)
+#define FIX8_8_DIV(a,b) ( ((a) << 8) / (b))
 
 typedef struct TVector_8_8 {
 	// Vector in 8.8 unsigned fixed point notation
@@ -28,5 +27,11 @@ signed short util_sin(int x);
 signed short util_cos(int x);
 
 void util_rotate(struct TVector_0_7 *v, int angle);
+
+int shift_fix_int_right(int x, int shift);
+
+char shift_fix_char_right(int x, int shift);
+
+int char_to_int(int y);
 
 #endif

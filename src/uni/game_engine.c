@@ -41,7 +41,7 @@ void game_update() {
 		if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
-		for (i = 0; i < 3; ++i) {
+		for (i = 0; i < 4; ++i) {
 			phy_simulate(&_ballPos, &_ballVel);
 		}
 

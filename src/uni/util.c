@@ -46,9 +46,13 @@ signed short util_cos(int x) {
 // }
 
 void util_rotate(TVector_0_7 *v, int angle) {
-    int temp = v->x;
-    v->x = v->x * util_cos(angle) - v->y * util_sin(angle);
-    v->y = temp * util_sin(angle) + v->y * util_cos(angle);
+    int cosine, sine, x, y;
+    cosine = shift_fix_int_right(util_cos(angle), 7);   // 0.7 representation
+    sine = shift_fix_int_right(util_sin(angle), 7);   // 0.7 representation
+    x = char_to_int(v->x);
+    y = char_to_int(v->y);
+    v->x = (char) (shift_fix_int_right(x * cosine, 7) - shift_fix_int_right(y * sine, 7));
+    v->y = (char) (shift_fix_int_right(x * sine, 7) + shift_fix_int_right(y * cosine, 7));
 }
 
 int shift_fix_int_right(int x, int shift) {
@@ -64,13 +68,27 @@ int shift_fix_int_right(int x, int shift) {
     return x;
 }
 
-int shift_fix_char_right(char x, char shift) {
-    // Also works for negative numbers by filling in with the sign bit. Returns an int, which can be typecasted back to char if neccesary.
+char shift_fix_char_right(int y, int shift) {
+    // Also works for negative numbers by filling in with the sign bit. Takes an int because of compiler error
     char i;
+    char x = (char) y;
     char msb = x >> 7;
-    int y = (int) (x >> shift);
+    x >>= shift;
     if (msb) {
-        for (i = 0; i < shift + 8; ++i) {
+        for (i = 0; i < shift; ++i) {
+            x |= 0x80 >> i;
+        }
+    }
+    return x;
+}
+
+int char_to_int(int y) {
+    // Also works for negative numbers by filling in with the sign bit.
+    char i;
+    char x = (char) y;
+    char msb = x >> 7;
+    if (msb) {
+        for (i = 0; i < 8; ++i) {
             y |= 0x8000 >> i;
         }
     }
