@@ -3,7 +3,7 @@
 
 void game_init();
 
-void game_update();
+void game_update(char * block_data);
 
 void game_init_player();
 

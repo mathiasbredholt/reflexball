@@ -3,6 +3,6 @@
 
 void lvl_create_menu();
 
-void lvl_create_lvl1();
+void lvl_create_lvl1(char * block_data);
 
 #endif  // _LEVELS_H_
