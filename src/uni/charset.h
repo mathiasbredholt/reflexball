@@ -135,8 +135,6 @@ const char character_data[95][5] = {
   {0x00, 0x41, 0x36, 0x08, 0x00},
   {0x08, 0x04, 0x08, 0x10, 0x08}
 };
-<<< <<< < HEAD
-== == == =
 
 const char font_mini[26][3][5] = {{
     "    ",
@@ -244,6 +242,5 @@ const char font_mini[26][3][5] = {{
     "/_  "
   }
 };
->>> >>> > origin / master
 
 #endif /*! _CHARSET_H_ */

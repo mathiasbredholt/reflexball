@@ -85,7 +85,9 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 
 				} else {
 					// Middle
-					phy_hit_block(blockData, blockHit, x >> 4, (y >> 2) - 1);
+					if (phy_hit_block(blockData, blockHit, x >> 4, (y >> 2) - 1)) {
+						vel->y = -vel->y;
+					}
 				}
 			} else if (y & 0x03) {
 				// Touching upper edge of block
@@ -97,7 +99,9 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 
 				} else {
 					// Middle
-					phy_hit_block(blockData, blockHit, x >> 4, y >> 2);
+					if (phy_hit_block(blockData, blockHit, x >> 4, y >> 2)) {
+						vel->y = -vel->y;
+					}
 				}
 				//*redraw = 1;
 			}
@@ -111,22 +115,23 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 
 }
 
-void phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int x, int y) {
+char phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int x, int y) {
 	int type;
 
 	for (type = 3; type >= 0; --type) {
 		if (blockData[type][x][y >> 3] & 0x80 >> (y & 0x07)) {
 			// Block exists
 			blockData[type][x][y >> 3] &= ~(0x80 >> (y & 0x07));	// Delete block
-			blockHit = (type - 1) << 8;
-			blockHit |= y << 4;
-			blockHit |= x;
+			*blockHit = (type - 1) << 8;
+			*blockHit |= y << 4;
+			*blockHit |= x;
 			if (type) {	// type != 0
 				blockData[type - 1][x][y >> 3] |= 0x80 >> (y & 0x07);	// Add block with lower type
 			}
-			break;
+			return 1;
 		}
 	}
+	return 0;
 }
 
 void phy_set_striker_size(int size) {
