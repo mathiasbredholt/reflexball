@@ -24,7 +24,7 @@
 char _ballSpeed, _bouncedStriker;
 int _strikerSize;
 
-void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0_7 *vel, unsigned int strikerPos) {
+void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0_7 *vel, unsigned int strikerPos, char * redraw) {
 	unsigned char x, y, sp;
 	pos->x += (signed int) (_ballSpeed * vel->x);
 	pos->y += (signed int) (_ballSpeed * vel->y);
@@ -32,8 +32,10 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 	y = (unsigned char) (pos->y >> 8);
 	if (y == 0) {
 		vel->y = -vel->y;
+		*redraw = 1;
 	} else if (!_bouncedStriker && y == 91 && x >= (strikerPos >> 8) - _strikerSize && x <= (strikerPos >> 8) + _strikerSize && !(vel->y & 0x80)) {
 		_bouncedStriker = 1;
+		*redraw = 1;
 		sp = (unsigned char) (strikerPos >> 8);
 		vel->y = -vel->y;
 		//printf("vel_x=%d, vel_y=%d,  sw=%d,   sw>>2=%d,  x=%d,  sp=%d,   l >= %d, ml >= %d, c > %d, mr > %d", (int) vel->x, (int) vel->y, _strikerSize, _strikerSize >> 2, (int) x, (int) sp, (int) (x + _strikerSize - (_strikerSize >> 2) - 1), (int) (x + _strikerSize - (_strikerSize >> 1) - 1), (int) (x - _strikerSize + (_strikerSize >> 1) - 1), (int) (x - _strikerSize + (_strikerSize >> 2) - 1));
@@ -72,16 +74,38 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 		_bouncedStriker = y >= 91;
 
 		if (y <= 62) {
-			if (y & 0x01) {
+			if (y & 0x00) {
 				// Touching lower edge of block
+				//*redraw = 1;
+				if (x & 0x01) {
+					// Left corner
 
-			} else if (y & 0x00) {
+				} else if (x & 0x0F) {
+					// Right corner
+
+				} else {
+					// Middle
+
+				}
+			} else if (y & 0x03) {
 				// Touching upper edge of block
+				if (x & 0x01) {
+					// Left corner
+
+				} else if (x & 0x0F) {
+					// Right corner
+
+				} else {
+					// Middle
+
+				}
+				//*redraw = 1;
 			}
 		}
 	}
-	if (x == 0 || x == width - 1) {
+	if (x == 0 || x == width - 2) {
 		vel->x = -vel->x;
+		*redraw = 1;
 	}
 
 

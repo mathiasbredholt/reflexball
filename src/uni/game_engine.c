@@ -25,6 +25,7 @@ void game_init() {
 
 void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 	char key, i;
+	char * redraw = 0;
 
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
@@ -35,16 +36,28 @@ void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 		key = hw_read_key();
 
 		// move striker left
-		if (key & 2 && _strikerX > (_strikerSize + 1) << 7) _strikerX -= 512;
+		if (key & 2 && _strikerX >= _strikerSize << 7) _strikerX -= 256;
+
+		// move striker left
+		if (key & 2 && _strikerX >= _strikerSize << 7) _strikerX -= 256;
 
 		// move striker right
-		if (key & 1 && _strikerX >> 8 < 254 - ((_strikerSize >> 1) + 1)) _strikerX += 512;
+		if (key & 1 && _strikerX >> 8 <= 255 - ((_strikerSize >> 1) + 1)) _strikerX += 256;
+
+		// move striker right
+		if (key & 1 && _strikerX >> 8 <= 255 - ((_strikerSize >> 1) + 1)) _strikerX += 256;
 
 		if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
-		for (i = 0; i < 1; ++i) {
-			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX);
+		for (i = 0; i < 6; ++i) {
+			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX, redraw);
+			if (*redraw) {
+				//gfx_draw_ball(_ballOldPos, _ballPos);
+				//_ballOldPos = _ballPos;
+				*redraw = 0;
+				break;
+			}
 		}
 
 		gfx_draw_striker(_strikerOldX, _strikerX);
