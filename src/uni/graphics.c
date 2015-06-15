@@ -247,18 +247,18 @@ void gfx_draw_text(int x, int y, char *str, int ul) {
 
 void gfx_draw_button(int x, int y, char *str) {
 	int textW = util_strlen(str) * 4;
-	int w = textW + 8;
+	int w = textW + 7;
 
 	// left corners
 	go_to_xy(x, y);
 	printf("%c", 201);
-	go_to_xy(x, y + 4);
+	go_to_xy(x, y + 5);
 	printf("%c", 200);
 
 	// right corners
 	go_to_xy(x + w, y);
 	printf("%c", 187);
-	go_to_xy(x + w, y + 4);
+	go_to_xy(x + w, y + 5);
 	printf("%c", 188);
 
 
@@ -269,17 +269,22 @@ void gfx_draw_button(int x, int y, char *str) {
 	printf("%c", 186);
 	go_to_xy(x, y + 3);
 	printf("%c", 186);
+	go_to_xy(x, y + 4);
+	printf("%c", 186);
 	go_to_xy(x + w, y + 1);
 	printf("%c", 186);
 	go_to_xy(x + w, y + 2);
 	printf("%c", 186);
 	go_to_xy(x + w, y + 3);
 	printf("%c", 186);
+	go_to_xy(x + w, y + 4);
+	printf("%c", 186);
+
 
 	// top and bottom
 	go_to_xy(x + 1, y);
 	spacer(w - 1, 205);
-	go_to_xy(x + 1, y + 4);
+	go_to_xy(x + 1, y + 5);
 	spacer(w - 1, 205);
 
 	gfx_draw_text(x + 4, y + 1, str, 0);
