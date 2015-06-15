@@ -54,8 +54,6 @@ void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 		for (i = 0; i < 6; ++i) {
 			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX, redraw, blockHit);
 			if (*redraw) {
-				//gfx_draw_ball(_ballOldPos, _ballPos);
-				//_ballOldPos = _ballPos;
 				*redraw = 0;
 				break;
 			}

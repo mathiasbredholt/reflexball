@@ -19,6 +19,7 @@
 #include "ansi.h"
 #include "util.h"
 #include "graphics.h"
+#include "charset.h"
 
 #define width 256
 #define height 96
@@ -105,6 +106,10 @@ void gfx_change_striker_size(unsigned int x, int size) {
 	printf("%c", 204);
 	spacer(_strikerSize - 2, 205);
 	printf("%c", 185);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_set_striker_size(int size) {
@@ -218,4 +223,18 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 #ifdef GCC
 	fflush(stdout);
 #endif
+}
+
+void gfx_draw_text(int x, int y, char * str) {
+	int i, j, k;
+	for (i = 0; i < util_strlen(str); ++i) {
+		if (str[i] != 32) {
+			for (j = 0; j < 3; ++j) {
+				for (k = 0; k < 4; ++k) {
+					go_to_xy(x + k + i * 5, y + j);
+					printf("%c", font_mini[(int) str[i] - 97][j][k]);
+				}
+			}
+		}
+	}
 }

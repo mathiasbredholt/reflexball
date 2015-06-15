@@ -11,12 +11,15 @@
 #include "game_engine.h"
 #include "levels.h"
 #include "intro.h"
+#include "graphics.h"
 
 #ifndef GCC
 
 void main() {
+	char *items;
 	char *lives = (char *) 3;
 	int *points = 0;
+
 	unsigned char blockData[4][15][2];
 
 	game_init();
@@ -42,8 +45,8 @@ int main() {
 	unsigned char blockData[4][15][2];
 
 	game_init();
-	intro_play();
-	game_wait_for_input();
+	// intro_play();
+	// game_wait_for_input();
 	lvl_create_lvl1(blockData);
 	game_init_player();
 
