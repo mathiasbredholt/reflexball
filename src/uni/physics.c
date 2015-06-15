@@ -131,10 +131,10 @@ char phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int x, int
 
 	for (type = 3; type >= 0; --type) {
 		if (blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)) {
-			if (type == 3)
-			{
-				printf("Type = %d   x & 0x07 = %d   0x80 >> (x & 0x07) = %d   blockData[type][y][x >> 3] = %d   blockData[type][y][x >> 3] & 0x80 >> (x & 0x07) = %d", type, (int) (x & 0x07), (int) (0x80 >> (x & 0x07)), (int) blockData[type][y][x >> 3], (int) (blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)));
-			}
+			// if (type == 3)
+			// {
+			// 	printf("Type = %d   x & 0x07 = %d   0x80 >> (x & 0x07) = %d   blockData[type][y][x >> 3] = %d   blockData[type][y][x >> 3] & 0x80 >> (x & 0x07) = %d", type, (int) (x & 0x07), (int) (0x80 >> (x & 0x07)), (int) blockData[type][y][x >> 3], (int) (blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)));
+			// }
 			// Block exists
 			// printf("type=%d", type);
 			blockData[type][y][x >> 3] &= ~(0x80 >> (x & 0x07));	// Delete block
