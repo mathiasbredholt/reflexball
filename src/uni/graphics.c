@@ -290,14 +290,15 @@ void gfx_draw_button(int x, int y, char *str, int focus) {
 	go_to_xy(x + 1, y + 5);
 	spacer(w - 1, 205);
 
-	reverse(focus);
+	bg_color(3);
 	for (i = 0; i < 4; ++i) {
-		go_to_xy(x + 1, y + 1 + i);
-		spacer(w - 1, 32);
+		go_to_xy(x + 2, y + 1 + i);
+		spacer(w - 3, 32);
 	}
 
 	gfx_draw_text(x + 4, y + 1, str, 0);
 
+	bg_color(0);
 
 #ifdef GCC
 	fflush(stdout);
