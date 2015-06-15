@@ -24,6 +24,7 @@
 #define width 256
 #define height 96
 #define striker_height 92
+#define BTN_WIDTH 20
 
 int _strikerSize;
 
@@ -200,6 +201,10 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 	int h = y2 - y1;
 	int i;
 
+	clr_scr();
+	hide_csr();
+	fg_color(15);
+
 	if (draw) {
 		reverse(0);
 		go_to_xy(x1, y1);
@@ -235,16 +240,116 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 #endif
 }
 
-void gfx_draw_text(int x, int y, char * str) {
+void gfx_draw_text(int x, int y, char *str) {
 	int i, j, k;
 	for (i = 0; i < util_strlen(str); ++i) {
 		if (str[i] != 32) {
 			for (j = 0; j < 3; ++j) {
 				for (k = 0; k < 4; ++k) {
-					go_to_xy(x + k + i * 5, y + j);
+					go_to_xy(x + k + i * 4, y + j);
 					printf("%c", font_mini[(int) str[i] - 97][j][k]);
 				}
 			}
 		}
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_btn(int x, int y, char *str, int focus) {
+	fg_color(15);
+
+	// left corners
+	go_to_xy(x, y);
+	printf("%c", 201);
+	go_to_xy(x, y + 5);
+	printf("%c", 200);
+
+	// right corners
+	go_to_xy(x + BTN_WIDTH, y);
+	printf("%c", 187);
+	go_to_xy(x + BTN_WIDTH, y + 5);
+	printf("%c", 188);
+
+
+	// sides
+	go_to_xy(x, y + 1);
+	printf("%c", 186);
+	go_to_xy(x, y + 2);
+	printf("%c", 186);
+	go_to_xy(x, y + 3);
+	printf("%c", 186);
+	go_to_xy(x, y + 4);
+	printf("%c", 186);
+	go_to_xy(x + BTN_WIDTH, y + 1);
+	printf("%c", 186);
+	go_to_xy(x + BTN_WIDTH, y + 2);
+	printf("%c", 186);
+	go_to_xy(x + BTN_WIDTH, y + 3);
+	printf("%c", 186);
+	go_to_xy(x + BTN_WIDTH, y + 4);
+	printf("%c", 186);
+
+
+	// top and bottom
+	go_to_xy(x + 1, y);
+	spacer(BTN_WIDTH - 1, 205);
+	go_to_xy(x + 1, y + 5);
+	spacer(BTN_WIDTH - 1, 205);
+
+	gfx_draw_btn_focus(x, y, str, focus);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_btn_focus(int x, int y, char * str, int focus) {
+	int textW = util_strlen(str) * 4;
+	int padding = BTN_WIDTH - textW;
+	int i;
+
+	fg_color(15);
+
+	focus ? bg_color(3) : bg_color(0);
+
+	for (i = 0; i < 4; ++i) {
+		go_to_xy(x + 2, y + 1 + i);
+		spacer(BTN_WIDTH - 3, 32);
+	}
+
+	gfx_draw_text(x + padding / 2 + 1, y + 1, str);
+
+	bg_color(0);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_item(int x, int y, int item) {
+	int i;
+
+	fg_color(15);
+
+	for (i = 0; i < 8; ++i) {
+		go_to_xy(x, y + i);
+		printf("%s", items[item][i]);
+	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_meter(int x, int y, int val) {
+	fg_color(2);
+	go_to_xy(x, y);
+	spacer(val, 221);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
