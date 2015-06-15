@@ -12,6 +12,7 @@
 #include "levels.h"
 #include "intro.h"
 #include "graphics.h"
+#include "shop.h"
 
 #ifndef GCC
 
@@ -40,6 +41,7 @@ void main() {
 #ifdef GCC
 
 int main() {
+	char *items = "dfgss";
 	char *lives = (char *) 3;
 	int *points = 0;
 	unsigned char blockData[4][15][2];
@@ -47,11 +49,12 @@ int main() {
 	game_init();
 	// intro_play();
 	// game_wait_for_input();
-	lvl_create_lvl1(blockData);
-	game_init_player();
+	// lvl_create_lvl1(blockData);
+	shop_show(items);
+	// game_init_player();
 
 	while (1) {
-		game_update(blockData, lives, points);
+		// game_update(blockData, lives, points);
 	}
 
 	return 0;

@@ -225,16 +225,67 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 #endif
 }
 
-void gfx_draw_text(int x, int y, char * str) {
+void gfx_draw_text(int x, int y, char *str, int ul) {
 	int i, j, k;
 	for (i = 0; i < util_strlen(str); ++i) {
 		if (str[i] != 32) {
 			for (j = 0; j < 3; ++j) {
 				for (k = 0; k < 4; ++k) {
-					go_to_xy(x + k + i * 5, y + j);
+					go_to_xy(x + k + i * 4, y + j);
+					if (ul && j == 2) underline(1);
 					printf("%c", font_mini[(int) str[i] - 97][j][k]);
+					if (ul) underline(0);
 				}
 			}
 		}
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_button(int x, int y, char *str) {
+	int textW = util_strlen(str) * 4;
+	int w = textW + 8;
+
+	// left corners
+	go_to_xy(x, y);
+	printf("%c", 201);
+	go_to_xy(x, y + 4);
+	printf("%c", 200);
+
+	// right corners
+	go_to_xy(x + w, y);
+	printf("%c", 187);
+	go_to_xy(x + w, y + 4);
+	printf("%c", 188);
+
+
+	// sides
+	go_to_xy(x, y + 1);
+	printf("%c", 186);
+	go_to_xy(x, y + 2);
+	printf("%c", 186);
+	go_to_xy(x, y + 3);
+	printf("%c", 186);
+	go_to_xy(x + w, y + 1);
+	printf("%c", 186);
+	go_to_xy(x + w, y + 2);
+	printf("%c", 186);
+	go_to_xy(x + w, y + 3);
+	printf("%c", 186);
+
+	// top and bottom
+	go_to_xy(x + 1, y);
+	spacer(w - 1, 205);
+	go_to_xy(x + 1, y + 4);
+	spacer(w - 1, 205);
+
+	gfx_draw_text(x + 4, y + 1, str, 0);
+
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
