@@ -21,8 +21,14 @@ void gfx_erase_block(int x, int y);
 
 void gfx_window(int x1, int y1, int x2, int y2,  int draw);
 
-void gfx_draw_text(int x, int y, char *str, int ul);
+void gfx_draw_text(int x, int y, char *str);
 
-void gfx_draw_button(int x, int y, char *str, int focus);
+void gfx_draw_btn(int x, int y, char *str, int focus);
+
+void gfx_draw_btn_focus(int x, int y, char * str, int focus);
+
+void gfx_draw_item(int x, int y, int item);
+
+void gfx_draw_meter(int x, int y, int val);
 
 #endif
