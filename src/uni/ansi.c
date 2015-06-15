@@ -66,7 +66,8 @@ void reset_bg_color() {
 
 // Clear screen
 void clr_scr() {
-  printf("%c[2j", ESC);
+  reset_bg_color();
+  printf("%c[2J", ESC);
 }
 
 // Hides cursor

@@ -41,8 +41,6 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 	blockData[0][13][1] = 0xFF;
 	blockData[0][14][0] = 0xFF;
 	blockData[0][14][1] = 0xFF;
-	blockData[0][15][0] = 0xFF;
-	blockData[0][15][1] = 0xFF;
 
 	blockData[1] [0][0] = 0x00;
 	blockData[1] [0][1] = 0x00;
@@ -74,8 +72,6 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 	blockData[1][13][1] = 0x00;
 	blockData[1][14][0] = 0x00;
 	blockData[1][14][1] = 0x00;
-	blockData[1][15][0] = 0x00;
-	blockData[1][15][1] = 0x00;
 
 	blockData[2] [0][0] = 0x00;
 	blockData[2] [0][1] = 0x00;
@@ -107,8 +103,6 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 	blockData[2][13][1] = 0x00;
 	blockData[2][14][0] = 0x00;
 	blockData[2][14][1] = 0x00;
-	blockData[2][15][0] = 0x00;
-	blockData[2][15][1] = 0x00;
 
 	blockData[3] [0][0] = 0xFF;
 	blockData[3] [0][1] = 0xFF;
@@ -140,8 +134,6 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 	blockData[3][13][1] = 0x00;
 	blockData[3][14][0] = 0x00;
 	blockData[3][14][1] = 0x00;
-	blockData[3][15][0] = 0x00;
-	blockData[3][15][1] = 0x00;
 
 	gfx_draw_bounds();
 	gfx_draw_all_blocks(blockData);
