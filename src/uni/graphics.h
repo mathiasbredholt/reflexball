@@ -13,7 +13,7 @@ void gfx_change_striker_size(unsigned int x, int size);
 
 void gfx_set_striker_size(int size);
 
-void gfx_draw_all_blocks(char blockData[4][15][2]);
+void gfx_draw_all_blocks(unsigned char blockData[4][15][2]);
 
 void gfx_draw_block(int x, int y, int type);
 

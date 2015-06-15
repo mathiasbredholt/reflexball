@@ -32,16 +32,16 @@ void gfx_draw_bounds() {
 	hide_scr();
 	clr_scr();
 
-	go_to_xy(0, 0);
+	go_to_xy(-1, -1);
 	printf("%c", 201);  // top left corner
-	spacer(width - 2, 205); // top line
+	spacer(width, 205); // top line
 	printf("%c", 187);
 
 	// print sides
-	for (i = 1; i < height - 1; i++) {
-		go_to_xy(0, i);
+	for (i = 0; i < height; i++) {
+		go_to_xy(-1, i);
 		printf("%c", 186);
-		go_to_xy(255, i);
+		go_to_xy(256, i);
 		printf("%c", 186);
 	}
 
@@ -111,16 +111,16 @@ void gfx_set_striker_size(int size) {
 	_strikerSize = size;
 }
 
-void gfx_draw_all_blocks(char blockData[4][15][2]) {
+void gfx_draw_all_blocks(unsigned char blockData[4][15][2]) {
 	char i, j, k, l;
 
-	for (i = 0; i < 4; ++i) {
+	for (j = 0; j < 15; ++j) {
 		fg_color(i + 1);
-		for (j = 0; j < 15; ++j) {
+		for (i = 0; i < 4; ++i) {
 			for (k = 0; k < 2; ++k) {
 				for (l = 0; l < 8; ++l) {
 					if (blockData[i][j][k] & (0x80 >> l)) {
-						gfx_draw_block((k << 4) + l, j, i);
+						gfx_draw_block((int)((k << 3) + l), (int) j, (int) i);
 					}
 				}
 			}
@@ -135,28 +135,36 @@ void gfx_draw_all_blocks(char blockData[4][15][2]) {
 }
 
 void gfx_draw_block(int x, int y, int type) {
-	fg_color(type);
+	fg_color(type + 1);
 
-	x = (x << 4) + 1;
-	y = y * 3 + 1;
+	x = x << 4;
+	y = y << 2;
 
 	// Top
 	go_to_xy(x, y);
 	printf("%c", 201);  // top left corner
-	spacer(13, 203); // top line
+	spacer(14, 203); // top line
 	printf("%c", 187);	// top right corner
 
 	// Sides
 	go_to_xy(x, y + 1);
 	printf("%c", 204);
-	spacer(13, 206);
+	spacer(14, 206);
+	printf("%c", 185);
+	go_to_xy(x, y + 2);
+	printf("%c", 204);
+	spacer(14, 206);
 	printf("%c", 185);
 
 	// Bottom
-	go_to_xy(x, y + 2);
+	go_to_xy(x, y + 3);
 	printf("%c", 200);  // corner
-	spacer(13, 202);
+	spacer(14, 202);
 	printf("%c", 188);  // corner
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_erase_block(int x, int y) {

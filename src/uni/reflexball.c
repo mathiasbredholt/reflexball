@@ -17,7 +17,7 @@
 void main() {
 	char *lives = (char *) 3;
 	int *points = 0;
-	char blockData[4][15][2];
+	unsigned char blockData[4][15][2];
 
 	game_init();
 //	intro_play();
@@ -39,7 +39,7 @@ void main() {
 int main() {
 	char *lives = (char *) 3;
 	int *points = 0;
-	char blockData[4][15][2];
+	unsigned char blockData[4][15][2];
 
 	game_init();
 	intro_play();

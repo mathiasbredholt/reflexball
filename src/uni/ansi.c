@@ -81,7 +81,7 @@ void clear_eol() {
 
 // Moves cursor to coordinates
 void go_to_xy(int x, int y) {
-  printf("%c[%d;%df", ESC, y + 1, x + 1);
+  printf("%c[%d;%df", ESC, y + 2, x + 2); //Ignore frame
 }
 
 // Set underline on/off

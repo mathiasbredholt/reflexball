@@ -23,7 +23,7 @@ void game_init() {
 	_strikerSize = 48;
 }
 
-void game_update(char blockData[4][15][2], char *lives, int *points) {
+void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 	char key, i;
 
 	if (hw_time_get_next_frame()) {
@@ -43,8 +43,8 @@ void game_update(char blockData[4][15][2], char *lives, int *points) {
 		if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
-		for (i = 0; i < 6; ++i) {
-			phy_simulate(&_ballPos, &_ballVel, _strikerX);
+		for (i = 0; i < 1; ++i) {
+			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX);
 		}
 
 		gfx_draw_striker(_strikerOldX, _strikerX);
