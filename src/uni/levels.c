@@ -4,6 +4,7 @@
 
 void lvl_create_menu() {
 	gfx_window(64, 16, 192, 80, 1);
+	gfx_draw_text(16, 16, "reflexball");
 	game_wait_for_input();
 	gfx_window(64, 16, 192, 80, 0);
 	// lvl_create_lvl1();
