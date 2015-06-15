@@ -15,16 +15,16 @@
 #ifndef GCC
 
 void main() {
-	char block_data[2][15][4];
+	char blockData[4][15][2];
 
 	game_init();
 //	intro_play();
 //	game_wait_for_input();
 	game_init_player();
-	lvl_create_lvl1(block_data);
+	lvl_create_lvl1(blockData);
 
 	while (1) {
-		game_update(block_data);
+		game_update(blockData);
 	}
 }
 
@@ -35,14 +35,16 @@ void main() {
 #ifdef GCC
 
 int main() {
+	char blockData[4][15][2];
+
 	game_init();
 	intro_play();
 	game_wait_for_input();
-	lvl_create_lvl1();
+	lvl_create_lvl1(blockData);
 	game_init_player();
 
 	while (1) {
-		game_update();
+		game_update(blockData);
 	}
 
 	return 0;

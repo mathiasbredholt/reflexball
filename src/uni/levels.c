@@ -9,10 +9,10 @@ void lvl_create_menu() {
 	// lvl_create_lvl1();
 }
 
-void lvl_create_lvl1(char block_data[2][15][4]) {
+void lvl_create_lvl1(char blockData[4][15][2]) {
 	block_data[0][0][0] = 0xFF;
-	block_data[1][0][0] = 0xFF;
+	block_data[0][0][1] = 0xFF;
 
 	gfx_draw_bounds();
-	gfx_draw_all_blocks(block_data);
+	gfx_draw_all_blocks(blockData);
 }
