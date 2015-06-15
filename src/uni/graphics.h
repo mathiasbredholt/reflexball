@@ -15,6 +15,6 @@ void gfx_set_striker_size(int size);
 
 void gfx_draw_bars();
 
-void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw);
+void gfx_window(int x1, int y1, int x2, int y2,  int draw);
 
 #endif

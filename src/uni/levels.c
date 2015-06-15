@@ -3,9 +3,9 @@
 #include "graphics.h"
 
 void lvl_create_menu() {
-	gfx_window(64, 16, 192, 80, "REFLEXBALL", 1);
+	gfx_window(64, 16, 192, 80, 1);
 	game_wait_for_input();
-	gfx_window(64, 16, 192, 80, "REFLEXBALL", 0);
+	gfx_window(64, 16, 192, 80, 0);
 	// lvl_create_lvl1();
 }
 
