@@ -70,7 +70,7 @@ void clr_scr() {
 }
 
 // Hides cursor
-void hide_scr() {
+void hide_csr() {
   printf("%c[?25l", ESC);
 }
 

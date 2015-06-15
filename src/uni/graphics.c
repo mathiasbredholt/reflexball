@@ -29,7 +29,7 @@ int _strikerSize;
 void gfx_draw_bounds() {
 	int i;
 
-	hide_scr();
+	hide_csr();
 	clr_scr();
 
 	go_to_xy(-1, -1);

@@ -13,7 +13,7 @@ void reset_bg_color();
 
 void clr_scr();
 
-void hide_scr();
+void hide_csr();
 
 void clear_eol();
 
