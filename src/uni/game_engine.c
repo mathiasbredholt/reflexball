@@ -44,7 +44,7 @@ void game_update() {
 
 		// Calculate new ball position
 		for (i = 0; i < 6; ++i) {
-			phy_simulate(&_ballPos, &_ballVel);
+			phy_simulate(&_ballPos, &_ballVel, _strikerX);
 		}
 
 		gfx_draw_striker(_strikerOldX, _strikerX);
@@ -63,7 +63,7 @@ void game_init_player() {
 	_ballVel.y = -32;
 
 	phy_set_ball_speed(2);
-	phy_set_striker(&_strikerX, _strikerSize);
+	phy_set_striker_size(_strikerSize);
 	gfx_set_striker_size(_strikerSize);
 
 	gfx_draw_striker(_strikerOldX, _strikerX);

@@ -111,18 +111,19 @@ void gfx_set_striker_size(int size) {
 	_strikerSize = size;
 }
 
-void gfx_draw_bars() {
-	int numberOfBars = 15;
-	int i, j;
+void gfx_draw_all_blocks(char blockData[4][15][2]) {
+	char i, j, k, l;
 
-	for (i = 0; i < numberOfBars; ++i) {
-		fg_color(1);	// For ´testing
-		//fg_color(i);
-		for (j = 0; j < numberOfBars; ++j) {
-			go_to_xy(10 + j * 16, 4 + i * 4);
-			spacer(10, 178);
-			go_to_xy(10 + j * 16, 5 + i * 4);
-			spacer(10, 178);
+	for (i = 0; i < 4; ++i) {
+		fg_color(i + 1);
+		for (j = 0; j < 15; ++j) {
+			for (k = 0; k < 2; ++k) {
+				for (l = 0; l < 8; ++l) {
+					if (blockData[i][j][k] & (0x80 >> l)) {
+						gfx_draw_block((k << 4) + l, j, i);
+					}
+				}
+			}
 		}
 	}
 
@@ -133,7 +134,32 @@ void gfx_draw_bars() {
 #endif
 }
 
-void gfx_erase_bar(int x, int y) {
+void gfx_draw_block(int x, int y, int type) {
+	fg_color(type);
+
+	x = (x << 4) + 1;
+	y = y * 3 + 1;
+
+	// Top
+	go_to_xy(x, y);
+	printf("%c", 201);  // top left corner
+	spacer(13, 203); // top line
+	printf("%c", 187);	// top right corner
+
+	// Sides
+	go_to_xy(x, y + 1);
+	printf("%c", 204);
+	spacer(13, 206);
+	printf("%c", 185);
+
+	// Bottom
+	go_to_xy(x, y + 2);
+	printf("%c", 200);  // corner
+	spacer(13, 202);
+	printf("%c", 188);  // corner
+}
+
+void gfx_erase_block(int x, int y) {
 	go_to_xy(10 + x * 16, 4 + y * 4);
 	spacer(10, ' ');
 	go_to_xy(10 + x * 16, 5 + y * 4);

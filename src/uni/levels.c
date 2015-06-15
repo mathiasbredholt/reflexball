@@ -11,5 +11,5 @@ void lvl_create_menu() {
 
 void lvl_create_lvl1() {
 	gfx_draw_bounds();
-	gfx_draw_bars();
+	gfx_draw_all_bars();
 }

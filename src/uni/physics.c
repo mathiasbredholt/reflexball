@@ -18,10 +18,9 @@
 #include "util.h"
 
 char _ballSpeed, _bouncedStriker;
-unsigned int * _strikerPos;
 int _strikerSize;
 
-void phy_simulate(TVector_8_8 *pos, TVector_0_7 *vel) {
+void phy_simulate(TVector_8_8 *pos, TVector_0_7 *vel, unsigned int strikerPos) {
 	unsigned char x, y, sp;
 	pos->x += (signed int) (_ballSpeed * vel->x);
 	pos->y += (signed int) (_ballSpeed * vel->y);
@@ -29,9 +28,9 @@ void phy_simulate(TVector_8_8 *pos, TVector_0_7 *vel) {
 	y = (unsigned char) (pos->y >> 8);
 	if (y == 1) {
 		vel->y = -vel->y;
-	} else if (!_bouncedStriker && y == 91 && x >= (*_strikerPos >> 8) - _strikerSize && x <= (*_strikerPos >> 8) + _strikerSize && !(vel->y & 0x80)) {
+	} else if (!_bouncedStriker && y == 91 && x >= (strikerPos >> 8) - _strikerSize && x <= (strikerPos >> 8) + _strikerSize && !(vel->y & 0x80)) {
 		_bouncedStriker = 1;
-		sp = (unsigned char) (*_strikerPos >> 8);
+		sp = (unsigned char) (strikerPos >> 8);
 		vel->y = -vel->y;
 		//printf("vel_x=%d, vel_y=%d,  sw=%d,   sw>>2=%d,  x=%d,  sp=%d,   l >= %d, ml >= %d, c > %d, mr > %d", (int) vel->x, (int) vel->y, _strikerSize, _strikerSize >> 2, (int) x, (int) sp, (int) (x + _strikerSize - (_strikerSize >> 2) - 1), (int) (x + _strikerSize - (_strikerSize >> 1) - 1), (int) (x - _strikerSize + (_strikerSize >> 1) - 1), (int) (x - _strikerSize + (_strikerSize >> 2) - 1));
 		if (x <= sp - _strikerSize + (_strikerSize >> 2) + 1) {
@@ -75,8 +74,7 @@ void phy_simulate(TVector_8_8 *pos, TVector_0_7 *vel) {
 
 }
 
-void phy_set_striker(unsigned int * pos, int width) {
-	_strikerPos = pos;
+void phy_set_striker_size(int width) {
 	_strikerSize = (width >> 1);
 }
 
