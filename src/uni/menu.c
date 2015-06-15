@@ -21,8 +21,8 @@ void menu_update(int *mode, char *lastKey) {
 			*lastKey = key;
 
 			if (*lastKey & 4) {
-				*mode = 2;
+				*mode = 1;
 			}
 		}
 	}
-};
+}
