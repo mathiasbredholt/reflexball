@@ -10,8 +10,8 @@ void lvl_create_menu() {
 }
 
 void lvl_create_lvl1(char blockData[4][15][2]) {
-	block_data[0][0][0] = 0xFF;
-	block_data[0][0][1] = 0xFF;
+	blockData[0][0][0] = 0xFF;
+	blockData[0][0][1] = 0xFF;
 
 	gfx_draw_bounds();
 	gfx_draw_all_blocks(blockData);

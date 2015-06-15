@@ -3,7 +3,7 @@
 
 void game_init();
 
-void game_update(char blockData[4][15][2]);
+void game_update(char blockData[4][15][2], char *lives, int *points);
 
 void game_init_player();
 

@@ -15,6 +15,8 @@
 #ifndef GCC
 
 void main() {
+	char *lives = (char *) 3;
+	int *points = 0;
 	char blockData[4][15][2];
 
 	game_init();
@@ -24,7 +26,7 @@ void main() {
 	lvl_create_lvl1(blockData);
 
 	while (1) {
-		game_update(blockData);
+		game_update(blockData, lives, points);
 	}
 }
 
@@ -35,6 +37,8 @@ void main() {
 #ifdef GCC
 
 int main() {
+	char *lives = (char *) 3;
+	int *points = 0;
 	char blockData[4][15][2];
 
 	game_init();
@@ -44,7 +48,7 @@ int main() {
 	game_init_player();
 
 	while (1) {
-		game_update(blockData);
+		game_update(blockData, lives, points);
 	}
 
 	return 0;

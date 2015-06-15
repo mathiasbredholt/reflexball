@@ -23,7 +23,7 @@ void game_init() {
 	_strikerSize = 48;
 }
 
-void game_update(char blockData[4][15][2]) {
+void game_update(char blockData[4][15][2], char *lives, int *points) {
 	char key, i;
 
 	if (hw_time_get_next_frame()) {
