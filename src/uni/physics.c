@@ -29,7 +29,7 @@ void phy_simulate(TVector_8_8 *pos, TVector_0_7 *vel) {
 	y = (unsigned char) (pos->y >> 8);
 	if (y == 1) {
 		vel->y = -vel->y;
-	} else if (!_bouncedStriker && y == 91 && x > (*_strikerPos >> 8) - _strikerSize - 1 && x < (*_strikerPos >> 8) + _strikerSize + 1 && !(vel->y & 0x80)) {
+	} else if (!_bouncedStriker && y == 91 && x >= (*_strikerPos >> 8) - _strikerSize && x <= (*_strikerPos >> 8) + _strikerSize && !(vel->y & 0x80)) {
 		_bouncedStriker = 1;
 		sp = (unsigned char) (*_strikerPos >> 8);
 		vel->y = -vel->y;
