@@ -190,6 +190,8 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 	int h = y2 - y1;
 	int i;
 
+	hide_csr();
+
 	if (draw) {
 		reverse(0);
 		go_to_xy(x1, y1);
@@ -245,9 +247,10 @@ void gfx_draw_text(int x, int y, char *str, int ul) {
 #endif
 }
 
-void gfx_draw_button(int x, int y, char *str) {
+void gfx_draw_button(int x, int y, char *str, int focus) {
 	int textW = util_strlen(str) * 4;
 	int w = textW + 7;
+	int i;
 
 	// left corners
 	go_to_xy(x, y);
@@ -286,6 +289,12 @@ void gfx_draw_button(int x, int y, char *str) {
 	spacer(w - 1, 205);
 	go_to_xy(x + 1, y + 5);
 	spacer(w - 1, 205);
+
+	reverse(focus);
+	for (i = 0; i < 4; ++i) {
+		go_to_xy(x + 1, y + 1 + i);
+		spacer(w - 1, 32);
+	}
 
 	gfx_draw_text(x + 4, y + 1, str, 0);
 

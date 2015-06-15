@@ -6,5 +6,5 @@ void shop_show(char *items) {
 	gfx_draw_text(24, 18, "welcome to my shop", 0);
 	gfx_draw_text(24, 21, "what does your heart desire", 0);
 
-	gfx_draw_button(24, 28, "buy");
+	gfx_draw_button(24, 28, "buy", 1);
 }
