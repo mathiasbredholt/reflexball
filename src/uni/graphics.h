@@ -19,6 +19,6 @@ void gfx_draw_block(int x, int y, int type);
 
 void gfx_erase_block(int x, int y);
 
-void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw);
+void gfx_window(int x1, int y1, int x2, int y2,  int draw);
 
 #endif

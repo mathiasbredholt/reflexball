@@ -172,29 +172,18 @@ void gfx_erase_block(int x, int y) {
 #endif
 }
 
-void gfx_window(int x1, int y1, int x2, int y2, char *title, int draw) {
+void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 	int w = x2 - x1;
 	int h = y2 - y1;
-	int padding = w - util_strlen(title) - 8;
 	int i;
 
 	if (draw) {
-		if (padding < 0) {
-			title[util_strlen(title) + padding] = '\0';
-		}
-
 		reverse(0);
 		go_to_xy(x1, y1);
 
 		// print top line
 		printf("%c", 201);  // corner
-		spacer(padding / 2, 205);  // padding
-		printf("%c", 185);  // title start
-		reverse(1);
-		printf("  %s  ", title);
-		reverse(0);
-		printf("%c", 204);  // title end
-		spacer((padding + 1) / 2, 205);  // padding
+		spacer( w - 2, 205);
 		printf("%c", 187);  // corner
 
 		// print sides
