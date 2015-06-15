@@ -24,7 +24,7 @@
 char _ballSpeed, _bouncedStriker;
 int _strikerSize;
 
-void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0_7 *vel, unsigned int strikerPos, char * redraw, int * blockHit) {
+void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0_7 *vel, unsigned int strikerPos, int * redraw, int * blockHit) {
 	unsigned char x, y, sp;
 	pos->x += (signed int) (_ballSpeed * vel->x);
 	pos->y += (signed int) (_ballSpeed * vel->y);
@@ -73,37 +73,44 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 	} else {
 		_bouncedStriker = y >= 91;
 
-		if (y <= 62) {	// We already know that y!=0
-			if (y & 0x00) {
+		if (y <= 60) {	// We already know that y!=0
+			if ((y & 3) == 0) {
 				// Touching lower edge of block
 				//*redraw = 1;
-				if (x & 0x01) {
+				if (phy_hit_block(blockData, blockHit, x >> 4, (y >> 2) - 1)) {
+					vel->y = -vel->y;
+
+				}
+				if ((x & 1) == 1) {
 					// Left corner
-
-				} else if (x & 0x0F) {
+					if (phy_hit_block(blockData, blockHit, (x >> 4) - 1, y >> 2)) {
+						vel->x = -vel->x;
+					}
+				} else if ((x & 15) == 15) {
 					// Right corner
-
-				} else {
-					// Middle
-					if (phy_hit_block(blockData, blockHit, x >> 4, (y >> 2) - 1)) {
-						vel->y = -vel->y;
+					if (phy_hit_block(blockData, blockHit, (x >> 4) + 1, y >> 2)) {
+						vel->x = -vel->x;
 					}
 				}
-			} else if (y & 0x03) {
+			}
+			else if (y & 0x00) {
+				printf("upper");
 				// Touching upper edge of block
+				// *redraw = 1;
+				if (phy_hit_block(blockData, blockHit, x >> 4, y >> 2)) {
+					vel->y = -vel->y;
+				}
 				if (x & 0x01) {
 					// Left corner
-
+					if (phy_hit_block(blockData, blockHit, (x >> 4) - 1, (y >> 2) - 1)) {
+						vel->x = -vel->x;
+					}
 				} else if (x & 0x0F) {
 					// Right corner
-
-				} else {
-					// Middle
-					if (phy_hit_block(blockData, blockHit, x >> 4, y >> 2)) {
-						vel->y = -vel->y;
+					if (phy_hit_block(blockData, blockHit, (x >> 4) + 1, (y >> 2) - 1)) {
+						vel->x = -vel->x;
 					}
 				}
-				//*redraw = 1;
 			}
 		}
 	}
@@ -118,15 +125,27 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 char phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int x, int y) {
 	int type;
 
+	if (x > 15 || x < 0 || y > 14 || y < 0) {
+		return 0;
+	}
+
 	for (type = 3; type >= 0; --type) {
-		if (blockData[type][x][y >> 3] & 0x80 >> (y & 0x07)) {
+		if (blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)) {
+			if (type == 3)
+			{
+				printf("Type = %d   x & 0x07 = %d   0x80 >> (x & 0x07) = %d   blockData[type][y][x >> 3] = %d   blockData[type][y][x >> 3] & 0x80 >> (x & 0x07) = %d", type, (int) (x & 0x07), (int) (0x80 >> (x & 0x07)), (int) blockData[type][y][x >> 3], (int) (blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)));
+			}
 			// Block exists
-			blockData[type][x][y >> 3] &= ~(0x80 >> (y & 0x07));	// Delete block
-			*blockHit = (type - 1) << 8;
+			// printf("type=%d", type);
+			blockData[type][y][x >> 3] &= ~(0x80 >> (x & 0x07));	// Delete block
+			*blockHit = type << 8;
+			// printf("     %d", *blockHit);
 			*blockHit |= y << 4;
+			// printf("          %d", *blockHit);
 			*blockHit |= x;
+			// printf("               %d", *blockHit);
 			if (type) {	// type != 0
-				blockData[type - 1][x][y >> 3] |= 0x80 >> (y & 0x07);	// Add block with lower type
+				blockData[type - 1][y][x >> 3] |= 0x80 >> (x & 0x07);	// Add block with lower type
 			}
 			return 1;
 		}

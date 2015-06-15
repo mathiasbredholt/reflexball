@@ -58,6 +58,8 @@ void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
 	unsigned char oldX = (unsigned char) (oldPos.x >> 8);
 	unsigned char oldY = (unsigned char) (oldPos.y >> 8);
 
+	fg_color(15);
+
 	if (oldX != newX || oldY != newY) {
 		// Erase old ball
 		go_to_xy((int) oldX, (int) oldY);
@@ -74,6 +76,7 @@ void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
 
 void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 	char dX ;
+	fg_color(15);
 	oldX >>= 8;
 	newX >>= 8;
 	dX = (char) newX - (char) oldX;
@@ -174,12 +177,19 @@ void gfx_draw_block(int x, int y, int type) {
 }
 
 void gfx_erase_block(int x, int y) {
-	go_to_xy(10 + x * 16, 4 + y * 4);
-	spacer(10, ' ');
-	go_to_xy(10 + x * 16, 5 + y * 4);
-	spacer(10, ' ');
+	x = x << 4;
+	y = y << 2;
 
 	fg_color(15);
+
+	go_to_xy(x, y);
+	spacer(16, ' '); // top line
+	go_to_xy(x, y + 1);
+	spacer(16, ' '); // middle line
+	go_to_xy(x, y + 2);
+	spacer(16, ' '); // middle line
+	go_to_xy(x, y + 3);
+	spacer(16, ' '); // bottom line
 
 #ifdef GCC
 	fflush(stdout);

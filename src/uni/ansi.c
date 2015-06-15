@@ -66,6 +66,7 @@ void reset_bg_color() {
 
 // Clear screen
 void clr_scr() {
+  reset_bg_color();
   printf("%c[2J", ESC);
 }
 
