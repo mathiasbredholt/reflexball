@@ -6,8 +6,8 @@
 #define NUMBER_OF_ITEMS 8
 
 typedef struct PlayerData {
-	unsigned char energy;
-	unsigned int coins;
+	int energy;
+	int coins;
 	unsigned char items[NUMBER_OF_ITEMS];
 } PlayerData;
 
@@ -22,7 +22,7 @@ typedef struct GameData {
 
 void game_init(GameData *gameData, PlayerData *playerData);
 
-void game_update(GameData *gameData, PlayerData *playerData);
+void game_update(int *mode, GameData *gameData, PlayerData *playerData);
 
 void game_init_player(GameData *gameData);
 

@@ -230,13 +230,20 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 
 void gfx_draw_text(int x, int y, char *str) {
 	int i, j, k;
+	int index;
+
 	for (i = 0; i < util_strlen(str); ++i) {
-		if (str[i] != 32) {
-			for (j = 0; j < 3; ++j) {
-				for (k = 0; k < 4; ++k) {
-					go_to_xy(x + k + i * 4, y + j);
-					printf("%c", font_mini[(int) str[i] - 97][j][k]);
-				}
+		if ((int) str[i] >= 97) {
+			index = 97; // ASCII index of letter a
+		} else {
+			index = 22; // ASCII index of 0 (48) - length of alphabet (26)
+		}
+		for (j = 0; j < 3; ++j) {
+			go_to_xy(x + i * 4, y + j);
+			if ((int) str[i] != 32) {
+				printf("%s", font_mini[(int) str[i] - index][j]);
+			} else {
+				spacer(4, 32);
 			}
 		}
 	}
@@ -335,6 +342,8 @@ void gfx_draw_item(int x, int y, int item) {
 void gfx_draw_meter(int x, int y, int val) {
 	fg_color(2);
 	go_to_xy(x, y);
+	spacer(16, 32);
+	go_to_xy(x, y);
 	spacer(val, 221);
 
 #ifdef GCC
@@ -342,21 +351,42 @@ void gfx_draw_meter(int x, int y, int val) {
 #endif
 }
 
-void gfx_draw_number(int x, int y, int val) {
-	int i, j, k;
-	char str[10];
+void gfx_draw_energy_meter(int val) {
+	char str[15];
+	int i;
 
-	fg_color(15);
+	color(0, 6);
+	sprintf(str, "energy");
+	gfx_draw_text(0, 98, str);
 
-	sprintf(str, "%d", val);
+	go_to_xy(0, 101);
+	spacer(64, 32);
 
-	for (i = 0; i < util_strlen(str); ++i) {
-		for (j = 0; j < 3; ++j) {
-			for (k = 0; k < 4; ++k) {
-				go_to_xy(x + k + i * 4, y + j);
-				printf("%c", font_mini[(int) str[i] - 48 + 26][j][k]);
-			}
-		}
+	for (i = 98; i < 102; ++i) {
+		go_to_xy(24, i);
+		spacer(40, 32);
+	}
+
+	color(15, 0);
+	go_to_xy(0, 102);
+	spacer(64, 205);
+
+	for (i = 98; i < 102; ++i) {
+		go_to_xy(64, i);
+		spacer(1, 186);
+	}
+
+	go_to_xy(64, 103);
+	spacer(1, 188);
+}
+
+void gfx_update_energy_meter(int val) {
+	int level = (val >> 2);
+	int i;
+
+	for (i = 0; i < 4; ++i) {
+		go_to_xy(level, 98 + i);
+		spacer(64 - level, 32);
 	}
 
 #ifdef GCC

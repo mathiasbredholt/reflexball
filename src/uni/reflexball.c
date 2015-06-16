@@ -36,12 +36,11 @@ void main() {
 		if (mode == 0) {
 			menu_show();
 			while (mode == 0) menu_update(&mode, &lastKey, &focus);
-
 		}
 		if (mode == 1) {
-			lvl_create_lvl1(&gameData);
+			lvl_create_lvl1(&gameData, &playerData);
 			game_init_player(&gameData);
-			while (mode == 1) game_update(&gameData, &playerData);
+			while (mode == 1) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 2) {
 			shop_show(&playerData);
@@ -76,9 +75,9 @@ int main() {
 
 		}
 		if (mode == 1) {
-			lvl_create_lvl1(&gameData);
-			game_init_player();
-			while (mode == 1) game_update(&gameData, &playerData);
+			lvl_create_lvl1(&gameData, &playerData);
+			game_init_player(&gameData);
+			while (mode == 1) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 2) {
 			shop_show(&playerData);
