@@ -359,7 +359,6 @@ void gfx_draw_number(int x, int y, int val) {
 	char str[10];
 
 	fg_color(15);
-	bold(1);
 
 	sprintf(str, "%d", val);
 
@@ -371,8 +370,6 @@ void gfx_draw_number(int x, int y, int val) {
 			}
 		}
 	}
-
-	bold(0);
 
 #ifdef GCC
 	fflush(stdout);
