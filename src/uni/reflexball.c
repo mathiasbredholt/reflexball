@@ -68,13 +68,12 @@ int main() {
 	PlayerData playerData;
 	GameData gameData;
 
-	game_init(blockData, &playerData);
+	game_init(&gameData, &playerData);
 
 	while (1) {
 		if (mode == 0) {
 			menu_show();
 			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame);
-
 		}
 		if (mode == 1) {
 			lvl_create_lvl1(&gameData, &playerData);
@@ -85,6 +84,7 @@ int main() {
 			shop_show(&playerData);
 			while (mode == 2) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
+
 		if (mode == 4) break;
 	}
 

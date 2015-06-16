@@ -19,7 +19,7 @@
 #include "graphics.h"
 
 void lvl_create_lvl1(GameData *gameData, PlayerData *playerData) {
-	char *str;
+	char str[15];
 
 	gameData->blockData[0] [0][0] = 0x00;
 	gameData->blockData[0] [0][1] = 0x00;

@@ -231,22 +231,24 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 void gfx_draw_text(int x, int y, char *str) {
 	int i, j, k;
 	int index;
+	char length = util_strlen(str);
 
-	for (i = 0; i < util_strlen(str); ++i) {
-		if ((int) str[i] >= 97) {
-			index = 97; // ASCII index of letter a
-		} else {
-			index = 22; // ASCII index of 0 (48) - length of alphabet (26)
-		}
-		for (j = 0; j < 3; ++j) {
-			for (k = 0; k < 3; ++k) {
-				go_to_xy(x + i * 4 + k, y + j);
+	for (j = 0; j < 3; ++j) {   // line
+		go_to_xy(x, y + j);
+		for (i = 0; i < length; ++i) { // letters
+			if ((int) str[i] >= 97) {
+				index = 97; // ASCII index of letter a
+			} else {
+				index = 22; // ASCII index of 0 (48) - length of alphabet (26)
+			}
+			for (k = 0; k < 3; ++k) {  // char
 				if ((int) str[i] != 32) {
 					printf("%c", font_mini[(int) str[i] - index][j][k]);
 				} else {
 					printf(" ");
 				}
 			}
+			printf(" ");
 		}
 	}
 
