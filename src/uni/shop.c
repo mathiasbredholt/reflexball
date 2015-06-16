@@ -30,29 +30,27 @@ void shop_update(int *mode, char *lastKey, int *focus, char items[8]) {
 		if (key != *lastKey) {
 			*lastKey = key;
 
-			if (*lastKey & 2 && *focus > 0) {
-				if (*focus == 8) {
-					gfx_draw_btn(16, 16, "exit", 0);
-				} else {
-					gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 0);
-				}
-				--(*focus);
-				gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 1);
+			if (*focus == 8) {
+				gfx_draw_btn(16, 16, "exit", 0);
+			} else {
+				gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 0);
 			}
 
-			if (*lastKey & 1 && *focus < 8) {
-				gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 0);
-				++(*focus);
-				if (*focus == 8) {
-					gfx_draw_btn(16, 16, "exit", 1);
-				} else {
-					gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 1);
-				}
+			if (*lastKey & 0x01) ++(*focus);
+			if (*lastKey & 0x02) --(*focus);
+
+			*focus %= 9;
+
+			if (*focus == 8) {
+				gfx_draw_btn(16, 16, "exit", 1);
+			} else {
+				gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 1);
 			}
 
 			if (*lastKey & 4 && *focus != 8) {
 				++items[*focus];
-			} if (*lastKey & 4 && *focus == 8) {
+			}
+			if (*lastKey & 4 && *focus == 8) {
 				*focus = 0;
 				*mode = 0;
 			}

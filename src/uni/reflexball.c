@@ -34,7 +34,7 @@ void main() {
 	while (1) {
 		if (mode == 0) {
 			menu_show();
-			while (mode == 0) menu_update(&mode, &lastKey);
+			while (mode == 0) menu_update(&mode, &lastKey, &focus);
 
 		}
 		if (mode == 1) {
@@ -72,7 +72,7 @@ int main() {
 	while (1) {
 		if (mode == 0) {
 			menu_show();
-			while (mode == 0) menu_update(&mode, &lastKey);
+			while (mode == 0) menu_update(&mode, &lastKey, &focus);
 
 		}
 		if (mode == 1) {
@@ -84,6 +84,7 @@ int main() {
 			shop_show(items);
 			while (mode == 2) shop_update(&mode, &lastKey, &focus, items);
 		}
+		if (mode == 4) break;
 	}
 
 	return 0;
