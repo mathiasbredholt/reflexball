@@ -1,19 +1,18 @@
 #include "util.h"
+#include "game_engine.h"
 
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
 
 void gfx_draw_bounds();
 
-void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos);
+void gfx_draw_ball(GameData *gameData);
 
-void gfx_draw_striker(unsigned int oldX, unsigned int newX);
+void gfx_draw_striker(GameData *gameData);
 
-void gfx_change_striker_size(unsigned int x, int size);
+void gfx_erase_striker(GameData *gameData);
 
-void gfx_set_striker_size(int size);
-
-void gfx_draw_all_blocks(unsigned char blockData[4][15][2]);
+void gfx_draw_all_blocks(GameData *gameData);
 
 void gfx_draw_block(int x, int y, int type);
 

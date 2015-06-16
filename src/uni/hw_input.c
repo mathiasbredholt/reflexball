@@ -126,9 +126,9 @@ char hw_wait_for_key() {
 
 void hw_ADC_init() {
 	PBADDR = 0x02; // selects the alternate function of the B register
-	PBAF = 0xFF; // Enables alternate function for inputs 0-7.
+	PBAF = 0x01; // Enables alternate function for inputs 0-7.
 	ADCCTL = 0x90; // initates the ADC, for continous conversion of input 0.
-	while (!(PBCTL & 0x80)); // waits for the output to be ready
+	while (!(ADCCTL & 0x80)); // waits for the output to be ready
 }
 
 char hw_read_analog() {

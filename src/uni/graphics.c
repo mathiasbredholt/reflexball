@@ -20,13 +20,12 @@
 #include "util.h"
 #include "graphics.h"
 #include "charset.h"
+#include "game_engine.h"
 
 #define width 256
 #define height 96
 #define striker_height 92
 #define BTN_WIDTH 20
-
-int _strikerSize;
 
 void gfx_draw_bounds() {
 	int i;
@@ -52,11 +51,11 @@ void gfx_draw_bounds() {
 #endif
 }
 
-void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
-	unsigned char newX = (unsigned char) (newPos.x >> 8);
-	unsigned char newY = (unsigned char) (newPos.y >> 8);
-	unsigned char oldX = (unsigned char) (oldPos.x >> 8);
-	unsigned char oldY = (unsigned char) (oldPos.y >> 8);
+void gfx_draw_ball(GameData *gameData) 	{
+	unsigned char newX = (unsigned char) (gameData->ballPos.x >> 8);
+	unsigned char newY = (unsigned char) (gameData->ballPos.y >> 8);
+	unsigned char oldX = (unsigned char) (gameData->ballOldPos.x >> 8);
+	unsigned char oldY = (unsigned char) (gameData->ballOldPos.y >> 8);
 
 	fg_color(15);
 
@@ -74,22 +73,21 @@ void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
 #endif
 }
 
-void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
-	char dX ;
+void gfx_draw_striker(GameData *gameData) 	{
+	unsigned char oldX = (char) (gameData->strikerOldPos >> 8);
+	unsigned char newX = (char) (gameData->strikerPos >> 8);
+	char dX = (char) newX - (char) oldX;
 	fg_color(15);
-	oldX >>= 8;
-	newX >>= 8;
-	dX = (char) newX - (char) oldX;
 	if (dX > 0) {
-		go_to_xy(oldX - (_strikerSize >> 1) + 1, striker_height);
+		go_to_xy(oldX - (gameData->strikerSize >> 1) + 1, striker_height);
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
-		spacer(_strikerSize - 2, 205);
+		spacer(gameData->strikerSize - 2, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
-		go_to_xy(newX - (_strikerSize >> 1) + 1, striker_height);
+		go_to_xy(newX - (gameData->strikerSize >> 1) + 1, striker_height);
 		printf("%c", 204);
-		spacer(_strikerSize - 2, 205);
+		spacer(gameData->strikerSize - 2, 205);
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
@@ -99,28 +97,18 @@ void gfx_draw_striker(unsigned int oldX, unsigned int newX) 	{
 #endif
 }
 
-void gfx_change_striker_size(unsigned int x, int size) {
-	x >>= 8;
+void gfx_erase_striker(GameData *gameData) {
+	unsigned char x = (char) (gameData->strikerPos >> 8);
 
-	go_to_xy(x - (_strikerSize >> 1) + 1, striker_height);
-	spacer(_strikerSize, (int) ' ');
-
-	_strikerSize = size;
-	go_to_xy(x - (_strikerSize >> 1) + 1, striker_height);
-	printf("%c", 204);
-	spacer(_strikerSize - 2, 205);
-	printf("%c", 185);
+	go_to_xy((int) ((gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1), striker_height);
+	spacer(gameData->strikerSize, (int) ' ');
 
 #ifdef GCC
 	fflush(stdout);
 #endif
 }
 
-void gfx_set_striker_size(int size) {
-	_strikerSize = size;
-}
-
-void gfx_draw_all_blocks(unsigned char blockData[4][15][2]) {
+void gfx_draw_all_blocks(GameData *gameData) {
 	char i, j, k, l;
 
 	for (j = 0; j < 15; ++j) {
@@ -128,7 +116,7 @@ void gfx_draw_all_blocks(unsigned char blockData[4][15][2]) {
 		for (i = 0; i < 4; ++i) {
 			for (k = 0; k < 2; ++k) {
 				for (l = 0; l < 8; ++l) {
-					if (blockData[i][j][k] & (0x80 >> l)) {
+					if (gameData->blockData[i][j][k] & (0x80 >> l)) {
 						gfx_draw_block((int)((k << 3) + l), (int) j, (int) i);
 					}
 				}
