@@ -31,4 +31,8 @@ void gfx_draw_item(int x, int y, int item);
 
 void gfx_draw_meter(int x, int y, int val);
 
+void gfx_draw_energy_meter(int val);
+
+void gfx_update_energy_meter(int val);
+
 #endif

@@ -28,30 +28,6 @@
 
 int _strikerSize;
 
-void gfx_draw_bounds() {
-	int i;
-
-	hide_csr();
-	clr_scr();
-
-	go_to_xy(-1, -1);
-	printf("%c", 201);  // top left corner
-	spacer(width, 205); // top line
-	printf("%c", 187);
-
-	// print sides
-	for (i = 0; i < height; i++) {
-		go_to_xy(-1, i);
-		printf("%c", 186);
-		go_to_xy(256, i);
-		printf("%c", 186);
-	}
-
-#ifdef GCC
-	fflush(stdout);
-#endif
-}
-
 void gfx_draw_ball(TVector_8_8 oldPos, TVector_8_8 newPos) 	{
 	unsigned char newX = (unsigned char) (newPos.x >> 8);
 	unsigned char newY = (unsigned char) (newPos.y >> 8);
@@ -244,20 +220,18 @@ void gfx_draw_text(int x, int y, char *str) {
 	int i, j, k;
 	int index;
 
-	fg_color(15);
-
 	for (i = 0; i < util_strlen(str); ++i) {
-		if (str[i] != 32) {
-			if ((int) str[i] >= 97) {
-				index = 97; // ASCII index of letter a
+		if ((int) str[i] >= 97) {
+			index = 97; // ASCII index of letter a
+		} else {
+			index = 22; // ASCII index of 0 (48) - length of alphabet (26)
+		}
+		for (j = 0; j < 3; ++j) {
+			go_to_xy(x + i * 4, y + j);
+			if ((int) str[i] != 32) {
+				printf("%s", font_mini[(int) str[i] - index][j]);
 			} else {
-				index = 22; // ASCII index of 0 (48) - length of alphabet (26)
-			}
-			for (j = 0; j < 3; ++j) {
-				for (k = 0; k < 4; ++k) {
-					go_to_xy(x + k + i * 4, y + j);
-					printf("%c", font_mini[(int) str[i] - index][j][k]);
-				}
+				spacer(4, 32);
 			}
 		}
 	}
@@ -356,7 +330,52 @@ void gfx_draw_item(int x, int y, int item) {
 void gfx_draw_meter(int x, int y, int val) {
 	fg_color(2);
 	go_to_xy(x, y);
+	spacer(16, 32);
+	go_to_xy(x, y);
 	spacer(val, 221);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_energy_meter(int val) {
+	char str[15];
+	int i;
+
+	color(0, 6);
+	sprintf(str, "energy");
+	gfx_draw_text(0, 98, str);
+
+	go_to_xy(0, 101);
+	spacer(64, 32);
+
+	for (i = 98; i < 102; ++i) {
+		go_to_xy(24, i);
+		spacer(40, 32);
+	}
+
+	color(15, 0);
+	go_to_xy(0, 102);
+	spacer(64, 205);
+
+	for (i = 98; i < 102; ++i) {
+		go_to_xy(64, i);
+		spacer(1, 186);
+	}
+
+	go_to_xy(64, 103);
+	spacer(1, 188);
+}
+
+void gfx_update_energy_meter(int val) {
+	int level = (val >> 2);
+	int i;
+
+	for (i = 0; i < 4; ++i) {
+		go_to_xy(level, 98 + i);
+		spacer(64 - level, 32);
+	}
 
 #ifdef GCC
 	fflush(stdout);

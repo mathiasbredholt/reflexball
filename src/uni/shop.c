@@ -1,3 +1,19 @@
+#ifdef __APPLE__
+#define GCC
+#endif
+
+#ifdef __WIN32__
+#define GCC
+#endif
+
+#ifndef GCC
+#include <sio.h>
+#endif
+
+#ifdef GCC
+#include <stdio.h>
+#endif
+
 #include "game_engine.h"
 #include "graphics.h"
 #include "hw_input.h"
@@ -5,6 +21,7 @@
 
 void shop_show(PlayerData *playerData) {
 	int i;
+	char str[15];
 
 	gfx_window(0, 0, 256, 96, 1);
 
@@ -18,6 +35,9 @@ void shop_show(PlayerData *playerData) {
 	}
 
 	gfx_draw_btn(16, 16, "exit", 0);
+
+	sprintf(str, "coins %8d", playerData->coins);
+	gfx_draw_text(196, 2, str);
 }
 
 void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
@@ -50,7 +70,12 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 			}
 
 			if (*lastKey & 4 && *focus != 8) {
+				char str[15];
+				--playerData->coins;
 				++playerData->items[*focus];
+
+				sprintf(str, "coins %8d", playerData->coins);
+				gfx_draw_text(196, 2, str);
 			}
 			if (*lastKey & 4 && *focus == 8) {
 				*focus = 0;

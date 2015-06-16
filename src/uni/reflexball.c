@@ -36,7 +36,6 @@ void main() {
 		if (mode == 0) {
 			menu_show();
 			while (mode == 0) menu_update(&mode, &lastKey, &focus);
-
 		}
 		if (mode == 1) {
 			lvl_create_lvl1(blockData);

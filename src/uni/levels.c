@@ -145,9 +145,13 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2], PlayerData *playerData) 
 	blockData[3][14][0] = 0x00;
 	blockData[3][14][1] = 0x00;
 
+	playerData->energy = 255;
+
 	gfx_window(-1, -1, 258, 98, 1);
 	gfx_draw_all_blocks(blockData);
 
 	sprintf(str, "coins %8d", playerData->coins);
 	gfx_draw_text(200, 98, str);
+
+	gfx_draw_energy_meter(playerData->energy);
 }
