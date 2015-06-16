@@ -7,10 +7,10 @@ void menu_show() {
 	gfx_window(64, 16, 192, 80, 1);
 	gfx_draw_text(68, 18, "reflexball");
 
-	gfx_draw_btn(68, 24, "play", 1);
-	gfx_draw_btn(68, 32, "shop", 0);
-	gfx_draw_btn(68, 40, "load", 0);
-	gfx_draw_btn(68, 48, "exit", 0);
+	gfx_draw_btn(118, 24, "play", 1);
+	gfx_draw_btn(118, 32, "shop", 0);
+	gfx_draw_btn(118, 40, "load", 0);
+	gfx_draw_btn(118, 48, "exit", 0);
 }
 
 void menu_update(int *mode, char *lastKey, int *focus) {
@@ -29,13 +29,13 @@ void menu_update(int *mode, char *lastKey, int *focus) {
 				*focus = 0;
 			}
 
-			gfx_draw_btn_focus(68, 24 + 8 * *focus, btns[*focus], 0);
+			gfx_draw_btn_focus(118, 24 + 8 * *focus, btns[*focus], 0);
 
 			if (*lastKey & 0x02) --(*focus);
 			if (*lastKey & 0x01) ++(*focus);
 			*focus &= 0x03;
 
-			gfx_draw_btn_focus(68, 24 + 8 * *focus, btns[*focus], 1);
+			gfx_draw_btn_focus(118, 24 + 8 * *focus, btns[*focus], 1);
 		}
 	}
 }

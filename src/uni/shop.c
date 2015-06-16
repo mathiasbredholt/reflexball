@@ -40,6 +40,7 @@ void shop_update(int *mode, char *lastKey, int *focus, char items[8]) {
 			if (*lastKey & 0x02) --(*focus);
 
 			*focus %= 9;
+			if (*focus < 0) *focus += 9;
 
 			if (*focus == 8) {
 				gfx_draw_btn(16, 16, "exit", 1);

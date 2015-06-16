@@ -51,7 +51,7 @@ void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 		// move striker right
 		if (key & 1 && _strikerX >> 8 <= 255 - ((_strikerSize >> 1) + 1)) _strikerX += 256;
 
-		if (key & 4) lvl_create_menu();
+		// if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
 		for (i = 0; i < 4; ++i) {
