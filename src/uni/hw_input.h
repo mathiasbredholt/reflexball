@@ -21,4 +21,8 @@ char hw_keys();
 
 char hw_wait_for_key();
 
+void hw_ADC_init();
+
+char hw_read_analog();
+
 #endif
