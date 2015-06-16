@@ -41,7 +41,7 @@ void main() {
 		if (mode == 1) {
 			lvl_create_lvl1(blockData);
 			game_init_player();
-			while (mode == 1) game_update(blockData, &playerData);
+			while (mode == 1) game_update(&mode, blockData, &playerData);
 		}
 		if (mode == 2) {
 			shop_show(&playerData);
@@ -76,9 +76,9 @@ int main() {
 
 		}
 		if (mode == 1) {
-			lvl_create_lvl1(blockData);
+			lvl_create_lvl1(blockData, &playerData);
 			game_init_player();
-			while (mode == 1) game_update(blockData, &playerData);
+			while (mode == 1) game_update(&mode, blockData, &playerData);
 		}
 		if (mode == 2) {
 			shop_show(&playerData);

@@ -11,7 +11,7 @@ typedef struct PlayerData {
 
 void game_init(unsigned char blockData[4][15][2], PlayerData *playerData);
 
-void game_update(unsigned char blockData[4][15][2], PlayerData *playerData);
+void game_update(int *mode, unsigned char blockData[4][15][2], PlayerData *playerData);
 
 void game_init_player();
 

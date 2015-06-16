@@ -1,8 +1,26 @@
+#ifdef __APPLE__
+#define GCC
+#endif
+
+#ifdef __WIN32__
+#define GCC
+#endif
+
+#ifndef GCC
+#include <sio.h>
+#endif
+
+#ifdef GCC
+#include <stdio.h>
+#endif
+
 #include "levels.h"
 #include "game_engine.h"
 #include "graphics.h"
 
-void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
+void lvl_create_lvl1(unsigned char blockData[4][15][2], PlayerData *playerData) {
+	char str[15];
+
 	blockData[0] [0][0] = 0x00;
 	blockData[0] [0][1] = 0x00;
 	blockData[0] [1][0] = 0x00;
@@ -129,4 +147,7 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 
 	gfx_window(-1, -1, 258, 98, 1);
 	gfx_draw_all_blocks(blockData);
+
+	sprintf(str, "coins %8d", playerData->coins);
+	gfx_draw_text(200, 98, str);
 }

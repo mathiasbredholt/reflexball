@@ -242,12 +242,21 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 
 void gfx_draw_text(int x, int y, char *str) {
 	int i, j, k;
+	int index;
+
+	fg_color(15);
+
 	for (i = 0; i < util_strlen(str); ++i) {
 		if (str[i] != 32) {
+			if ((int) str[i] >= 97) {
+				index = 97; // ASCII index of letter a
+			} else {
+				index = 22; // ASCII index of 0 (48) - length of alphabet (26)
+			}
 			for (j = 0; j < 3; ++j) {
 				for (k = 0; k < 4; ++k) {
 					go_to_xy(x + k + i * 4, y + j);
-					printf("%c", font_mini[(int) str[i] - 97][j][k]);
+					printf("%c", font_mini[(int) str[i] - index][j][k]);
 				}
 			}
 		}
@@ -348,28 +357,6 @@ void gfx_draw_meter(int x, int y, int val) {
 	fg_color(2);
 	go_to_xy(x, y);
 	spacer(val, 221);
-
-#ifdef GCC
-	fflush(stdout);
-#endif
-}
-
-void gfx_draw_number(int x, int y, int val) {
-	int i, j, k;
-	char str[10];
-
-	fg_color(15);
-
-	sprintf(str, "%d", val);
-
-	for (i = 0; i < util_strlen(str); ++i) {
-		for (j = 0; j < 3; ++j) {
-			for (k = 0; k < 4; ++k) {
-				go_to_xy(x + k + i * 4, y + j);
-				printf("%c", font_mini[(int) str[i] - 48 + 26][j][k]);
-			}
-		}
-	}
 
 #ifdef GCC
 	fflush(stdout);

@@ -1,3 +1,19 @@
+#ifdef __APPLE__
+#define GCC
+#endif
+
+#ifdef __WIN32__
+#define GCC
+#endif
+
+#ifndef GCC
+#include <sio.h>
+#endif
+
+#ifdef GCC
+#include <stdio.h>
+#endif
+
 // game_engine.c
 
 #include "game_engine.h"
@@ -36,7 +52,7 @@ void game_init(unsigned char blockData[4][15][2], PlayerData *playerData) {
 	hw_ADC_init();
 }
 
-void game_update(unsigned char blockData[4][15][2], PlayerData *playerData) {
+void game_update(int *mode, unsigned char blockData[4][15][2], PlayerData *playerData) {
 	char key, i;
 	int redraw = 0;
 	int blockHit = 0;
@@ -62,20 +78,22 @@ void game_update(unsigned char blockData[4][15][2], PlayerData *playerData) {
 		// move striker right
 		if (key & 1 && _strikerX >> 8 <= 255 - ((_strikerSize >> 1) + 1)) _strikerX += 256;
 
-		gfx_draw_number(200, 80, (int) hw_read_analog());
+		// gfx_draw_number(200, 80, (int) hw_read_analog());
 
-		// if (key & 4) lvl_create_menu();
+		if (key & 4) *mode = 0;
 
 		// Calculate new ball position
 		for (i = 0; i < 4; ++i) {
 			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX, &redraw, &blockHit);
 			if (blockHit) {
+				char str[15];
 				(blockHit >> 8) ? gfx_draw_block(blockHit & 0x000F, blockHit >> 4 & 0x000F, (blockHit >> 8) - 1) : gfx_erase_block(blockHit & 0x000F, blockHit >> 4 & 0x000F);
 				blockHit = 0;
 
 				// update score
 				playerData->coins += 5;
-				gfx_draw_number(240, 98, playerData->coins);
+				sprintf(str, "coins %8d", playerData->coins);
+				gfx_draw_text(200, 98, str);
 			}
 			if (redraw) {
 				redraw = 0;
