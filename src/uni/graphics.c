@@ -387,12 +387,12 @@ void gfx_draw_energy_meter(int val) {
 void gfx_update_energy_meter(int val) {
 	int level = (val >> 2);
 	int i;
-
-	for (i = 0; i < 4; ++i) {
-		go_to_xy(level, 98 + i);
-		spacer(64 - level, 32);
+	if ((val & 0x03) == 0) {
+		for (i = 0; i < 4; ++i) {
+			go_to_xy(level, 98 + i);
+			printf(" ");
+		}
 	}
-
 #ifdef GCC
 	fflush(stdout);
 #endif
