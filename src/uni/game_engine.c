@@ -9,8 +9,8 @@
 #include "util.h"
 #include "physics.h"
 // #include "sounds.h"
-#include <sio.h>
-#include "ansi.h"
+// #include <sio.h>
+// #include "ansi.h"
 
 unsigned int _strikerX, _strikerOldX;
 int _strikerSize;
@@ -27,9 +27,8 @@ void game_init() {
 
 void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 	char key, i;
-	int *redraw;
+	int redraw = 0;
 	int blockHit = 0;
-	*redraw = 0;
 
 	// if (hw_read_key() && hw_time_get_next_frame()) {
 	if (hw_time_get_next_frame()) {
@@ -55,14 +54,14 @@ void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 		if (key & 4) lvl_create_menu();
 
 		// Calculate new ball position
-		for (i = 0; i < 6; ++i) {
-			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX, redraw, &blockHit);
+		for (i = 0; i < 4; ++i) {
+			phy_simulate(blockData, &_ballPos, &_ballVel, _strikerX, &redraw, &blockHit);
 			if (blockHit) {
 				(blockHit >> 8) ? gfx_draw_block(blockHit & 0x000F, blockHit >> 4 & 0x000F, (blockHit >> 8) - 1) : gfx_erase_block(blockHit & 0x000F, blockHit >> 4 & 0x000F);
 				blockHit = 0;
 			}
-			if (*redraw) {
-				*redraw = 0;
+			if (redraw) {
+				redraw = 0;
 				break;
 			}
 		}

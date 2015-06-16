@@ -26,8 +26,8 @@ int _strikerSize;
 
 void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0_7 *vel, unsigned int strikerPos, int * redraw, int * blockHit) {
 	unsigned char x, y, sp;
-	pos->x += (signed int) (_ballSpeed * vel->x);
-	pos->y += (signed int) (_ballSpeed * vel->y);
+	pos->x += shift_fix_int_right((int) (_ballSpeed * vel->x * 8), 2);
+	pos->y += shift_fix_int_right((int) (_ballSpeed * vel->y * 5), 2);
 	x = (unsigned char) (pos->x >> 8);
 	y = (unsigned char) (pos->y >> 8);
 	if (y == 0) {
@@ -76,40 +76,58 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 		if (y <= 60) {	// We already know that y!=0
 			if ((y & 3) == 0) {
 				// Touching lower edge of block
-				//*redraw = 1;
-				if (phy_hit_block(blockData, blockHit, x >> 4, (y >> 2) - 1)) {
+				if (phy_hit_block(blockData, blockHit, redraw, x >> 4, (y >> 2) - 1)) {
 					vel->y = -vel->y;
-
+					if ((x & 15) == 15) {
+						// Hitting corner of right block because ball is two pixels wide
+						phy_hit_block(blockData, blockHit, redraw, (x >> 4) + 1, (y >> 2) - 1);
+					}
+				} else if ((x & 15) == 15 && phy_hit_block(blockData, blockHit, redraw, (x >> 4) + 1, (y >> 2) - 1)) {
+					// Hitting corner of right block because ball is two pixels wide
+					vel->y = -vel->y;
 				}
-				if ((x & 1) == 1) {
+				if ((x & 15) == 1) {
 					// Left corner
-					if (phy_hit_block(blockData, blockHit, (x >> 4) - 1, y >> 2)) {
+					if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) - 1, y >> 2)) {
+						vel->x = -vel->x;
+					}
+				} else if ((x & 15) == 14) {
+					// Right corner
+					if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) + 1, y >> 2)) {
 						vel->x = -vel->x;
 					}
 				} else if ((x & 15) == 15) {
-					// Right corner
-					if (phy_hit_block(blockData, blockHit, (x >> 4) + 1, y >> 2)) {
+					if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) + 1, y >> 2)) {
 						vel->x = -vel->x;
 					}
 				}
-			}
-			else if (y & 0x00) {
-				printf("upper");
+			} else if ((y & 3) == 3) {
+				// printf("upper");
 				// Touching upper edge of block
 				// *redraw = 1;
-				if (phy_hit_block(blockData, blockHit, x >> 4, y >> 2)) {
+				if (phy_hit_block(blockData, blockHit, redraw, x >> 4, (y >> 2) + 1)) {
 					vel->y = -vel->y;
 				}
-				if (x & 0x01) {
+				if ((x & 15) == 1) {
 					// Left corner
-					if (phy_hit_block(blockData, blockHit, (x >> 4) - 1, (y >> 2) - 1)) {
+					if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) - 1, y >> 2)) {
 						vel->x = -vel->x;
 					}
-				} else if (x & 0x0F) {
+				} else if ((x & 15) == 14) {
 					// Right corner
-					if (phy_hit_block(blockData, blockHit, (x >> 4) + 1, (y >> 2) - 1)) {
+					if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) + 1, y >> 2)) {
 						vel->x = -vel->x;
 					}
+				}
+			} else if ((x & 15) == 1) {
+				// Right edge
+				if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) - 1, y >> 2)) {
+					vel->x = -vel->x;
+				}
+			} else if ((x & 15) == 14) {
+				// Left edge
+				if (phy_hit_block(blockData, blockHit, redraw, (x >> 4) + 1, y >> 2)) {
+					vel->x = -vel->x;
 				}
 			}
 		}
@@ -122,7 +140,7 @@ void phy_simulate(unsigned char blockData[4][15][2], TVector_8_8 *pos, TVector_0
 
 }
 
-char phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int x, int y) {
+char phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int * redraw, int x, int y) {
 	int type;
 
 	if (x > 15 || x < 0 || y > 14 || y < 0) {
@@ -147,6 +165,7 @@ char phy_hit_block(unsigned char blockData[4][15][2], int * blockHit, int x, int
 			if (type) {	// type != 0
 				blockData[type - 1][y][x >> 3] |= 0x80 >> (x & 0x07);	// Add block with lower type
 			}
+			*redraw = 1;
 			return 1;
 		}
 	}
