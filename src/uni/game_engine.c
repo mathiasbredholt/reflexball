@@ -33,6 +33,8 @@ int _strikerSize;
 TVector_8_8 _ballPos, _ballOldPos;
 TVector_0_7 _ballVel;
 
+int _bulletY = 80;
+
 void game_init(unsigned char blockData[4][15][2], PlayerData *playerData) {
 	int i;
 	hw_init();
@@ -96,7 +98,11 @@ void game_update(int *mode, unsigned char blockData[4][15][2], PlayerData *playe
 
 		// gfx_draw_number(200, 80, (int) hw_read_analog());
 
-		if (key & 4) *mode = 0;
+		// if (key & 4) *mode = 0;
+
+		if (key & 4) {
+			gfx_draw_bullet(128, _strikerX, 0, 0);
+		}
 
 		// Calculate new ball position
 		for (i = 0; i < 4; ++i) {

@@ -381,3 +381,29 @@ void gfx_update_energy_meter(int val) {
 	fflush(stdout);
 #endif
 }
+
+void gfx_draw_bullet(int x, int newY, int oldY, int type) {
+	int i;
+	fg_color(1);
+	for (i = 90; i > 0; --i) {
+		go_to_xy(x, i);
+		spacer(1, 221);
+	}
+}
+
+void gfx_draw_stars(int frame) {
+	int i, j;
+	int random[20] = { 6, 2, 9, 3, 4, 7, 1, 0, 8, 5, 3, 7, 0, 2, 7, 9, 4, 1, 3, 5 };
+	for (i = 0; i < 5; ++i) {
+		for (j = 0; j < 10; ++j) {
+			go_to_xy(j * 25 + random[i], i * 10 + random[10 + j] - frame + 1);
+			printf(" ");
+			go_to_xy(j * 25 + random[i], 49 + i * 10 + random[10 + j] - frame + 1);
+			printf(" ");
+			go_to_xy(j * 25 + random[i], i * 10 + random[10 + j] - frame);
+			printf(".");
+			go_to_xy(j * 25 + random[i], 49 + i * 10 + random[10 + j] - frame);
+			printf(".");
+		}
+	}
+}

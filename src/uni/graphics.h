@@ -35,4 +35,8 @@ void gfx_draw_energy_meter(int val);
 
 void gfx_update_energy_meter(int val);
 
+void gfx_draw_bullet(int x, int newY, int oldY, int type);
+
+void gfx_draw_stars(int frame);
+
 #endif

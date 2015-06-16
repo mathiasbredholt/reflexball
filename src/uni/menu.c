@@ -13,7 +13,7 @@ void menu_show() {
 	gfx_draw_btn(118, 48, "exit", 0);
 }
 
-void menu_update(int *mode, char *lastKey, int *focus) {
+void menu_update(int *mode, char *lastKey, int *focus, int *animFrame) {
 	char key;
 	char btns[4][5] = { "play", "shop", "load", "exit" };
 
@@ -37,5 +37,9 @@ void menu_update(int *mode, char *lastKey, int *focus) {
 
 			gfx_draw_btn_focus(118, 24 + 8 * *focus, btns[*focus], 1);
 		}
+
+		// gfx_draw_stars(*animFrame);
+		++*animFrame;
+		*animFrame %= 49;
 	}
 }
