@@ -176,7 +176,11 @@ char hw_wait_for_key() {
 	return hw_read_key();
 }
 
+void hw_ADC_init() {
+}
 
-
+char hw_read_analog() {
+	return 0;
+}
 
 #endif
