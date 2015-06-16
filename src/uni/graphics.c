@@ -239,11 +239,13 @@ void gfx_draw_text(int x, int y, char *str) {
 			index = 22; // ASCII index of 0 (48) - length of alphabet (26)
 		}
 		for (j = 0; j < 3; ++j) {
-			go_to_xy(x + i * 4, y + j);
-			if ((int) str[i] != 32) {
-				printf("%s", font_mini[(int) str[i] - index][j]);
-			} else {
-				spacer(4, 32);
+			for (k = 0; k < 3; ++k) {
+				go_to_xy(x + i * 4 + k, y + j);
+				if ((int) str[i] != 32) {
+					printf("%c", font_mini[(int) str[i] - index][j][k]);
+				} else {
+					printf(" ");
+				}
 			}
 		}
 	}
