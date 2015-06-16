@@ -18,18 +18,19 @@
 #ifndef GCC
 
 void main() {
-	int mode = 0;
-	char items[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	char lives = 3;
-	int points = 0;
-	unsigned char blockData[4][15][2];
+	int i;
+
+	// gui variables
 
 	int focus = 0;
 	char lastKey = 0;
+	int mode = 0;
 
-	game_init();
-	// intro_play();
-	// game_wait_for_input();
+
+	PlayerData playerData;
+	unsigned char blockData[4][15][2];
+
+	game_init(blockData, &playerData);
 
 	while (1) {
 		if (mode == 0) {
@@ -40,11 +41,11 @@ void main() {
 		if (mode == 1) {
 			lvl_create_lvl1(blockData);
 			game_init_player();
-			while (mode == 1) game_update(blockData, &lives, &points);
+			while (mode == 1) game_update(blockData, &playerData);
 		}
 		if (mode == 2) {
-			shop_show(items);
-			while (mode == 2) shop_update(&mode, &lastKey, &focus, items);
+			shop_show(&playerData);
+			while (mode == 2) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 	}
 }
@@ -56,18 +57,17 @@ void main() {
 #ifdef GCC
 
 int main() {
-	int mode = 0;
-	char items[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	char lives = 3;
-	int points = 0;
-	unsigned char blockData[4][15][2];
+	// gui variables
 
 	int focus = 0;
 	char lastKey = 0;
+	int mode = 0;
 
-	game_init();
-	// intro_play();
-	// game_wait_for_input();
+
+	PlayerData playerData;
+	unsigned char blockData[4][15][2];
+
+	game_init(blockData, &playerData);
 
 	while (1) {
 		if (mode == 0) {
@@ -78,11 +78,11 @@ int main() {
 		if (mode == 1) {
 			lvl_create_lvl1(blockData);
 			game_init_player();
-			while (mode == 1) game_update(blockData, &lives, &points);
+			while (mode == 1) game_update(blockData, &playerData);
 		}
 		if (mode == 2) {
-			shop_show(items);
-			while (mode == 2) shop_update(&mode, &lastKey, &focus, items);
+			shop_show(&playerData);
+			while (mode == 2) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 		if (mode == 4) break;
 	}

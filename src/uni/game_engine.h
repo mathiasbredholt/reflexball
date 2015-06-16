@@ -1,9 +1,17 @@
 #ifndef _GAME_ENGINE_H_
 #define _GAME_ENGINE_H_
 
-void game_init();
+#define NUMBER_OF_ITEMS 8
 
-void game_update(unsigned char blockData[4][15][2], char *lives, int *points);
+typedef struct PlayerData {
+	unsigned char energy;
+	unsigned int coins;
+	unsigned char items[NUMBER_OF_ITEMS];
+} PlayerData;
+
+void game_init(unsigned char blockData[4][15][2], PlayerData *playerData);
+
+void game_update(unsigned char blockData[4][15][2], PlayerData *playerData);
 
 void game_init_player();
 

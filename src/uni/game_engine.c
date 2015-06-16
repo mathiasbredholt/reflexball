@@ -17,15 +17,25 @@ int _strikerSize;
 TVector_8_8 _ballPos, _ballOldPos;
 TVector_0_7 _ballVel;
 
-void game_init() {
+void game_init(unsigned char blockData[4][15][2], PlayerData *playerData) {
+	int i;
 	hw_init();
 	hw_time_init();
 	LED_init();
 	LED_set_string("Welcome");
+
+	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
+		playerData->items[i] = 0;
+	}
+
+	playerData->energy = 255;
+	playerData->coins = 0;
+
+
 	_strikerSize = 48;
 }
 
-void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
+void game_update(unsigned char blockData[4][15][2], PlayerData *playerData) {
 	char key, i;
 	int redraw = 0;
 	int blockHit = 0;
@@ -59,6 +69,10 @@ void game_update(unsigned char blockData[4][15][2], char *lives, int *points) {
 			if (blockHit) {
 				(blockHit >> 8) ? gfx_draw_block(blockHit & 0x000F, blockHit >> 4 & 0x000F, (blockHit >> 8) - 1) : gfx_erase_block(blockHit & 0x000F, blockHit >> 4 & 0x000F);
 				blockHit = 0;
+
+				// update score
+				playerData->coins += 5;
+				gfx_draw_number(240, 98, playerData->coins);
 			}
 			if (redraw) {
 				redraw = 0;

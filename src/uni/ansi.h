@@ -19,7 +19,7 @@ void clear_eol();
 
 void go_to_xy(int x, int y);
 
-void underline(char on);
+void bold(char on);
 
 void blink(char on);
 

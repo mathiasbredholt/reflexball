@@ -31,4 +31,6 @@ void gfx_draw_item(int x, int y, int item);
 
 void gfx_draw_meter(int x, int y, int val);
 
+void gfx_draw_number(int x, int y, int val);
+
 #endif

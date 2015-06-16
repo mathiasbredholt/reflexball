@@ -2,14 +2,6 @@
 #include "game_engine.h"
 #include "graphics.h"
 
-void lvl_create_menu() {
-	gfx_window(64, 16, 192, 80, 1);
-	gfx_draw_text(68, 18, "reflexball");
-	game_wait_for_input();
-	gfx_window(64, 16, 192, 80, 0);
-	// lvl_create_lvl1();
-}
-
 void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 	blockData[0] [0][0] = 0x00;
 	blockData[0] [0][1] = 0x00;
@@ -135,6 +127,6 @@ void lvl_create_lvl1(unsigned char blockData[4][15][2]) {
 	blockData[3][14][0] = 0x00;
 	blockData[3][14][1] = 0x00;
 
-	gfx_draw_bounds();
+	gfx_window(-1, -1, 258, 98, 1);
 	gfx_draw_all_blocks(blockData);
 }

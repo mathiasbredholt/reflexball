@@ -1,3 +1,5 @@
-void shop_show(char items[8]);
+#include "game_engine.h"
 
-void shop_update(int *mode, char *lastKey, int *focus, char items[8]);
+void shop_show(PlayerData *playerData);
+
+void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData);

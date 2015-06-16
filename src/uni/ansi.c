@@ -85,9 +85,9 @@ void go_to_xy(int x, int y) {
   printf("%c[%d;%df", ESC, y + 2, x + 2); //Ignore frame
 }
 
-// Set underline on/off
-void underline(char on) {
-  printf("%c[%dm", ESC, on != 0 ? 4 : 24);
+// Set bold face on/off
+void bold(char on) {
+  printf("%c[%dm", ESC, on != 0 ? 1 : 21);
 }
 
 // Set cursor blink on/off

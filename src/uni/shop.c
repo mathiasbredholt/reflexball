@@ -1,8 +1,9 @@
+#include "game_engine.h"
 #include "graphics.h"
 #include "hw_input.h"
 #include "hw_time.h"
 
-void shop_show(char *items) {
+void shop_show(PlayerData *playerData) {
 	int i;
 
 	gfx_window(0, 0, 256, 96, 1);
@@ -11,7 +12,7 @@ void shop_show(char *items) {
 	gfx_draw_text(8, 6, "what does your heart desire");
 
 	for (i = 0; i < 8; ++i) {
-		gfx_draw_meter(32 + 24 * i, 40, items[i]);
+		gfx_draw_meter(32 + 24 * i, 40, playerData->items[i]);
 		gfx_draw_item(34 + 24 * i, 48, 0);
 		gfx_draw_btn(32 + 24 * i, 64, "buy", i == 0);
 	}
@@ -19,7 +20,7 @@ void shop_show(char *items) {
 	gfx_draw_btn(16, 16, "exit", 0);
 }
 
-void shop_update(int *mode, char *lastKey, int *focus, char items[8]) {
+void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 	int i;
 	char key;
 
@@ -49,7 +50,7 @@ void shop_update(int *mode, char *lastKey, int *focus, char items[8]) {
 			}
 
 			if (*lastKey & 4 && *focus != 8) {
-				++items[*focus];
+				++playerData->items[*focus];
 			}
 			if (*lastKey & 4 && *focus == 8) {
 				*focus = 0;
@@ -57,7 +58,7 @@ void shop_update(int *mode, char *lastKey, int *focus, char items[8]) {
 			}
 
 			for (i = 0; i < 8; ++i) {
-				gfx_draw_meter(32 + 24 * i, 40, items[i]);
+				gfx_draw_meter(32 + 24 * i, 40, playerData->items[i]);
 			}
 		}
 

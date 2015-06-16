@@ -353,3 +353,28 @@ void gfx_draw_meter(int x, int y, int val) {
 	fflush(stdout);
 #endif
 }
+
+void gfx_draw_number(int x, int y, int val) {
+	int i, j, k;
+	char str[10];
+
+	fg_color(15);
+	bold(1);
+
+	sprintf(str, "%d", val);
+
+	for (i = 0; i < util_strlen(str); ++i) {
+		for (j = 0; j < 3; ++j) {
+			for (k = 0; k < 4; ++k) {
+				go_to_xy(x + k + i * 4, y + j);
+				printf("%c", font_mini[(int) str[i] - 48 + 26][j][k]);
+			}
+		}
+	}
+
+	bold(0);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
