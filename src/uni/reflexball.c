@@ -29,9 +29,9 @@ void main() {
 
 
 	PlayerData playerData;
-	unsigned char blockData[4][15][2];
+	GameData gameData;
 
-	game_init(blockData, &playerData);
+	game_init(&gameData, &playerData);
 
 	while (1) {
 		if (mode == 0) {
@@ -39,9 +39,9 @@ void main() {
 			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame);
 		}
 		if (mode == 1) {
-			lvl_create_lvl1(blockData);
-			game_init_player();
-			while (mode == 1) game_update(&mode, blockData, &playerData);
+			lvl_create_lvl1(&gameData, &playerData);
+			game_init_player(&gameData);
+			while (mode == 1) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 2) {
 			shop_show(&playerData);
@@ -66,7 +66,7 @@ int main() {
 
 
 	PlayerData playerData;
-	unsigned char blockData[4][15][2];
+	GameData gameData;
 
 	game_init(blockData, &playerData);
 
@@ -77,9 +77,9 @@ int main() {
 
 		}
 		if (mode == 1) {
-			lvl_create_lvl1(blockData, &playerData);
-			game_init_player();
-			while (mode == 1) game_update(&mode, blockData, &playerData);
+			lvl_create_lvl1(&gameData, &playerData);
+			game_init_player(&gameData);
+			while (mode == 1) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 2) {
 			shop_show(&playerData);
