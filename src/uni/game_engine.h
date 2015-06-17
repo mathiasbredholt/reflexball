@@ -25,8 +25,4 @@ void game_init(GameData *gameData, PlayerData *playerData);
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData);
 
-void game_init_player(GameData *gameData);
-
-void game_wait_for_input();
-
 #endif  // _GAME_ENGINE_H_

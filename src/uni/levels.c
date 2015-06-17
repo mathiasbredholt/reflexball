@@ -1,17 +1,9 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifndef GCC
-#include <sio.h>
-#endif
-
-#ifdef GCC
+#if defined(__APPLE__) || defined(__WIN32__)
 #include <stdio.h>
+#endif
+
+#if defined(_Z8F6403)
+#include <sio.h>
 #endif
 
 #include "levels.h"
@@ -19,8 +11,6 @@
 #include "graphics.h"
 
 void lvl_create_lvl1(GameData *gameData, PlayerData *playerData) {
-	char str[15];
-
 	gameData->blockData[0] [0][0] = 0x00;
 	gameData->blockData[0] [0][1] = 0x00;
 	gameData->blockData[0] [1][0] = 0x00;
@@ -146,12 +136,4 @@ void lvl_create_lvl1(GameData *gameData, PlayerData *playerData) {
 	gameData->blockData[3][14][1] = 0x00;
 
 	playerData->energy = 255;
-
-	gfx_window(-1, -1, 258, 98, 1);
-	gfx_draw_all_blocks(gameData);
-
-	sprintf(str, "coins %8d", playerData->coins);
-	gfx_draw_text(200, 98, str);
-
-	gfx_draw_energy_meter(playerData->energy);
 }

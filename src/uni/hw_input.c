@@ -59,7 +59,7 @@ void hw_init() {
 }
 #endif
 
-#ifndef GCC
+#if defined(_Z8F6403)
 
 // hw_input.c
 

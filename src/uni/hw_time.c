@@ -22,8 +22,7 @@ void mySleep(int sleepMs) {
 
 // hw_time.c
 
-#ifndef GCC
-
+#if defined(_Z8F6403)
 #include <eZ8.h>
 
 unsigned long _millis;

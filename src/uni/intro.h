@@ -1,15 +1,7 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
 #ifndef _INTRO_H_
 #define _INTRO_H_
 
-#ifndef GCC
+#if defined(_Z8F6403)
 rom char title[42][8] = {
 	"aaasdggt",
 	"aaasdggt",

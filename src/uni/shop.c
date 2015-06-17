@@ -1,17 +1,9 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifndef GCC
-#include <sio.h>
-#endif
-
-#ifdef GCC
+#if defined(__APPLE__)||defined(__WIN32__)
 #include <stdio.h>
+#endif
+
+#if defined(_Z8403)
+#include <sio.h>
 #endif
 
 #include "game_engine.h"
@@ -30,7 +22,9 @@ void shop_show(PlayerData *playerData) {
 
 	for (i = 0; i < 8; ++i) {
 		gfx_draw_meter(32 + 24 * i, 40, playerData->items[i]);
-		gfx_draw_item(34 + 24 * i, 48, 0);
+
+		gfx_draw_item(34 + 24 * i, 48, i);
+
 		gfx_draw_btn(32 + 24 * i, 64, "buy", i == 0);
 	}
 

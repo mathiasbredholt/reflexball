@@ -1,17 +1,9 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
 #ifndef _hw_INPUT_H_
 #define _hw_INPUT_H_
 
 void hw_init();
 
-#ifndef GCC
+#if defined(_Z8F6403)
 void hw_ROM_to_RAM(char *dest, rom char *src);
 #endif
 

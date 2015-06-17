@@ -409,17 +409,37 @@ void gfx_draw_bullet(int x, int newY, int oldY, int type) {
 
 void gfx_draw_stars(int frame) {
 	int i, j;
-	int random[20] = { 6, 2, 9, 3, 4, 7, 1, 0, 8, 5, 3, 7, 0, 2, 7, 9, 4, 1, 3, 5 };
-	for (i = 0; i < 5; ++i) {
-		for (j = 0; j < 10; ++j) {
-			go_to_xy(j * 25 + random[i], i * 10 + random[10 + j] - frame + 1);
-			printf(" ");
-			go_to_xy(j * 25 + random[i], 49 + i * 10 + random[10 + j] - frame + 1);
-			printf(" ");
-			go_to_xy(j * 25 + random[i], i * 10 + random[10 + j] - frame);
-			printf(".");
-			go_to_xy(j * 25 + random[i], 49 + i * 10 + random[10 + j] - frame);
-			printf(".");
+	int randomX[5] = { 6, 62, 43, 34, 10 };
+	int randomY[8] = { 6, 9, 2, 11, 7, 3, 6, 4 };
+	for (i = 0; i < 8; ++i) {
+		for (j = 0; j < 4; ++j) {
+			int posX = j * 64 + randomX[i];
+			int posY = i * 13 - 104 + frame + randomY[i] - 1;
+
+			if (frame == 0 && i == 0) {
+				go_to_xy(posX, 103);
+				printf(" ");
+			}
+
+			if (posY <= 104 && posY >= 0 &&
+			        !(posX >= 64 && posX <= 192 &&
+			          posY >= 17 && posY <= 80)
+			   ) {
+				go_to_xy(posX, posY - 1);
+				printf(" ");
+			}
+
+			if (posY < 104 && posY > 0 &&
+			        !(posX > 64 && posX < 192 &&
+			          posY > 15 && posY < 80)
+			   ) {
+				go_to_xy(posX, posY);
+				printf("%c", 206);
+			}
 		}
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
