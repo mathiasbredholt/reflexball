@@ -12,7 +12,7 @@ void gfx_erase_striker(GameData *gameData);
 
 void gfx_draw_all_blocks(GameData *gameData);
 
-void gfx_draw_block(int x, int y, int type);
+void gfx_draw_block(int x, int y, int line , int type);
 
 void gfx_erase_block(int x, int y);
 

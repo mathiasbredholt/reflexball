@@ -67,6 +67,7 @@ void main() {
 			if (mode == 4) break;
 #endif
 		}
-
+#if defined(__APPLE__) || defined(__WIN32__)
 		return 0; // only for computer
+#endif
 	}

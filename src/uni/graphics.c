@@ -94,7 +94,7 @@ void gfx_draw_all_blocks(GameData *gameData) {
 				for (column = 0; column < 8; ++column) { // Column (bit)
 					for (type = 0; type < 4; ++type) { // Types
 						if (gameData->blockData[type][row][side] & (0x80 >> column)) {
-							gfx_draw_block((int)((side << 3) + column), (int) j, (int) line, (int) type);
+							gfx_draw_block((int)((side << 3) + column), (int) row, (int) line, (int) type);
 						}
 					}
 				}
@@ -180,20 +180,14 @@ void gfx_window(int x1, int y1, int x2, int y2) {
 	spacer( w - 2, 205);
 	printf("%c", 187);  // corner
 
-	ansi_load();
-	down(1);
-	printf("%c", 186);
-	right(w - 2);
-	printf("%c", 186);
-
 	// print sides
-	// for (i = 1; i < h - 1; i++) {
-	// 	ansi_load();
-	// 	down(i);
-	// 	printf("%c", 186);
-	// 	right(w - 2);
-	// 	printf("%c", 186);
-	// }
+	for (i = 1; i < h - 1; i++) {
+		ansi_load();
+		go_down(i);
+		printf("%c", 186);
+		go_right(w - 2);
+		printf("%c", 186);
+	}
 	// print bottom line
 	go_to_xy(x1, y2 - 1);
 	printf("%c", 200);  // corner
