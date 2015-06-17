@@ -30,20 +30,30 @@
 
 
 void game_init(GameData *gameData, PlayerData *playerData) {
-	int i;
-	hw_init();
-	hw_time_init();
-	LED_init();
-	LED_set_string("Welcome");
+	char str[9];
+	gfx_window(-1, -1, 258, 98, 1);
 
-	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
-		playerData->items[i] = 0;
-	}
+	gfx_draw_text(200, 98, "coins");
+	gfx_draw_energy_meter(255);
 
-	playerData->coins = 0;
+	gfx_draw_all_blocks(gameData);
+	sprintf(str, "%8d", playerData->coins);
+	gfx_draw_text(224, 98, str);
 
-	gameData->strikerSize = 48;
-	hw_ADC_init();
+	gameData->strikerPos = 128 << 8;
+
+	gameData->ballPos.x = 128 << 8;
+	gameData->ballPos.y = 90 << 8;
+	gameData->ballOldPos.x = gameData->ballPos.x;
+	gameData->ballOldPos.y = gameData->ballPos.y;
+
+	gameData->ballVel.x = -(int)32;
+	gameData->ballVel.y = -(int)32;
+
+	gameData->ballSpeed = 3;
+
+	gfx_draw_striker(gameData);
+	gfx_draw_ball(gameData);
 }
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
@@ -102,14 +112,14 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		for (i = 0; i < 8; ++i) {
 			phy_simulate(gameData);
 			if (gameData->blockHit) {
-				char str[15];
+				char str[9];
 				(gameData->blockHit >> 8) ? gfx_draw_block(gameData->blockHit & 0x000F, gameData->blockHit >> 4 & 0x000F, (gameData->blockHit >> 8) - 1) : gfx_erase_block(gameData->blockHit & 0x000F, gameData->blockHit >> 4 & 0x000F);
 				gameData->blockHit = 0;
 
 				// update score
 				playerData->coins += 5;
-				sprintf(str, "coins %8d", playerData->coins);
-				gfx_draw_text(200, 98, str);
+				sprintf(str, "%8d", playerData->coins);
+				gfx_draw_text(224, 98, str);
 			}
 			if (gameData->redraw) {
 				gameData->redraw = 0;
@@ -121,23 +131,6 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	LED_update();
-}
-
-void game_init_player(GameData *gameData) {
-	gameData->strikerPos = 128 << 8;
-
-	gameData->ballPos.x = 128 << 8;
-	gameData->ballPos.y = 90 << 8;
-	gameData->ballOldPos.x = gameData->ballPos.x;
-	gameData->ballOldPos.y = gameData->ballPos.y;
-
-	gameData->ballVel.x = -(int)32;
-	gameData->ballVel.y = -(int)32;
-
-	gameData->ballSpeed = 3;
-
-	gfx_draw_striker(gameData);
-	gfx_draw_ball(gameData);
 }
 
 void game_wait_for_input() {

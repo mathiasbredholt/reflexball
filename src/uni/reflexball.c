@@ -9,6 +9,9 @@
 // reflexball.c
 
 #include "game_engine.h"
+#include "hw_time.h"
+#include "hw_input.h"
+#include "hw_LED.h"
 #include "levels.h"
 #include "intro.h"
 #include "graphics.h"
@@ -18,7 +21,21 @@
 #ifndef GCC
 
 void main() {
+	// Hardware initialize
 	int i;
+	hw_init();
+	hw_time_init();
+	LED_init();
+	LED_set_string("Welcome");
+	hw_ADC_init();
+
+	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
+		playerData->items[i] = 0;
+	}
+
+	playerData->coins = 0;
+
+	gameData->strikerSize = 48;
 
 	// gui variables
 
@@ -57,6 +74,14 @@ void main() {
 #ifdef GCC
 
 int main() {
+	// Hardware initialize
+	int i;
+	hw_init();
+	hw_time_init();
+	LED_init();
+	LED_set_string("Welcome");
+	hw_ADC_init();
+
 	// gui variables
 
 	int focus = 0;
@@ -68,7 +93,14 @@ int main() {
 	PlayerData playerData;
 	GameData gameData;
 
-	game_init(&gameData, &playerData);
+	// Game parameters initialize
+	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
+		playerData.items[i] = 0;
+	}
+
+	playerData.coins = 0;
+
+	gameData.strikerSize = 48;
 
 	while (1) {
 		if (mode == 0) {
@@ -77,7 +109,7 @@ int main() {
 		}
 		if (mode == 1) {
 			lvl_create_lvl1(&gameData, &playerData);
-			game_init_player(&gameData);
+			game_init(&gameData, &playerData);
 			while (mode == 1) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 2) {
