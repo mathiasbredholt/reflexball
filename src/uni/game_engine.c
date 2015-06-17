@@ -50,6 +50,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 	char key, i;
+	char debug[20];
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;
 	gameData->blockHit[1] = 0;
@@ -93,7 +94,9 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 		if (playerData->energy <= 0) *mode = 0;
 
-		//gfx_draw_number(200, 80, (int) hw_read_analog());
+		hw_read_analog();
+		// sprintf(debug, "%d", (int) hw_read_analog());
+		// gfx_draw_text(200, 80, debug);
 
 		// if (key & 4) *mode = 0;
 

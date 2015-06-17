@@ -58,6 +58,7 @@ void gfx_draw_striker(GameData *gameData) 	{
 		go_to_xy(oldX - (gameData->strikerSize >> 1) + 1, striker_height);
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
+		go_to_xy(oldX + (gameData->strikerSize >> 1), striker_height);
 		spacer(gameData->strikerSize - 2, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
@@ -85,15 +86,16 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_draw_all_blocks(GameData *gameData) {
-	char i, j, k, l;
+	char type, row, side, column, line;
 
-	for (j = 0; j < 15; ++j) {
-		fg_color(i + 1);
-		for (i = 0; i < 4; ++i) {
-			for (k = 0; k < 2; ++k) {
-				for (l = 0; l < 8; ++l) {
-					if (gameData->blockData[i][j][k] & (0x80 >> l)) {
-						gfx_draw_block((int)((k << 3) + l), (int) j, (int) i);
+	for (row = 0; row < 15; ++row) { // Rows
+		for (line = 0; line < 3; ++line) { // Lines
+			for (side = 0; side < 2; ++side) { // Left/right side (byte)
+				for (column = 0; column < 8; ++column) { // Column (bit)
+					for (type = 0; type < 4; ++type) { // Types
+						if (gameData->blockData[type][row][side] & (0x80 >> column)) {
+							gfx_draw_block((int)((side << 3) + column), (int) j, (int) line, (int) type);
+						}
 					}
 				}
 			}
@@ -107,7 +109,7 @@ void gfx_draw_all_blocks(GameData *gameData) {
 #endif
 }
 
-void gfx_draw_block(int x, int y, int type) {
+void gfx_draw_block(int x, int y, int line, int type) {
 	fg_color(type + 1);
 
 	x = x << 4;
