@@ -13,6 +13,18 @@
 #if defined(_Z8F6403)
 
 void main() {
+
+	// gui variables
+
+	int focus = 0;
+	char lastKey = 0;
+	int mode = 0;
+	int animFrame1 = 0;
+	int animFrame2 = 104;
+
+	PlayerData playerData;
+	GameData gameData;
+
 	// Hardware initialize
 	int i;
 	hw_init();
@@ -22,34 +34,22 @@ void main() {
 	hw_ADC_init();
 
 	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
-		playerData->items[i] = 0;
+		playerData.items[i] = 0;
 	}
 
-	playerData->coins = 0;
+	playerData.coins = 0;
 
-	gameData->strikerSize = 48;
+	gameData.strikerSize = 48;
 
-	// gui variables
-
-	int focus = 0;
-	char lastKey = 0;
-	int mode = 0;
-	int animFrame = 0;
-
-
-	PlayerData playerData;
-	GameData gameData;
-
-	game_init(&gameData, &playerData);
 
 	while (1) {
 		if (mode == 0) {
 			menu_show();
-			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame);
+			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
 		}
 		if (mode == 1) {
 			lvl_create_lvl1(&gameData, &playerData);
-			game_init_player(&gameData);
+			game_init(&gameData, &playerData);
 			while (mode == 1) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 2) {

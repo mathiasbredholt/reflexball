@@ -437,7 +437,7 @@ void gfx_draw_stars(int frame) {
 			          posY > 15 && posY < 80)
 			   ) {
 				go_to_xy(posX, posY);
-				printf("%c", 206);
+				printf(".");
 			}
 		}
 	}
