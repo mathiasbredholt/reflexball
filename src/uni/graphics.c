@@ -254,7 +254,7 @@ void gfx_draw_text(int x, int y, char *str) {
 				line[k] = '\0';
 				printf("%s", line);
 			} else {
-				printf(" ");
+				spacer(4, 32);
 			}
 		}
 	}
@@ -398,9 +398,12 @@ void gfx_update_energy_meter(int val) {
 	int level = (val >> 2);
 	int i;
 	if ((val & 0x03) == 0) {
+		go_to_xy(level, 98 - 1);
+
 		for (i = 0; i < 4; ++i) {
-			go_to_xy(level, 98 + i);
+			go_down(1);
 			printf(" ");
+			go_left(1);
 		}
 	}
 #ifdef GCC
@@ -411,11 +414,11 @@ void gfx_update_energy_meter(int val) {
 void gfx_draw_bullet(int x, int newY, int oldY, int type) {
 	int i;
 	fg_color(1);
-	go_to_xy(x, 90);
-	for (i = 0; i > 20; ++i) {
+	go_to_xy(128, 90);
+	for (i = 0; i < 80; ++i) {
 		go_up(1);
-		go_left(1);
 		printf("|");
+		go_left(1);
 	}
 }
 

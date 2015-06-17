@@ -67,28 +67,28 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		// move striker left
 		if (key & 2 && (gameData->strikerPos >> 7) >= gameData->strikerSize) {
 			gameData->strikerPos -= 256;
-			// --playerData->energy;
+			--playerData->energy;
 			gfx_update_energy_meter(playerData->energy);
 		}
 
 		// move striker left
 		if (key & 2 && (gameData->strikerPos >> 7) >= gameData->strikerSize) {
 			gameData->strikerPos -= 256;
-			// --playerData->energy;
+			--playerData->energy;
 			gfx_update_energy_meter(playerData->energy);
 		}
 
 		// move striker right
 		if (key & 1 && gameData->strikerPos >> 8 <= 255 - ((gameData->strikerSize >> 1) + 1)) {
 			gameData->strikerPos += 256;
-			// --playerData->energy;
+			--playerData->energy;
 			gfx_update_energy_meter(playerData->energy);
 		}
 
 		// move striker right
 		if (key & 1 && gameData->strikerPos >> 8 <= 255 - ((gameData->strikerSize >> 1) + 1)) {
 			gameData->strikerPos += 256;
-			// --playerData->energy;
+			--playerData->energy;
 			gfx_update_energy_meter(playerData->energy);
 		}
 
