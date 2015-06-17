@@ -1,17 +1,10 @@
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__WIN32__)
 #define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifndef GCC
-#include <sio.h>
-#endif
-
-#ifdef GCC
 #include <stdio.h>
+#endif
+
+#if defined(_Z8F6403)
+#include <sio.h>
 #endif
 
 // graphics.c
@@ -329,18 +322,21 @@ void gfx_draw_btn_focus(int x, int y, char * str, int focus) {
 }
 
 void gfx_draw_item(int x, int y, int item) {
-	int i;
+	int i, j;
 
 	fg_color(15);
 
 	for (i = 0; i < 8; ++i) {
 		go_to_xy(x, y + i);
-		printf("%s", items[item][i]);
+		for (j = 0; j < 16; ++j)
+		{
+			printf("%c", items[item][i][j]);
+		}
 	}
-
 #ifdef GCC
 	fflush(stdout);
 #endif
+
 }
 
 void gfx_draw_meter(int x, int y, int val) {

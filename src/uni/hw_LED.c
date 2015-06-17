@@ -1,12 +1,4 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifndef GCC
+#if defined(_Z8F6403)
 
 // hw_LED.c
 
@@ -120,7 +112,7 @@ void LED_update() {
 
 #endif
 
-#ifdef GCC
+#if defined(__APPLE__) || (__WIN32__)
 
 void LED_init() {};
 

@@ -1,11 +1,3 @@
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
 // reflexball.c
 
 #include "game_engine.h"
@@ -18,7 +10,7 @@
 #include "menu.h"
 #include "shop.h"
 
-#ifndef GCC
+#if defined(_Z8F6403)
 
 void main() {
 	// Hardware initialize
@@ -71,7 +63,7 @@ void main() {
 
 // for gcc compilation
 
-#ifdef GCC
+#if defined(__APPLE__) || defined(__WIN32__)
 
 int main() {
 	// Hardware initialize

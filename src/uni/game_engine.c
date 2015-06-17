@@ -1,16 +1,8 @@
-#ifdef __APPLE__
-#define GCC
+#if defined(__APPLE__) || defined(__WIN32__)
+#include <stdio.h>
 #endif
 
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifndef GCC
-#include <sio.h>
-#endif
-
-#ifdef GCC
+#if defined(_Z8F6403)
 #include <stdio.h>
 #endif
 

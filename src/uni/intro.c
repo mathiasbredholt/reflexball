@@ -1,19 +1,11 @@
 // generated with http://patorjk.com/software/taag/#p=display&h=3&f=Alpha&t=Reflexball
 
 
-#ifdef __APPLE__
-#define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifdef GCC
+#if defined(__APPLE__) || defined(__WIN32__)
 #include <stdio.h>
 #endif
 
-#ifndef GCC
+#if defined(_Z8F6403)
 #include <sio.h>
 #endif
 
