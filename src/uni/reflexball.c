@@ -79,7 +79,8 @@ int main() {
 	int focus = 0;
 	char lastKey = 0;
 	int mode = 0;
-	int animFrame = 0;
+	int animFrame1 = 0;
+	int animFrame2 = 104;
 
 
 	PlayerData playerData;
@@ -97,7 +98,7 @@ int main() {
 	while (1) {
 		if (mode == 0) {
 			menu_show();
-			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame);
+			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
 		}
 		if (mode == 1) {
 			lvl_create_lvl1(&gameData, &playerData);

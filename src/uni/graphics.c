@@ -1,10 +1,17 @@
-#if defined(__APPLE__) || defined(__WIN32__)
+#ifdef __APPLE__
 #define GCC
-#include <stdio.h>
 #endif
 
-#if defined(_Z8F6403)
+#ifdef __WIN32__
+#define GCC
+#endif
+
+#ifndef GCC
 #include <sio.h>
+#endif
+
+#ifdef GCC
+#include <stdio.h>
 #endif
 
 // graphics.c
@@ -322,21 +329,18 @@ void gfx_draw_btn_focus(int x, int y, char * str, int focus) {
 }
 
 void gfx_draw_item(int x, int y, int item) {
-	int i, j;
+	int i;
 
 	fg_color(15);
 
 	for (i = 0; i < 8; ++i) {
 		go_to_xy(x, y + i);
-		for (j = 0; j < 16; ++j)
-		{
-			printf("%c", items[item][i][j]);
-		}
+		printf("%s", items[item][i]);
 	}
+
 #ifdef GCC
 	fflush(stdout);
 #endif
-
 }
 
 void gfx_draw_meter(int x, int y, int val) {
@@ -405,17 +409,37 @@ void gfx_draw_bullet(int x, int newY, int oldY, int type) {
 
 void gfx_draw_stars(int frame) {
 	int i, j;
-	int random[20] = { 6, 2, 9, 3, 4, 7, 1, 0, 8, 5, 3, 7, 0, 2, 7, 9, 4, 1, 3, 5 };
-	for (i = 0; i < 5; ++i) {
-		for (j = 0; j < 10; ++j) {
-			go_to_xy(j * 25 + random[i], i * 10 + random[10 + j] - frame + 1);
-			printf(" ");
-			go_to_xy(j * 25 + random[i], 49 + i * 10 + random[10 + j] - frame + 1);
-			printf(" ");
-			go_to_xy(j * 25 + random[i], i * 10 + random[10 + j] - frame);
-			printf(".");
-			go_to_xy(j * 25 + random[i], 49 + i * 10 + random[10 + j] - frame);
-			printf(".");
+	int randomX[5] = { 6, 62, 43, 34, 10 };
+	int randomY[8] = { 6, 9, 2, 11, 7, 3, 6, 4 };
+	for (i = 0; i < 8; ++i) {
+		for (j = 0; j < 4; ++j) {
+			int posX = j * 64 + randomX[i];
+			int posY = i * 13 - 104 + frame + randomY[i] - 1;
+
+			if (frame == 0 && i == 0) {
+				go_to_xy(posX, 103);
+				printf(" ");
+			}
+
+			if (posY <= 104 && posY >= 0 &&
+			        !(posX >= 64 && posX <= 192 &&
+			          posY >= 17 && posY <= 80)
+			   ) {
+				go_to_xy(posX, posY - 1);
+				printf(" ");
+			}
+
+			if (posY < 104 && posY > 0 &&
+			        !(posX > 64 && posX < 192 &&
+			          posY > 15 && posY < 80)
+			   ) {
+				go_to_xy(posX, posY);
+				printf("%c", 206);
+			}
 		}
 	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
