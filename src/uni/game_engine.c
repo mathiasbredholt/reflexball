@@ -23,7 +23,7 @@
 
 void game_init(GameData *gameData, PlayerData *playerData) {
 	char str[9];
-	gfx_window(-1, -1, 258, 98, 1);
+	gfx_window(-1, -1, 258, 98);
 
 	gfx_draw_text(200, 98, "coins");
 	gfx_draw_energy_meter(255);

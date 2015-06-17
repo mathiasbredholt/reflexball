@@ -4,8 +4,6 @@
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
 
-void gfx_draw_bounds();
-
 void gfx_draw_ball(GameData *gameData);
 
 void gfx_draw_striker(GameData *gameData);
@@ -18,7 +16,7 @@ void gfx_draw_block(int x, int y, int type);
 
 void gfx_erase_block(int x, int y);
 
-void gfx_window(int x1, int y1, int x2, int y2,  int draw);
+void gfx_window(int x1, int y1, int x2, int y2);
 
 void gfx_draw_text(int x, int y, char *str);
 

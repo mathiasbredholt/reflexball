@@ -116,8 +116,19 @@ void left(int n) {
   printf("%c[%dD", ESC, n);
 }
 
+void ansi_save() {
+  printf("%c[s", ESC);
+}
+
+void ansi_load() {
+  printf("%c[u", ESC);
+}
+
 // Prints the char, corresponding to c, n times. Uses int instead of char because of compiler bug when passing char as argument.
 void spacer(int n, int c) {
   int i;
-  for (i = 0; i < n; i++) printf("%c", (char) c);
+  char str[n + 1];
+  // for (i = 0; i < n; i++) printf("%c", (char) c);
+  for (i = 0; i < n; i++) str[i] = (char) c;
+  printf("%s", str);
 }

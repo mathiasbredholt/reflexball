@@ -27,30 +27,6 @@
 #define striker_height 92
 #define BTN_WIDTH 20
 
-void gfx_draw_bounds() {
-	int i;
-
-	hide_csr();
-	clr_scr();
-
-	go_to_xy(-1, -1);
-	printf("%c", 201);  // top left corner
-	spacer(width, 205); // top line
-	printf("%c", 187);
-
-	// print sides
-	for (i = 0; i < height; i++) {
-		go_to_xy(-1, i);
-		printf("%c", 186);
-		go_to_xy(256, i);
-		printf("%c", 186);
-	}
-
-#ifdef GCC
-	fflush(stdout);
-#endif
-}
-
 void gfx_draw_ball(GameData *gameData) 	{
 	unsigned char newX = (unsigned char) (gameData->ballPos.x >> 8);
 	unsigned char newY = (unsigned char) (gameData->ballPos.y >> 8);
@@ -184,7 +160,7 @@ void gfx_erase_block(int x, int y) {
 #endif
 }
 
-void gfx_window(int x1, int y1, int x2, int y2, int draw) {
+void gfx_window(int x1, int y1, int x2, int y2) {
 	int w = x2 - x1;
 	int h = y2 - y1;
 	int i;
@@ -193,35 +169,26 @@ void gfx_window(int x1, int y1, int x2, int y2, int draw) {
 	hide_csr();
 	fg_color(15);
 
-	if (draw) {
-		reverse(0);
-		go_to_xy(x1, y1);
+	reverse(0);
+	go_to_xy(x1, y1);
 
-		// print top line
-		printf("%c", 201);  // corner
-		spacer( w - 2, 205);
-		printf("%c", 187);  // corner
-
-		// print sides
-		for (i = 1; i < h - 1; i++) {
-			go_to_xy(x1, y1 + i);
-			printf("%c", 186);
-			go_to_xy(x2 - 1, y1 + i);
-			printf("%c", 186);
-		}
-
-		// print bottom line
-		go_to_xy(x1, y2 - 1);
-		printf("%c", 200);  // corner
-		spacer(w - 2, 205);
-		printf("%c", 188);  // corner
+	// print top line
+	printf("%c", 201);  // corner
+	spacer( w - 2, 205);
+	printf("%c", 187);  // corner
+	// print sides
+	go_to_xy(x1, y1 + 1);
+	ansi_save();
+	for (i = 1; i < h - 1; i++) {
+		printf("%c", 186);
+		right(w - 2);
+		printf("%c", 186);
 	}
-	else {
-		for (i = 0; i < h; ++i) {
-			go_to_xy(x1, y1 + i);
-			spacer(w, 32);
-		}
-	}
+	// print bottom line
+	go_to_xy(x1, y2 - 1);
+	printf("%c", 200);  // corner
+	spacer(w - 2, 205);
+	printf("%c", 188);  // corner
 
 #ifdef GCC
 	fflush(stdout);

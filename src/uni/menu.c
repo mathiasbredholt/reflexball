@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 void menu_show() {
-	gfx_window(64, 16, 192, 80, 1);
+	gfx_window(64, 16, 192, 80);
 	gfx_draw_text(68, 18, "reflexball");
 
 	gfx_draw_btn(118, 24, "play", 1);

@@ -15,7 +15,7 @@ void shop_show(PlayerData *playerData) {
 	int i;
 	char str[15];
 
-	gfx_window(0, 0, 256, 96, 1);
+	gfx_window(0, 0, 256, 96);
 
 	gfx_draw_text(8, 2, "welcome to my shop");
 	gfx_draw_text(8, 6, "what does your heart desire");
