@@ -101,18 +101,18 @@ void reverse(char on) {
 }
 
 // Functions to move cursor n positions
-void up(int n) {
+void go_up(int n) {
   printf("%c[%dA", ESC, n);
 }
-void down(int n) {
+void go_down(int n) {
   printf("%c[%dB", ESC, n);
 }
 
-void right(int n) {
+void go_right(int n) {
   printf("%c[%dC", ESC, n);
 }
 
-void left(int n) {
+void go_left(int n) {
   printf("%c[%dD", ESC, n);
 }
 

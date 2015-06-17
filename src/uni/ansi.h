@@ -25,13 +25,13 @@ void blink(char on);
 
 void reverse(char on);
 
-void up(int n);
+void go_up(int n);
 
-void down(int n);
+void go_down(int n);
 
-void right(int n);
+void go_right(int n);
 
-void left(int n);
+void go_left(int n);
 
 void spacer(int n, int c);
 
