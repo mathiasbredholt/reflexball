@@ -337,7 +337,7 @@ void gfx_draw_item(int x, int y, int item) { //temp fix
 		go_to_xy(x, y + i);
 		for (j = 0; j < 16; ++j)
 		{
-			printf("%s", items[item][i][j]);
+			printf("%c", items[item][i][j]);
 		}
 	}
 
