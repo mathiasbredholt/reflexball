@@ -23,7 +23,7 @@
 
 void phy_simulate(GameData *gameData) {
 	unsigned char x, y, sp;
-	int dx, dy;
+	int dx, dy, size;
 	// gameData->ballPos.x += (int) (gameData->ballSpeed * gameData->ballVel.x);// * 8
 	// gameData->ballPos.y += (int) (gameData->ballSpeed * gameData->ballVel.y);// * 5
 	dx = (int) (gameData->ballSpeed * gameData->ballVel.x);
@@ -37,24 +37,25 @@ void phy_simulate(GameData *gameData) {
 	if (y == 0) {
 		gameData->ballVel.y = -gameData->ballVel.y;
 		gameData->redraw = 1;
-	} else if (!gameData->bouncedStriker && y == 91 && x >= (gameData->strikerPos >> 8) - gameData->strikerSize && x <= (gameData->strikerPos >> 8) + gameData->strikerSize && !(gameData->ballVel.y & 0x80)) {
+	} else if (!gameData->bouncedStriker && y == 91 && x >= (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
 		gameData->bouncedStriker = 1;
 		gameData->redraw = 1;
 		sp = (unsigned char) (gameData->strikerPos >> 8);
+		size = gameData->strikerSize >> 1;
 		gameData->ballVel.y = -gameData->ballVel.y;
 		//printf("vel_x=%d, vel_y=%d,  sw=%d,   sw>>2=%d,  x=%d,  sp=%d,   l >= %d, ml >= %d, c > %d, mr > %d", (int) gameData->ballVel.x, (int) gameData->ballVel.y, gameData->strikerSize, gameData->strikerSize >> 2, (int) x, (int) sp, (int) (x + gameData->strikerSize - (gameData->strikerSize >> 2) - 1), (int) (x + gameData->strikerSize - (gameData->strikerSize >> 1) - 1), (int) (x - gameData->strikerSize + (gameData->strikerSize >> 1) - 1), (int) (x - gameData->strikerSize + (gameData->strikerSize >> 2) - 1));
-		if (x <= sp - gameData->strikerSize + (gameData->strikerSize >> 2) + 1) {
+		if (x <= sp - size + (size >> 2) + 1) {
 			// Far left
 			// printf("  left");
 			util_rotate(&gameData->ballVel, -43);	// ~30 deg
-		} else if (x <= sp - gameData->strikerSize + (gameData->strikerSize >> 1) + 1) {
+		} else if (x <= sp - size + (size >> 1) + 1) {
 			// Middle left
 			// printf("  middle left");
 			util_rotate(&gameData->ballVel, -21);	// ~15 deg
-		} else if (x < sp + gameData->strikerSize - (gameData->strikerSize >> 1) + 1) {
+		} else if (x < sp + size - (size >> 1) + 1) {
 			// Center
 			// printf("  center");
-		} else if (x < sp + gameData->strikerSize - (gameData->strikerSize >> 2) + 1) {
+		} else if (x < sp + size - (size >> 2) + 1) {
 			// Middle right
 			// printf("  middle right");
 			util_rotate(&gameData->ballVel, 21);	// ~15 deg
@@ -65,6 +66,11 @@ void phy_simulate(GameData *gameData) {
 		}
 		if (gameData->ballVel.y > 0)	{
 			gameData->ballVel.y = -gameData->ballVel.y;
+		}
+	} else if (y == height) {
+		if (x == (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) || x == (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) + 1) {
+			// Hit side of striker
+			gameData->ballVel.x = -gameData->ballVel.x;
 		}
 	} else if (y > height) {
 		//Lost ball
@@ -145,11 +151,13 @@ void phy_simulate(GameData *gameData) {
 }
 
 char phy_hit_block(GameData *gameData, int x, int y) {
-	int type;
+	int type, numBlock;
 
 	if (x > 15 || x < 0 || y > 14 || y < 0) {
 		return 0;
 	}
+
+	numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
 
 	for (type = 3; type >= 0; --type) {
 		if (gameData->blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)) {
@@ -160,12 +168,12 @@ char phy_hit_block(GameData *gameData, int x, int y) {
 			// Block exists
 			// printf("type=%d", type);
 			gameData->blockData[type][y][x >> 3] &= ~(0x80 >> (x & 0x07));	// Delete block
-			gameData->blockHit = type << 8;
-			// printf("     %d", gameData->blockHit);
-			gameData->blockHit |= y << 4;
-			// printf("          %d", gameData->blockHit);
-			gameData->blockHit |= x;
-			// printf("               %d", gameData->blockHit);
+			gameData->blockHit[numBlock] = type << 8;
+			// printf("     %d", gameData->blockHit[numBlock]);
+			gameData->blockHit[numBlock] |= y << 4;
+			// printf("          %d", gameData->blockHit[numBlock]);
+			gameData->blockHit[numBlock] |= x;
+			// printf("               %d", gameData->blockHit[numBlock]);
 			if (type) {	// type != 0
 				gameData->blockData[type - 1][y][x >> 3] |= 0x80 >> (x & 0x07);	// Add block with lower type
 			}
