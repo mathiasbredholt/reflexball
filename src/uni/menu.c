@@ -38,11 +38,11 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 			gfx_draw_btn_focus(118, 24 + 8 * *focus, btns[*focus], 1);
 		}
 
-		gfx_draw_stars(*animFrame1);
-		gfx_draw_stars(*animFrame2);
-		++*animFrame1;
-		++*animFrame2;
-		*animFrame1 %= 208;
-		*animFrame2 %= 208;
+		// gfx_draw_stars(*animFrame1);
+		// gfx_draw_stars(*animFrame2);
+		// ++*animFrame1;
+		// ++*animFrame2;
+		// *animFrame1 %= 208;
+		// *animFrame2 %= 208;
 	}
 }
