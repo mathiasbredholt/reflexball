@@ -411,9 +411,11 @@ void gfx_update_energy_meter(int val) {
 void gfx_draw_bullet(int x, int newY, int oldY, int type) {
 	int i;
 	fg_color(1);
-	for (i = 90; i > 0; --i) {
-		go_to_xy(x, i);
-		printf("%c", 221);
+	go_to_xy(x, 90);
+	for (i = 0; i > 20; ++i) {
+		go_up(1);
+		go_left(1);
+		printf("|");
 	}
 }
 
