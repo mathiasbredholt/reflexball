@@ -1,7 +1,8 @@
 #include "graphics.h"
 #include "hw_time.h"
 #include "hw_input.h"
-#include <stdio.h>
+#include <sio.h>
+#include "ansi.h"
 
 void menu_show() {
 	gfx_window(64, 16, 192, 80);
@@ -11,6 +12,13 @@ void menu_show() {
 	gfx_draw_btn(118, 32, "shop", 0);
 	gfx_draw_btn(118, 40, "load", 0);
 	gfx_draw_btn(118, 48, "exit", 0);
+
+	go_to_xy(118, 60);
+	printf("%c[7h", 0x1B);
+	printf("Line 1");
+	//go_down(1);
+	printf("Line 2");
+	printf("%c[10h", 0x1B);
 }
 
 void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *animFrame2) {

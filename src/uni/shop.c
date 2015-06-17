@@ -2,7 +2,7 @@
 #include <stdio.h>
 #endif
 
-#if defined(_Z8403)
+#if defined(_Z8F6403)
 #include <sio.h>
 #endif
 

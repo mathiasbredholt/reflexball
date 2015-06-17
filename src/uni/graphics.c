@@ -86,15 +86,38 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_draw_all_blocks(GameData *gameData) {
-	char type, row, side, column, line;
+	char type, oldType, row, side, column, line;
+
+	go_to_xy(0, 0);
+	fg_color(1);
+	ansi_save();
 
 	for (row = 0; row < 15; ++row) { // Rows
-		for (line = 0; line < 3; ++line) { // Lines
+		for (line = 0; line < 4; ++line) { // Lines
+			ansi_load();
+			oldType = 0;
+			go_down(line + (row << 2));
 			for (side = 0; side < 2; ++side) { // Left/right side (byte)
 				for (column = 0; column < 8; ++column) { // Column (bit)
 					for (type = 0; type < 4; ++type) { // Types
-						if (gameData->blockData[type][row][side] & (0x80 >> column)) {
-							gfx_draw_block((int)((side << 3) + column), (int) row, (int) line, (int) type);
+						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
+							if (type != oldType) {
+								fg_color(type + 1);
+								oldType = type;
+							}
+							if (line == 0) {
+								printf("%c", 201);  // top left corner
+								spacer(14, 203); // top line
+								printf("%c", 187);	// top right corner
+							} else if (line < 3) {
+								printf("%c", 204);
+								spacer(14, 206);
+								printf("%c", 185);
+							} else {
+								printf("%c", 200);  // corner
+								spacer(14, 202);
+								printf("%c", 188);  // corner
+							}
 						}
 					}
 				}
@@ -109,30 +132,34 @@ void gfx_draw_all_blocks(GameData *gameData) {
 #endif
 }
 
-void gfx_draw_block(int x, int y, int line, int type) {
+void gfx_draw_block(int x, int y, int type) {
 	fg_color(type + 1);
+	go_to_xy(x, y);
+	ansi_save();
 
 	x = x << 4;
 	y = y << 2;
 
 	// Top
-	go_to_xy(x, y);
 	printf("%c", 201);  // top left corner
 	spacer(14, 203); // top line
 	printf("%c", 187);	// top right corner
 
 	// Sides
-	go_to_xy(x, y + 1);
+	ansi_load();
+	go_down(1);
 	printf("%c", 204);
 	spacer(14, 206);
 	printf("%c", 185);
-	go_to_xy(x, y + 2);
+	ansi_load();
+	go_down(2);
 	printf("%c", 204);
 	spacer(14, 206);
 	printf("%c", 185);
 
 	// Bottom
-	go_to_xy(x, y + 3);
+	ansi_load();
+	go_down(3);
 	printf("%c", 200);  // corner
 	spacer(14, 202);
 	printf("%c", 188);  // corner
@@ -147,14 +174,18 @@ void gfx_erase_block(int x, int y) {
 	y = y << 2;
 
 	fg_color(15);
-
 	go_to_xy(x, y);
+	ansi_save();
+
 	spacer(16, ' '); // top line
-	go_to_xy(x, y + 1);
+	ansi_load();
+	go_down(1);
 	spacer(16, ' '); // middle line
-	go_to_xy(x, y + 2);
+	ansi_load();
+	go_down(2);
 	spacer(16, ' '); // middle line
-	go_to_xy(x, y + 3);
+	ansi_load();
+	go_down(3);
 	spacer(16, ' '); // bottom line
 
 #ifdef GCC
@@ -382,7 +413,7 @@ void gfx_draw_bullet(int x, int newY, int oldY, int type) {
 	fg_color(1);
 	for (i = 90; i > 0; --i) {
 		go_to_xy(x, i);
-		spacer(1, 221);
+		printf("%c", 221);
 	}
 }
 
