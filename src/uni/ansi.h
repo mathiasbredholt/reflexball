@@ -35,4 +35,8 @@ void left(int n);
 
 void spacer(int n, int c);
 
+void ansi_save();
+
+void ansi_load();
+
 #endif

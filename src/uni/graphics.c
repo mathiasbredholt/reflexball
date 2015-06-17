@@ -171,19 +171,27 @@ void gfx_window(int x1, int y1, int x2, int y2) {
 
 	reverse(0);
 	go_to_xy(x1, y1);
+	ansi_save();
 
 	// print top line
 	printf("%c", 201);  // corner
 	spacer( w - 2, 205);
 	printf("%c", 187);  // corner
+
+	ansi_load();
+	down(1);
+	printf("%c", 186);
+	right(w - 2);
+	printf("%c", 186);
+
 	// print sides
-	go_to_xy(x1, y1 + 1);
-	ansi_save();
-	for (i = 1; i < h - 1; i++) {
-		printf("%c", 186);
-		right(w - 2);
-		printf("%c", 186);
-	}
+	// for (i = 1; i < h - 1; i++) {
+	// 	ansi_load();
+	// 	down(i);
+	// 	printf("%c", 186);
+	// 	right(w - 2);
+	// 	printf("%c", 186);
+	// }
 	// print bottom line
 	go_to_xy(x1, y2 - 1);
 	printf("%c", 200);  // corner
