@@ -12,6 +12,7 @@
 #include "hw_time.h"
 #include "hw_input.h"
 #include "hw_LED.h"
+#include "hw_sound.h"
 #include "levels.h"
 #include "graphics.h"
 #include "util.h"
@@ -23,6 +24,9 @@
 
 void game_init(GameData *gameData, PlayerData *playerData) {
 	char str[9];
+
+	playerData->energy = 0xFFFF;
+
 	gfx_window(-1, -1, 258, 98);
 
 	gfx_draw_text(200, 98, "coins");
@@ -132,4 +136,5 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	LED_update();
+	hw_sound_update();
 }

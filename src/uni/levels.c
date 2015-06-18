@@ -134,6 +134,4 @@ void lvl_create_lvl1(GameData *gameData, PlayerData *playerData) {
 	gameData->blockData[3][13][1] = 0x00;
 	gameData->blockData[3][14][0] = 0x00;
 	gameData->blockData[3][14][1] = 0x00;
-
-	playerData->energy = 255;
 }
