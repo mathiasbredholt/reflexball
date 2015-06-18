@@ -16,7 +16,8 @@ void hw_sound_init() {
 
 	// Setup timer 2 (sound generator)
 	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 3 (PWM)
-	T2CTL = 0x3B;
+	// T2CTL = 0x3B;
+	T2CTL = 0x39;
 
 	// Begin timer at 0
 	T2H = 0;
@@ -27,8 +28,8 @@ void hw_sound_init() {
 	T2RL = 0x47;
 
 	// 50% duty cycle
-	T2PWMH = 0x00;
-	T2PWML = 0xA4;
+	// T2PWMH = 0x00;
+	// T2PWML = 0xA4;
 
 	// Enable alternate function
 	PCAF |= 0x80;
@@ -45,8 +46,8 @@ void hw_sound_init() {
 	T3L = 0;
 
 	// End timer at 2250 (64 Hz)
-	T2RH = 0x08;
-	T2RL = 0xCA;
+	T3RH = 0x08;
+	T3RL = 0xCA;
 
 	// Enable timer3 interrupt
 	IRQ2 |= 0x80;
@@ -66,14 +67,14 @@ void hw_sound_update() {
 	if (_soundNext) {
 		_soundNext = 0;
 
-		T2CTL  = chord[_soundIndex][0] ? 0xBB : 0x3B;
-		T2H    = chord[_soundIndex][0];
-		T2L    = chord[_soundIndex][0];
-		T2PWMH = chord[_soundIndex][0];
-		T2PWML = chord[_soundIndex][0];
+		// T2CTL  = chord[_soundIndex][0] ? 0xBB : 0x3B;
+		T2RH    = chord[_soundIndex][1];
+		T2RL    = chord[_soundIndex][2];
+		// T2PWMH = chord[_soundIndex][0];
+		// T2PWML = chord[_soundIndex][0];
 
 		_soundIndex++;
-		_soundIndex &= 0xF;
+		_soundIndex &= 15;
 	}
 }
 
