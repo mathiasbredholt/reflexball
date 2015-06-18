@@ -65,6 +65,11 @@ int main()
 			shop_show(&playerData);
 			while (mode == 2) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
+		if (mode == 3) {
+			while (mode == 3) {	
+				hw_sound_update();
+			}
+		}
 
 #if defined(__APPLE__) || defined(__WIN32__)
 		if (mode == 4) break;

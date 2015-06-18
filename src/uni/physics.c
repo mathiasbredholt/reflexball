@@ -141,7 +141,7 @@ void phy_simulate(GameData *gameData) {
 }
 
 void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char input) {
-	printf("%d\n", ((int) input - 128) << 1);
+	printf("%d", ((int) input - 128) << 1);
 	gameData->strikerPos += ((int) input - 128) << 1;
 	playerData->energy -= input < 128 ? input : input - 128;
 }

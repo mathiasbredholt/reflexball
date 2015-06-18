@@ -55,7 +55,7 @@ void hw_time_init() {
     T0RL = 0x00;
 
     // Enable TIMER0 interrupt
-    IRQ0 |= 0x20;
+    //IRQ0 |= 0x20;
 
     // Set priority to HIGH
     IRQ0ENH |= 0x20;

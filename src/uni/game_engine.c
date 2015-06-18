@@ -113,9 +113,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	LED_update();
-	hw_sound_update();
 }
-
 void game_end(int *mode) {
 	gfx_window(87, 45, 161, 60);
 	gfx_draw_game_over();
