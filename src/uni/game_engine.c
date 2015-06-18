@@ -40,7 +40,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	gameData->ballOldPos.y = gameData->ballPos.y;
 
 	gameData->ballVel.x = -(int)32;
-	gameData->ballVel.y = -(int)32;
+	gameData->ballVel.y = 0;
 
 	gameData->ballSpeed = 3;
 
@@ -105,7 +105,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		}
 
 		// Calculate new ball position
-		for (i = 0; i < 8; ++i) {
+		for (i = 0; i < 1; ++i) {
 			phy_simulate(gameData);
 			if (gameData->blockHit[0]) {
 				char str[9];

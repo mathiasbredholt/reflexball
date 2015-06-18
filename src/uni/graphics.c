@@ -33,35 +33,28 @@ void gfx_draw_ball(GameData *gameData) {
 	unsigned char oldX = (unsigned char) (gameData->ballOldPos.x >> 8);
 	unsigned char oldY = (unsigned char) (gameData->ballOldPos.y >> 8);
 
-	char dX = (unsigned char) (gameData->ballPos.x >> 8) - (unsigned char) (gameData->ballOldPos.x >> 8);
-	char dY = (unsigned char) (gameData->ballPos.y >> 8) - (unsigned char) (gameData->ballOldPos.y >> 8);
+	fg_color(15);
 
-	if (dX != 0 || dY != 0) {
-		ansi_load();
-
-		if (dY == 0 && dX == 1) {
-			printf(" %c%c", 219, 219);
-		} else if (dY == 0 && dX == -1) {
+	if (oldX != newX || oldY != newY) {
+		if ((char) (newY - oldY) == 0 && (char) (newX - oldX) == 1) {
+			go_to_xy((int) oldX, (int) oldY);
+			printf("123");
+			// printf(" %c%c", 219, 219);
+		} else if ((char) (newY - oldY) == 0 && (char) (newX - oldX) == -1) {
+			go_to_xy((int) oldX - 1, (int) oldY);
 			go_left(1);
-			printf("%c%c ", 219, 219);
+			printf("456");
+			// printf("%c%c ", 219, 219);
 		} else {
+			go_to_xy((int) oldX, (int) oldY);
 			// Erase old ball
 			printf("  ");
-			if (dX > 0) {
-				go_right(dX);
-			} else {
-				go_left(-dX);
-			}
-			if (dY > 0) {
-				go_down(dY);
-			} else {
-				go_up(-dY);
-			}
-			ansi_save();
 			// Draw new ball
+			go_to_xy((int) newX, (int) newY);
 			printf("%c%c", 219, 219);
 		}
 	}
+
 
 #ifdef GCC
 	fflush(stdout);
@@ -71,7 +64,6 @@ void gfx_draw_ball(GameData *gameData) {
 void gfx_init_ball(GameData *gameData) {
 	fg_color(15);
 	go_to_xy(gameData->ballPos.x >> 8, gameData->ballPos.y >> 8);
-	ansi_save();
 	printf("%c%c", 219, 219);
 }
 
