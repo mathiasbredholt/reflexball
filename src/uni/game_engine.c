@@ -92,7 +92,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 			gfx_update_energy_meter(playerData->energy);
 		}
 
-		//if (playerData->energy <= 0) *mode = 0;
+		if (playerData->energy <= 0) game_end(mode);
 
 		hw_read_analog();
 		// sprintf(debug, "%d", (int) hw_read_analog());
@@ -132,4 +132,17 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	LED_update();
+}
+
+void game_end(int *mode) {
+	gfx_window(87, 45, 161, 60);
+	gfx_draw_game_over();
+	gfx_draw_text(91, 54, "press to continue");
+	while (1) {
+		if (hw_read_key() == 4) {
+			* mode = 0;
+			break;
+		}
+	}
+
 }

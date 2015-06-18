@@ -1,17 +1,10 @@
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__WIN32__)
 #define GCC
-#endif
-
-#ifdef __WIN32__
-#define GCC
-#endif
-
-#ifndef GCC
-#include <sio.h>
-#endif
-
-#ifdef GCC
 #include <stdio.h>
+#endif
+
+#if defined(_Z8F6403)
+#include <sio.h>
 #endif
 
 // graphics.c
@@ -482,6 +475,26 @@ void gfx_draw_stars(int frame) {
 		}
 	}
 
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_game_over() {
+	int i, j;
+	go_to_xy(93, 47);
+	fg_color(1);
+	for (i = 0; i < 62; ++i) {
+		for (j = 0; j <= 5; ++j) {
+			printf("%c", game_over[j][i]);
+			if (j == 5) {
+				go_up(5);
+			} else {
+				go_down(1);
+				go_left(1);
+			}
+		}
+	}
 #ifdef GCC
 	fflush(stdout);
 #endif
