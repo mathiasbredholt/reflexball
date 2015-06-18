@@ -6,6 +6,8 @@
 
 void gfx_draw_ball(GameData *gameData);
 
+void gfx_init_ball(GameData *gameData);
+
 void gfx_draw_striker(GameData *gameData);
 
 void gfx_erase_striker(GameData *gameData);

@@ -27,26 +27,52 @@
 #define striker_height 92
 #define BTN_WIDTH 20
 
-void gfx_draw_ball(GameData *gameData) 	{
+void gfx_draw_ball(GameData *gameData) {
 	unsigned char newX = (unsigned char) (gameData->ballPos.x >> 8);
 	unsigned char newY = (unsigned char) (gameData->ballPos.y >> 8);
 	unsigned char oldX = (unsigned char) (gameData->ballOldPos.x >> 8);
 	unsigned char oldY = (unsigned char) (gameData->ballOldPos.y >> 8);
 
-	fg_color(15);
+	char dX = (unsigned char) (gameData->ballPos.x >> 8) - (unsigned char) (gameData->ballOldPos.x >> 8);
+	char dY = (unsigned char) (gameData->ballPos.y >> 8) - (unsigned char) (gameData->ballOldPos.y >> 8);
 
-	if (oldX != newX || oldY != newY) {
-		// Erase old ball
-		go_to_xy((int) oldX, (int) oldY);
-		printf("  ");
+	if (dX != 0 || dY != 0) {
+		ansi_load();
+
+		if (dY == 0 && dX == 1) {
+			printf(" %c%c", 219, 219);
+		} else if (dY == 0 && dX == -1) {
+			go_left(1);
+			printf("%c%c ", 219, 219);
+		} else {
+			// Erase old ball
+			printf("  ");
+			if (dX > 0) {
+				go_right(dX);
+			} else {
+				go_left(-dX);
+			}
+			if (dY > 0) {
+				go_down(dY);
+			} else {
+				go_up(-dY);
+			}
+			ansi_save();
+			// Draw new ball
+			printf("%c%c", 219, 219);
+		}
 	}
-	// Draw new ball
-	go_to_xy((int) newX, (int) newY);
-	printf("%c%c", 219, 219);
 
 #ifdef GCC
 	fflush(stdout);
 #endif
+}
+
+void gfx_init_ball(GameData *gameData) {
+	fg_color(15);
+	go_to_xy(gameData->ballPos.x >> 8, gameData->ballPos.y >> 8);
+	ansi_save();
+	printf("%c%c", 219, 219);
 }
 
 void gfx_draw_striker(GameData *gameData) 	{
@@ -58,13 +84,17 @@ void gfx_draw_striker(GameData *gameData) 	{
 		go_to_xy(oldX - (gameData->strikerSize >> 1) + 1, striker_height);
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
-		go_to_xy(oldX + (gameData->strikerSize >> 1), striker_height);
-		spacer(gameData->strikerSize - 2, 205);
+		go_right(gameData->strikerSize - dX - 2);
+		//go_to_xy(oldX + (gameData->strikerSize >> 1), striker_height);
+		// spacer(gameData->strikerSize - 2, 205);
+		spacer(dX, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
 		go_to_xy(newX - (gameData->strikerSize >> 1) + 1, striker_height);
 		printf("%c", 204);
-		spacer(gameData->strikerSize - 2, 205);
+		// spacer(gameData->strikerSize - 2, 205);
+		spacer(-dX, 205);
+		go_right(gameData->strikerSize - dX - 2);
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
@@ -133,12 +163,13 @@ void gfx_draw_all_blocks(GameData *gameData) {
 }
 
 void gfx_draw_block(int x, int y, int type) {
+	x = x << 4;
+	y = y << 2;
+
+
 	fg_color(type + 1);
 	go_to_xy(x, y);
 	ansi_save();
-
-	x = x << 4;
-	y = y << 2;
 
 	// Top
 	printf("%c", 201);  // top left corner
@@ -177,16 +208,19 @@ void gfx_erase_block(int x, int y) {
 	go_to_xy(x, y);
 	ansi_save();
 
-	spacer(16, ' '); // top line
+	spacer(16, (int) ' '); // top line
+	// go_to_xy(x, y + 1);
 	ansi_load();
 	go_down(1);
-	spacer(16, ' '); // middle line
+	spacer(16, (int) ' '); // middle line
+	// go_to_xy(x, y + 2);
 	ansi_load();
 	go_down(2);
-	spacer(16, ' '); // middle line
+	spacer(16, (int) ' '); // middle line
+	// go_to_xy(x, y + 3);
 	ansi_load();
 	go_down(3);
-	spacer(16, ' '); // bottom line
+	spacer(16, (int) ' '); // bottom line
 
 #ifdef GCC
 	fflush(stdout);
@@ -236,11 +270,13 @@ void gfx_draw_text(int x, int y, char *str) {
 	char length = util_strlen(str);
 	char line[5];
 
-	go_to_xy(x, y - 1);
+	go_to_xy(x, y);
 	ansi_save();
 	for (j = 0; j < 3; ++j) {   // line
 		ansi_load();
-		go_down(j + 1);
+		if (j != 0) {
+			go_down(j);
+		}
 		for (i = 0; i < length; ++i) { // letters
 			if ((int) str[i] >= 97) {
 				index = 97; // ASCII index of letter a

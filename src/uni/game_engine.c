@@ -45,7 +45,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	gameData->ballSpeed = 3;
 
 	gfx_draw_striker(gameData);
-	gfx_draw_ball(gameData);
+	gfx_init_ball(gameData);
 }
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
@@ -92,7 +92,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 			gfx_update_energy_meter(playerData->energy);
 		}
 
-		if (playerData->energy <= 0) *mode = 0;
+		//if (playerData->energy <= 0) *mode = 0;
 
 		hw_read_analog();
 		// sprintf(debug, "%d", (int) hw_read_analog());
@@ -109,10 +109,10 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 			phy_simulate(gameData);
 			if (gameData->blockHit[0]) {
 				char str[9];
-				// (gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, (gameData->blockHit[0] >> 8) - 1) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
+				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, (gameData->blockHit[0] >> 8) - 1) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
 				gameData->blockHit[0] = 0;
 				if (gameData->blockHit[1]) {
-					// (gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, (gameData->blockHit[1] >> 8) - 1) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
+					(gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, (gameData->blockHit[1] >> 8) - 1) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
 					gameData->blockHit[1] = 0;
 					playerData->coins += 5;
 				}
