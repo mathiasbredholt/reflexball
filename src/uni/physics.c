@@ -3,7 +3,7 @@
 #endif
 
 #if defined(_Z8F6403)
-// #include <sio.h>
+#include <sio.h>
 #endif
 
 #include "physics.h"
@@ -29,7 +29,7 @@ void phy_simulate(GameData *gameData) {
 	if (y == 0) {
 		gameData->ballVel.y = -gameData->ballVel.y;
 		gameData->redraw = 1;
-	} else if (!gameData->bouncedStriker && y == 91 && x >= (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
+	} else if (!gameData->bouncedStriker && y == striker_height - 1 && x >= (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
 		gameData->bouncedStriker = 1;
 		gameData->redraw = 1;
 		sp = (unsigned char) (gameData->strikerPos >> 8);
@@ -59,12 +59,12 @@ void phy_simulate(GameData *gameData) {
 		if (gameData->ballVel.y > 0)	{
 			gameData->ballVel.y = -gameData->ballVel.y;
 		}
-	} else if (y == height) {
+	} else if (y == striker_height) {
 		if (x == (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) || x == (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) + 1) {
 			// Hit side of striker
 			gameData->ballVel.x = -gameData->ballVel.x;
 		}
-	} else if (y > height) {
+	} else if (y > striker_height + 2) {
 		//Lost ball
 		gameData->ballPos.x = 128 << 8;
 		gameData->ballPos.y = 90 << 8;
@@ -73,7 +73,7 @@ void phy_simulate(GameData *gameData) {
 		// Ball will be stuck - so we turn it slighly upwards
 		gameData->ballVel.y = -1;
 	} else {
-		gameData->bouncedStriker = y >= 91;
+		gameData->bouncedStriker = y >= striker_height - 1;
 
 		if (y <= 60) {	// We already know that y!=0
 			if ((y & 3) == 0) {
@@ -138,8 +138,12 @@ void phy_simulate(GameData *gameData) {
 		gameData->ballVel.x = -gameData->ballVel.x;
 		gameData->redraw = 1;
 	}
+}
 
-
+void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char input) {
+	printf("%d\n", ((int) input - 128) << 1);
+	gameData->strikerPos += ((int) input - 128) << 1;
+	playerData->energy -= input < 128 ? input : input - 128;
 }
 
 char phy_hit_block(GameData *gameData, int x, int y) {

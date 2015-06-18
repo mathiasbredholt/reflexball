@@ -10,6 +10,8 @@ void gfx_init_ball(GameData *gameData);
 
 void gfx_draw_striker(GameData *gameData);
 
+void gfx_init_striker(GameData *gameData);
+
 void gfx_erase_striker(GameData *gameData);
 
 void gfx_draw_all_blocks(GameData *gameData);
@@ -37,5 +39,7 @@ void gfx_update_energy_meter(int val);
 void gfx_draw_bullet(int x, int newY, int oldY, int type);
 
 void gfx_draw_stars(int frame);
+
+void gfx_draw_score(PlayerData *playerData);
 
 #endif
