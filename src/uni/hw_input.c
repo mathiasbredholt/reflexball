@@ -131,7 +131,7 @@ void hw_ADC_init() {
 	while (!(ADCCTL & 0x80)); // waits for the output to be ready
 }
 
-char hw_read_analog() {
+unsigned char hw_read_analog() {
 	return ADCD_H;
 }
 

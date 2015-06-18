@@ -25,6 +25,10 @@ void blink(char on);
 
 void reverse(char on);
 
+void go_horiz(int n);
+
+void go_vert(int n);
+
 void go_up(int n);
 
 void go_down(int n);

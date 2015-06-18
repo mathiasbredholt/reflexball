@@ -12,6 +12,7 @@
 #include "hw_time.h"
 #include "hw_input.h"
 #include "hw_LED.h"
+#include "hw_sound.h"
 #include "levels.h"
 #include "graphics.h"
 #include "util.h"
@@ -23,6 +24,9 @@
 
 void game_init(GameData *gameData, PlayerData *playerData) {
 	char str[9];
+
+	playerData->energy = 0xFFFF;
+
 	gfx_window(-1, -1, 258, 98);
 
 	gfx_draw_text(200, 98, "coins");
@@ -32,19 +36,21 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	sprintf(str, "%8d", playerData->coins);
 	gfx_draw_text(224, 98, str);
 
-	gameData->strikerPos = 128 << 8;
+	gameData->strikerPos = 127 << 8;
 
-	gameData->ballPos.x = 128 << 8;
+	gameData->ballPos.x = 127 << 8;
 	gameData->ballPos.y = 90 << 8;
 	gameData->ballOldPos.x = gameData->ballPos.x;
 	gameData->ballOldPos.y = gameData->ballPos.y;
 
-	gameData->ballVel.x = -(int)32;
-	gameData->ballVel.y = 0;
+	gameData->ballVel.x = 0;
+	gameData->ballVel.y = -(int)32;
 
 	gameData->ballSpeed = 3;
 
-	gfx_draw_striker(gameData);
+	gameData->strikerSize = 48;
+
+	gfx_init_striker(gameData);
 	gfx_init_ball(gameData);
 }
 
@@ -62,39 +68,16 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gameData->strikerOldPos = gameData->strikerPos;
 		gameData->ballOldPos = gameData->ballPos;
 
+		phy_move_striker(gameData, playerData, hw_read_analog());
+
+		gfx_update_energy_meter(playerData->energy);
+
 		key = hw_read_key();
 
-		// move striker left
-		if (key & 2 && (gameData->strikerPos >> 7) >= gameData->strikerSize) {
-			gameData->strikerPos -= 256;
-			--playerData->energy;
-			gfx_update_energy_meter(playerData->energy);
-		}
 
-		// move striker left
-		if (key & 2 && (gameData->strikerPos >> 7) >= gameData->strikerSize) {
-			gameData->strikerPos -= 256;
-			--playerData->energy;
-			gfx_update_energy_meter(playerData->energy);
-		}
-
-		// move striker right
-		if (key & 1 && gameData->strikerPos >> 8 <= 255 - ((gameData->strikerSize >> 1) + 1)) {
-			gameData->strikerPos += 256;
-			--playerData->energy;
-			gfx_update_energy_meter(playerData->energy);
-		}
-
-		// move striker right
-		if (key & 1 && gameData->strikerPos >> 8 <= 255 - ((gameData->strikerSize >> 1) + 1)) {
-			gameData->strikerPos += 256;
-			--playerData->energy;
-			gfx_update_energy_meter(playerData->energy);
-		}
 
 		if (playerData->energy <= 0) game_end(mode);
 
-		hw_read_analog();
 		// sprintf(debug, "%d", (int) hw_read_analog());
 		// gfx_draw_text(200, 80, debug);
 
@@ -105,10 +88,9 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		}
 
 		// Calculate new ball position
-		for (i = 0; i < 1; ++i) {
+		for (i = 0; i < 8; ++i) {
 			phy_simulate(gameData);
 			if (gameData->blockHit[0]) {
-				char str[9];
 				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, (gameData->blockHit[0] >> 8) - 1) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
 				gameData->blockHit[0] = 0;
 				if (gameData->blockHit[1]) {
@@ -119,8 +101,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 				// update score
 				playerData->coins += 5;
-				sprintf(str, "%8d", playerData->coins);
-				gfx_draw_text(224, 98, str);
+				gfx_draw_score(playerData);
 			}
 			if (gameData->redraw) {
 				gameData->redraw = 0;
@@ -132,6 +113,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	LED_update();
+	hw_sound_update();
 }
 
 void game_end(int *mode) {
@@ -144,5 +126,4 @@ void game_end(int *mode) {
 			break;
 		}
 	}
-
 }

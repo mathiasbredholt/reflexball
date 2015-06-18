@@ -101,6 +101,22 @@ void reverse(char on) {
 }
 
 // Functions to move cursor n positions
+void go_horiz(int n) {
+  if (n > 0) {
+    go_right(n);
+  } else if (n < 0) {
+    go_left(-n);
+  }
+}
+
+void go_vert(int n) {
+  if (n > 0) {
+    go_down(n);
+  } else if (n < 0) {
+    go_up(-n);
+  }
+}
+
 void go_up(int n) {
   printf("%c[%dA", ESC, n);
 }

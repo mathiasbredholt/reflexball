@@ -31,19 +31,18 @@ void gfx_draw_ball(GameData *gameData) {
 	if (oldX != newX || oldY != newY) {
 		if ((char) (newY - oldY) == 0 && (char) (newX - oldX) == 1) {
 			go_to_xy((int) oldX, (int) oldY);
-			printf("123");
-			// printf(" %c%c", 219, 219);
+			printf(" %c%c", 219, 219);
 		} else if ((char) (newY - oldY) == 0 && (char) (newX - oldX) == -1) {
 			go_to_xy((int) oldX - 1, (int) oldY);
-			go_left(1);
-			printf("456");
-			// printf("%c%c ", 219, 219);
+			printf("%c%c ", 219, 219);
 		} else {
 			go_to_xy((int) oldX, (int) oldY);
 			// Erase old ball
 			printf("  ");
 			// Draw new ball
-			go_to_xy((int) newX, (int) newY);
+			go_horiz((int) (char) (newX - oldX) - 2);
+			go_vert((int) (char) (newY - oldY));
+			// go_to_xy((int) newX, (int) newY);
 			printf("%c%c", 219, 219);
 		}
 	}
@@ -79,7 +78,7 @@ void gfx_draw_striker(GameData *gameData) 	{
 		printf("%c", 204);
 		// spacer(gameData->strikerSize - 2, 205);
 		spacer(-dX, 205);
-		go_right(gameData->strikerSize - dX - 2);
+		go_right(gameData->strikerSize + dX - 2);
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
@@ -87,6 +86,13 @@ void gfx_draw_striker(GameData *gameData) 	{
 #ifdef GCC
 	fflush(stdout);
 #endif
+}
+
+void gfx_init_striker(GameData *gameData) {
+	go_to_xy((gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1, striker_height);
+	printf("%c", 204);
+	spacer(gameData->strikerSize - 2, 205);
+	printf("%c", 185);
 }
 
 void gfx_erase_striker(GameData *gameData) {
@@ -498,4 +504,11 @@ void gfx_draw_game_over() {
 #ifdef GCC
 	fflush(stdout);
 #endif
+}
+
+void gfx_draw_score(PlayerData *playerData) {
+	char str[9];
+	fg_color(15);
+	sprintf(str, "%8d", playerData->coins);
+	gfx_draw_text(224, 98, str);
 }
