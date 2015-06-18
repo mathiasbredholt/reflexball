@@ -3,6 +3,7 @@
 #include "game_engine.h"
 #include "hw_time.h"
 #include "hw_input.h"
+#include "hw_sound_driver.h"
 #include "hw_LED.h"
 #include "levels.h"
 #include "intro.h"
@@ -35,6 +36,7 @@ int main()
 	hw_init();
 	hw_time_init();
 	hw_ADC_init();
+	hw_sound_init();
 
 	//LED_init();
 	//LED_set_string("Welcome");

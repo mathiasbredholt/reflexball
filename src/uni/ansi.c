@@ -128,8 +128,8 @@ void ansi_load() {
 void spacer(int n, int c) {
   int i;
   char str[259];
-  // for (i = 0; i < n; i++) printf("%c", (char) c);
-  for (i = 0; i < n; i++) str[i] = (char) c;
-  str[n] = '\0';
-  printf("%s", str);
+  for (i = 0; i < n; i++) printf("%c", (char) c);
+  // for (i = 0; i < n; i++) str[i] = (char) c;
+  // str[n] = '\0';
+  // printf("%s", str);
 }

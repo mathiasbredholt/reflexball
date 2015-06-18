@@ -101,7 +101,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		// if (key & 4) *mode = 0;
 
 		if (key & 4) {
-			gfx_draw_bullet(128, gameData->strikerPos, 0, 0);
+			gfx_draw_bullet(gameData->strikerPos, gameData->strikerPos, 0, 0);
 		}
 
 		// Calculate new ball position

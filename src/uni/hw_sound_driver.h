@@ -1,0 +1,1 @@
+void hw_sound_init();
