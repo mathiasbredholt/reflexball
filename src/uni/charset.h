@@ -594,7 +594,7 @@ const char items[8][8][16] = {
   }
 };
 
-const char image[22][52] {
+const char image[22][52] = {
 
   "                        ;LL;                        ",
   "                    C@@q3  4$@@M                    ",
@@ -617,7 +617,7 @@ const char image[22][52] {
   "    @@x       q6@@@@@89@@@@@@a@@@@@@6         @@    ",
   "      Yp@2                                  $@4     ",
   "        $@@                            @g6@@        ",
-  "           #m@@82$6@6g$GGGGGq$a6@6$O6@@7            ",
+  "           #m@@82$6@6g$GGGGGq$a6@6$O6@@7            "
 
 };
 
