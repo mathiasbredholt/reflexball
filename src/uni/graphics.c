@@ -131,7 +131,7 @@ void gfx_draw_all_blocks(GameData *gameData) {
 							} else if (type == 10) {
 								fg_color(4);
 							} else {
-								fg_color(5);
+								fg_color(8);
 							}
 							oldType = type;
 						}
@@ -241,66 +241,32 @@ void gfx_draw_block(int x, int y, int type) {
 	} else if (type <= 9) {
 		color = 4;
 	} else {
-		color = 5;
+		color = 8;
 	}
 
 	fg_color(color);
 
-	go_to_xy(x, y);
+	go_to_xy(x + 1, y + 1);
 	ansi_save();
 
-	// Top
-	printf("%c", 201);  // top left corner
-	spacer(14, 203); // top line
-	printf("%c", 187);	// top right corner
-
 	// Sides
-	ansi_load();
-	go_down(1);
 	if (type == 1 || type == 3 || type == 6 || type == 10 || type == 11) {
-		printf("%c", 204);
 		spacer(14, 206);
-		printf("%c", 185);
-		ansi_load();
-		go_down(2);
-		printf("%c", 204);
+		go_to_xy(x + 1, y + 2);
 		spacer(14, 206);
-		printf("%c", 185);
 	} else if (type == 2 || type == 4 || type == 7) {
-		printf("%c", 204);
 		spacer(14, 32);
-		printf("%c", 185);
-		ansi_load();
-		go_down(2);
-		printf("%c", 204);
+		go_to_xy(x + 1, y + 2);
 		spacer(14, 32);
-		printf("%c", 185);
 	} else if (type == 5 || type == 8) {
-		printf("%c", 204);
 		spacer(14, 97);
-		printf("%c", 185);
-		ansi_load();
-		go_down(2);
-		printf("%c", 204);
+		go_to_xy(x + 1, y + 2);
 		spacer(14, 97);
-		printf("%c", 185);
 	} else if (type == 9) {
-		printf("%c", 204);
 		spacer(14, 99);
-		printf("%c", 185);
-		ansi_load();
-		go_down(2);
-		printf("%c", 204);
+		go_to_xy(x + 1, y + 2);
 		spacer(14, 99);
-		printf("%c", 185);
 	}
-
-	// Bottom
-	ansi_load();
-	go_down(3);
-	printf("%c", 200);  // corner
-	spacer(14, 202);
-	printf("%c", 188);  // corner
 
 #ifdef GCC
 	fflush(stdout);

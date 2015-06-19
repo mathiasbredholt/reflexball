@@ -5,6 +5,8 @@
 
 void lvl_create_lvl1(GameData *gameData, PlayerData *playerData);
 
+void lvl_create_lvl2(GameData *gameData, PlayerData *playerData);
+
 void lvl_create_menu();
 
 #endif  // _LEVELS_H_

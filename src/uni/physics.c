@@ -17,13 +17,10 @@
 
 void phy_simulate(GameData *gameData) {
 	unsigned char x, y, sp;
+	char justHitBlock;
 	int dx, dy, size;
-	// gameData->ballPos.x += (int) (gameData->ballSpeed * gameData->ballVel.x);// * 8
-	// gameData->ballPos.y += (int) (gameData->ballSpeed * gameData->ballVel.y);// * 5
 	dx = (int) (gameData->ballSpeed * gameData->ballVel.x);
 	dy = (int) (gameData->ballSpeed * gameData->ballVel.y);
-	// printf("%d   %d   %d   %d", (int) gameData->ballSpeed, (int) gameData->ballVel.x, dx * 8, shift_fix_int_right((int) (gameData->ballSpeed * gameData->ballVel.x) * 8, 2));
-	// printf(",   %d   %d   %d   %d", (int) gameData->ballSpeed, (int) gameData->ballVel.y, dy * 5, shift_fix_int_right((int) (gameData->ballSpeed * gameData->ballVel.y) * 5, 2));
 	gameData->ballPos.x += shift_fix_int_right(dx * 8, 4);
 	gameData->ballPos.y += shift_fix_int_right(dy * 5, 4);
 	x = (unsigned char) (gameData->ballPos.x >> 8);
@@ -37,25 +34,19 @@ void phy_simulate(GameData *gameData) {
 		sp = (unsigned char) (gameData->strikerPos >> 8);
 		size = gameData->strikerSize >> 1;
 		gameData->ballVel.y = -gameData->ballVel.y;
-		//printf("vel_x=%d, vel_y=%d,  sw=%d,   sw>>2=%d,  x=%d,  sp=%d,   l >= %d, ml >= %d, c > %d, mr > %d", (int) gameData->ballVel.x, (int) gameData->ballVel.y, gameData->strikerSize, gameData->strikerSize >> 2, (int) x, (int) sp, (int) (x + gameData->strikerSize - (gameData->strikerSize >> 2) - 1), (int) (x + gameData->strikerSize - (gameData->strikerSize >> 1) - 1), (int) (x - gameData->strikerSize + (gameData->strikerSize >> 1) - 1), (int) (x - gameData->strikerSize + (gameData->strikerSize >> 2) - 1));
 		if (x <= sp - size + (size >> 2) + 1) {
 			// Far left
-			// printf("  left");
 			util_rotate(&gameData->ballVel, -43);	// ~30 deg
 		} else if (x <= sp - size + (size >> 1) + 1) {
 			// Middle left
-			// printf("  middle left");
 			util_rotate(&gameData->ballVel, -21);	// ~15 deg
 		} else if (x < sp + size - (size >> 1) + 1) {
 			// Center
-			// printf("  center");
 		} else if (x < sp + size - (size >> 2) + 1) {
 			// Middle right
-			// printf("  middle right");
 			util_rotate(&gameData->ballVel, 21);	// ~15 deg
 		} else {
 			// Far right
-			// printf("  right");
 			util_rotate(&gameData->ballVel, 43);	// ~30 deg
 		}
 		if (gameData->ballVel.y > 0)	{
@@ -77,31 +68,32 @@ void phy_simulate(GameData *gameData) {
 	} else {
 		gameData->bouncedStriker = y >= striker_height - 1;
 
-		if (y <= 60) {	// We already know that y!=0
+		if (y <= 60 && !gameData->blockHit[2]) {	// We already know that y!=0
+			justHitBlock = 0;
 			if ((y & 3) == 0) {
 				// Touching lower edge of block
-				if (phy_hit_block(gameData, x >> 4, (y >> 2) - 1)) {
+				if (phy_hit_block(gameData, x >> 4, (y >> 2) - 1, &justHitBlock)) {
 					gameData->ballVel.y = -gameData->ballVel.y;
 					if ((x & 15) == 15) {
 						// Hitting corner of right block because ball is two pixels wide
-						phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1);
+						phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock);
 					}
-				} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1)) {
+				} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock)) {
 					// Hitting corner of right block because ball is two pixels wide
 					gameData->ballVel.y = -gameData->ballVel.y;
 				}
 				if ((x & 15) == 1) {
 					// Left corner
-					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2)) {
+					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
 						gameData->ballVel.x = -gameData->ballVel.x;
 					}
 				} else if ((x & 15) == 14) {
 					// Right corner
-					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2)) {
+					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 						gameData->ballVel.x = -gameData->ballVel.x;
 					}
 				} else if ((x & 15) == 15) {
-					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2)) {
+					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 						gameData->ballVel.x = -gameData->ballVel.x;
 					}
 				}
@@ -109,31 +101,32 @@ void phy_simulate(GameData *gameData) {
 				// printf("upper");
 				// Touching upper edge of block
 				// gameData->redraw = 1;
-				if (phy_hit_block(gameData, x >> 4, (y >> 2) + 1)) {
+				if (phy_hit_block(gameData, x >> 4, (y >> 2) + 1, &justHitBlock)) {
 					gameData->ballVel.y = -gameData->ballVel.y;
 				}
 				if ((x & 15) == 1) {
 					// Left corner
-					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2)) {
+					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
 						gameData->ballVel.x = -gameData->ballVel.x;
 					}
 				} else if ((x & 15) == 14) {
 					// Right corner
-					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2)) {
+					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 						gameData->ballVel.x = -gameData->ballVel.x;
 					}
 				}
 			} else if ((x & 15) == 1) {
 				// Right edge
-				if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2)) {
+				if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
 					gameData->ballVel.x = -gameData->ballVel.x;
 				}
 			} else if ((x & 15) == 14) {
 				// Left edge
-				if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2)) {
+				if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 					gameData->ballVel.x = -gameData->ballVel.x;
 				}
 			}
+			gameData->blockHit[2] = justHitBlock;
 		}
 	}
 	if (x == 0 || x == width - 2) {
@@ -160,7 +153,7 @@ void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char 
 	playerData->energy -= analog < 0 ? -analog >> 3 : analog >> 3;
 }
 
-char phy_hit_block(GameData *gameData, int x, int y) {
+char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 	int type, numBlock;
 
 	if (x > 15 || x < 0 || y > 14 || y < 0) {
@@ -169,14 +162,15 @@ char phy_hit_block(GameData *gameData, int x, int y) {
 
 	numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
 
-	type = gameData->blockData[y][x >> 1];
+	type = x & 1 ? gameData->blockData[y][x >> 1] & 0xF : gameData->blockData[y][x >> 1] >> 4;
 
-	if (type) {
-		if (type != 11) {
-			if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface
+	if (type) {	// Block exists - damage or remove
+		if (type != 11) {	// Block is destructible
+			if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
 				gameData->blockData[y][x >> 1] -= x & 1 ? 0x01 : 0x10; 	// Decrements value on left or right block
 				--type;
-			} else {
+			} else {	// Mark for demolition
+				gameData->blockData[y][x >> 1] &= x & 1 ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
 				type = 0;
 			}
 			gameData->blockHit[numBlock] = type << 8; // Stores type value in blockHit bit 8-11
@@ -185,6 +179,7 @@ char phy_hit_block(GameData *gameData, int x, int y) {
 		}
 
 		gameData->redraw = 1; // Redraw ball for nice gfx!
+		*justHitBlock = 1;
 		return 1;
 	}
 	return 0;

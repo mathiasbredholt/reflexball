@@ -18,7 +18,7 @@ typedef struct GameData {
 	TVector_0_7 ballVel;
 	unsigned int strikerOldPos, strikerPos;
 	char strikerSize, redraw, bouncedStriker;
-	int blockHit[2];
+	int blockHit[3];
 	int ballSpeed;
 	int level;
 } GameData;
