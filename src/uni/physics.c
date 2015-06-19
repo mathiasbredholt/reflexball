@@ -6,12 +6,14 @@
 #include <sio.h>
 #endif
 
+#include "ansi.h"
 #include "physics.h"
 #include "util.h"
 
 #define width 256
 #define height 96
 #define striker_height 92
+#define striker_speed 4
 
 void phy_simulate(GameData *gameData) {
 	unsigned char x, y, sp;
@@ -141,8 +143,21 @@ void phy_simulate(GameData *gameData) {
 }
 
 void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char input) {
-	printf("%d", ((int) input - 128) << 1);
-	gameData->strikerPos += ((int) input - 128) << 1;
+	int analog = (((int) input - 127) << 1) - 96;
+	if (analog < -(int)160) analog = -(int)160;
+	else if (analog > -5 && analog < 5) analog = 0;
+	analog *= striker_speed;
+	// go_to_xy(200, 10);
+	// printf("%8u  %8u  %8u  ", gameData->strikerPos, (unsigned int) gameData->strikerSize << 7, ((unsigned int) gameData->strikerSize << 7) - analog);
+	if (gameData->strikerPos < ((unsigned int) gameData->strikerSize << 7) - analog) {
+		gameData->strikerPos = (unsigned int) (gameData->strikerSize - 1) << 7;
+	} else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (gameData->strikerSize) << 7)) {
+		gameData->strikerPos = 0xFFFF - ((unsigned int) (gameData->strikerSize) << 7);
+	} else {
+		gameData->strikerPos += analog;
+	}
+	// printf("%8d", (((int) input - 127) << 1) - 96);
+	// gameData->strikerPos += (((int) input - 127) << 1) - 96;
 	playerData->energy -= input < 128 ? input : input - 128;
 }
 

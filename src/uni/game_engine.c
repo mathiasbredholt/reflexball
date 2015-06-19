@@ -25,7 +25,7 @@
 void game_init(GameData *gameData, PlayerData *playerData) {
 	char str[9];
 
-	playerData->energy = 0xFFFF;
+	playerData->energy = 0x0FFF;
 
 	gfx_window(-1, -1, 258, 98);
 
@@ -48,7 +48,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gameData->ballSpeed = 3;
 
-	gameData->strikerSize = 48;
+	gameData->strikerSize = 24;
 
 	gfx_init_striker(gameData);
 	gfx_init_ball(gameData);
@@ -76,7 +76,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 
 
-		if (playerData->energy <= 0) game_end(mode);
+		// if (playerData->energy <= 0) game_end(mode);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
 		// gfx_draw_text(200, 80, debug);
@@ -88,7 +88,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		}
 
 		// Calculate new ball position
-		for (i = 0; i < 8; ++i) {
+		for (i = 0; i < 1; ++i) {
 			phy_simulate(gameData);
 			if (gameData->blockHit[0]) {
 				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, (gameData->blockHit[0] >> 8) - 1) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);

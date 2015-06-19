@@ -46,8 +46,8 @@ void hw_sound_init() {
 	T3L = 0;
 
 	// End timer at 2250 (64 Hz)
-	T3RH = 0x08;
-	T3RL = 0xCA;
+	T3RH = 0x11;
+	T3RL = 0x94;
 
 	// Enable timer3 interrupt
 	IRQ2 |= 0x80;
@@ -67,7 +67,7 @@ void hw_sound_update() {
 	if (_soundNext) {
 		_soundNext = 0;
 
-		// T2CTL  = chord[_soundIndex][0] ? 0xBB : 0x3B;
+		T2CTL  = chord[_soundIndex][0] ? 0xB9 : 0x39;
 		T2RH    = chord[_soundIndex][1];
 		T2RL    = chord[_soundIndex][2];
 		// T2PWMH = chord[_soundIndex][0];

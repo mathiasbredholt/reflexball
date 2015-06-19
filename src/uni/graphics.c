@@ -422,7 +422,7 @@ void gfx_draw_energy_meter(int val) {
 }
 
 void gfx_update_energy_meter(int val) {
-	int level = (val >> 2);
+	int level = (val >> 10);
 	int i;
 	if ((val & 0x03) == 0) {
 		go_to_xy(level, 98 - 1);

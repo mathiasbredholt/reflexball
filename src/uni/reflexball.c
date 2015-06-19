@@ -36,7 +36,7 @@ int main()
 	hw_init();
 	hw_time_init();
 	hw_ADC_init();
-	//hw_sound_init();
+	hw_sound_init();
 
 	//LED_init();
 	//LED_set_string("Welcome");
