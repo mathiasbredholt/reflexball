@@ -107,52 +107,49 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_draw_all_blocks(GameData *gameData) {
-	char type, oldType, row, side, column, line, exists;
+	char type, oldType, row, column, line, nibble;
 
 	go_to_xy(0, 0);
-	fg_color(1);
 	ansi_save();
 	oldType = 0;
 
 	for (row = 0; row < 15; ++row) { // Rows
-		for (line = 0; line < 4; ++line) { // Lines
-			for (side = 0; side < 2; ++side) { // Left/right side (byte)
-				for (column = 0; column < 8; ++column) { // Column (bit)
-					exists = 0;
-					for (type = 0; type < 4; ++type) { // Types
-						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
-							exists = 1;
-							if (type != oldType) {
-								if (type == 0) {
-									fg_color(1);
-								} else if (type == 2) {
-									fg_color(2);
-								} else if (type == 5) {
-									fg_color(3);
-								} else if (type == 9) {
-									fg_color(4);
-								} else {
-									fg_color(5);
-								}
-								oldType = type;
-							}
-							if (line == 0) {
-								printf("%c", 201);  // top left corner
-								spacer(14, 203); // top line
-								printf("%c", 187);	// top right corner
-							} else if (line < 3) {
-								printf("%c", 204);
-								spacer(14, 206);
-								printf("%c", 185);
+		for (line = 0; line < 4; ++line) { // Block lines
+			for (column = 0; column < 8; ++column) { // Column (byte)
+				for (nibble = 0; nibble < 2; ++nibble) { // Left/right nibble
+					type = nibble ?
+					       gameData->blockData[row][column] & 0x0F : // Right side
+					       gameData->blockData[row][column] >> 4; // Left side
+					if (type) {	// Block type is > 0
+						if (type != oldType) {
+							if (type == 1) {
+								fg_color(1);
+							} else if (type == 3) {
+								fg_color(2);
+							} else if (type == 6) {
+								fg_color(3);
+							} else if (type == 10) {
+								fg_color(4);
 							} else {
-								printf("%c", 200);  // corner
-								spacer(14, 202);
-								printf("%c", 188);  // corner
+								fg_color(5);
 							}
+							oldType = type;
 						}
-					}
-					if (!exists) {
-						spacer(16, (int) ' ');
+						if (line == 0) {
+							printf("%c", 201);  // top left corner
+							spacer(14, 203); // top line
+							printf("%c", 187);	// top right corner
+						} else if (line < 3) {
+							printf("%c", 204);
+							spacer(14, 206);
+							printf("%c", 185);
+						} else {
+							printf("%c", 200);  // corner
+							spacer(14, 202);
+							printf("%c", 188);  // corner
+						}
+					} else {
+						go_right(16);
 					}
 				}
 			}
@@ -162,12 +159,73 @@ void gfx_draw_all_blocks(GameData *gameData) {
 		}
 	}
 
-	fg_color(15);
-
 #ifdef GCC
 	fflush(stdout);
 #endif
 }
+
+// void gfx_draw_all_blocks(GameData *gameData) {
+// 	char type, oldType, row, side, column, line, exists;
+
+// 	go_to_xy(0, 0);
+// 	fg_color(1);
+// 	ansi_save();
+// 	oldType = 0;
+
+// 	for (row = 0; row < 15; ++row) { // Rows
+// 		for (line = 0; line < 4; ++line) { // Lines
+// 			for (side = 0; side < 2; ++side) { // Left/right side (byte)
+// 				for (column = 0; column < 8; ++column) { // Column (bit)
+// 					exists = 0;
+// 					for (type = 0; type < 4; ++type) { // Types
+// 						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
+// 							exists = 1;
+// 							if (type != oldType) {
+// 								if (type == 0) {
+// 									fg_color(1);
+// 								} else if (type == 2) {
+// 									fg_color(2);
+// 								} else if (type == 5) {
+// 									fg_color(3);
+// 								} else if (type == 9) {
+// 									fg_color(4);
+// 								} else {
+// 									fg_color(5);
+// 								}
+// 								oldType = type;
+// 							}
+// 							if (line == 0) {
+// 								printf("%c", 201);  // top left corner
+// 								spacer(14, 203); // top line
+// 								printf("%c", 187);	// top right corner
+// 							} else if (line < 3) {
+// 								printf("%c", 204);
+// 								spacer(14, 206);
+// 								printf("%c", 185);
+// 							} else {
+// 								printf("%c", 200);  // corner
+// 								spacer(14, 202);
+// 								printf("%c", 188);  // corner
+// 							}
+// 						}
+// 					}
+// 					if (!exists) {
+// 						spacer(16, (int) ' ');
+// 					}
+// 				}
+// 			}
+// 			ansi_load();
+// 			oldType = 0;
+// 			go_down(line + (row << 2) + 1);
+// 		}
+// 	}
+
+// 	fg_color(15);
+
+// #ifdef GCC
+// 	fflush(stdout);
+// #endif
+// }
 
 void gfx_draw_block(int x, int y, int type) {
 	char color;
@@ -199,7 +257,7 @@ void gfx_draw_block(int x, int y, int type) {
 	// Sides
 	ansi_load();
 	go_down(1);
-	if (type == 0 || type == 2 || type == 5 || type == 9 || type == 10) {
+	if (type == 1 || type == 3 || type == 6 || type == 10 || type == 11) {
 		printf("%c", 204);
 		spacer(14, 206);
 		printf("%c", 185);
@@ -208,7 +266,7 @@ void gfx_draw_block(int x, int y, int type) {
 		printf("%c", 204);
 		spacer(14, 206);
 		printf("%c", 185);
-	} else if (type == 1 || type == 3 || type == 6) {
+	} else if (type == 2 || type == 4 || type == 7) {
 		printf("%c", 204);
 		spacer(14, 32);
 		printf("%c", 185);
@@ -217,7 +275,7 @@ void gfx_draw_block(int x, int y, int type) {
 		printf("%c", 204);
 		spacer(14, 32);
 		printf("%c", 185);
-	} else if (type == 4 || type == 7) {
+	} else if (type == 5 || type == 8) {
 		printf("%c", 204);
 		spacer(14, 97);
 		printf("%c", 185);
@@ -226,7 +284,7 @@ void gfx_draw_block(int x, int y, int type) {
 		printf("%c", 204);
 		spacer(14, 97);
 		printf("%c", 185);
-	} else if (type == 8) {
+	} else if (type == 9) {
 		printf("%c", 204);
 		spacer(14, 99);
 		printf("%c", 185);

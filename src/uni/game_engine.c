@@ -88,13 +88,13 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		}
 
 		// Calculate new ball position
-		for (i = 0; i < 1; ++i) {
+		for (i = 0; i < 8; ++i) {
 			phy_simulate(gameData);
 			if (gameData->blockHit[0]) {
-				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, (gameData->blockHit[0] >> 8) - 1) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
+				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, gameData->blockHit[0] >> 8) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
 				gameData->blockHit[0] = 0;
 				if (gameData->blockHit[1]) {
-					(gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, (gameData->blockHit[1] >> 8) - 1) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
+					(gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, gameData->blockHit[1] >> 8) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
 					gameData->blockHit[1] = 0;
 					playerData->coins += 5;
 				}
