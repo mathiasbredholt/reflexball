@@ -521,6 +521,9 @@ void gfx_draw_victory() {
 			}
 		}
 	}
+#ifdef GCC
+	fflush(stdout);
+#endif
 }
 
 void gfx_draw_score(PlayerData *playerData) {
