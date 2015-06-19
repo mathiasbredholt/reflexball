@@ -458,7 +458,7 @@ void gfx_update_energy_meter(PlayerData *playerData) {
 void gfx_draw_bullet(int x, int newY, int oldY, int type) {
 	int i;
 	fg_color(1);
-	go_to_xy(x, 90);
+	go_to_xy(x >> 8, 90);
 	for (i = 0; i < 80; ++i) {
 		go_up(1);
 		printf("|");
