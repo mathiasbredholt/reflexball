@@ -42,6 +42,8 @@ void gfx_draw_stars(int frame);
 
 void gfx_draw_game_over();
 
+void gfx_draw_victory();
+
 void gfx_draw_score(PlayerData *playerData);
 
 #endif
