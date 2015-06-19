@@ -20,6 +20,7 @@ typedef struct GameData {
 	char strikerSize, redraw, bouncedStriker;
 	int blockHit[2];
 	int ballSpeed;
+	int level;
 } GameData;
 
 void game_init(GameData *gameData, PlayerData *playerData);

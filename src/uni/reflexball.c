@@ -10,6 +10,7 @@
 #include "graphics.h"
 #include "menu.h"
 #include "shop.h"
+#include "map.h"
 
 #if defined(_Z8F6403)
 void main()
@@ -57,19 +58,21 @@ int main()
 			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
 		}
 		if (mode == 1) {
-			lvl_create_lvl2(&gameData, &playerData);
-			game_init(&gameData, &playerData);
-			while (mode == 1) game_update(&mode, &gameData, &playerData);
-		}
-		if (mode == 2) {
-			shop_show(&playerData);
-			while (mode == 2) shop_update(&mode, &lastKey, &focus, &playerData);
+			map_show(&playerData);
+			while (mode == 1) map_update(&mode, &lastKey, &focus, &gameData, &playerData);
 		}
 		if (mode == 3) {
-			while (mode == 3) {
-				hw_sound_update();
-			}
+			game_init(&gameData, &playerData);
+			while (mode == 3) game_update(&mode, &gameData, &playerData);
 		}
+		if (mode == 4) {
+			shop_show(&playerData);
+			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData);
+		}
+		// if (mode == 3) {
+
+		// 	// hw_sound_update();
+		// }
 
 #if defined(__APPLE__) || defined(__WIN32__)
 		if (mode == 4) break;

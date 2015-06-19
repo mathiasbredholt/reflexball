@@ -18,7 +18,7 @@
 #define width 256
 #define height 96
 #define striker_height 92
-#define BTN_WIDTH 20
+#define BTN_WIDTH 40
 
 void gfx_draw_ball(GameData *gameData) {
 	unsigned char newX = (unsigned char) (gameData->ballPos.x >> 8);
@@ -663,4 +663,25 @@ void gfx_draw_score(PlayerData *playerData) {
 	fg_color(15);
 	sprintf(str, "%8d", playerData->coins);
 	gfx_draw_text(224, 98, str);
+
+#ifdef GCC
+	fflush(stdout);
+#endif
+}
+
+void gfx_draw_planet(int x, int y, int planet) {
+	int i, j;
+
+	fg_color(15);
+
+	for (i = 0; i < 16; ++i) {
+		go_to_xy(x, y + i);
+		for (j = 0; j < 16; ++j) {
+			printf("%c", mapPlanets[planet][i][j]);
+		}
+	}
+
+#ifdef GCC
+	fflush(stdout);
+#endif
 }

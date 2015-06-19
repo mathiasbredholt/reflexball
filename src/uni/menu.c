@@ -1,8 +1,6 @@
 #include "graphics.h"
 #include "hw_time.h"
 #include "hw_input.h"
-#include <sio.h>
-#include "ansi.h"
 
 void menu_show() {
 	gfx_window(64, 16, 192, 80);
@@ -10,7 +8,7 @@ void menu_show() {
 
 	gfx_draw_btn(118, 24, "play", 1);
 	gfx_draw_btn(118, 32, "shop", 0);
-	gfx_draw_btn(118, 40, "load", 0);
+	gfx_draw_btn(118, 40, "map", 0);
 	gfx_draw_btn(118, 48, "exit", 0);
 }
 
