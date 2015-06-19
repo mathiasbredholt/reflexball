@@ -46,4 +46,6 @@ void gfx_draw_victory();
 
 void gfx_draw_score(PlayerData *playerData);
 
+void gfx_draw_planet(int x, int y, int planet);
+
 #endif
