@@ -23,6 +23,7 @@
 
 
 void game_init(GameData *gameData, PlayerData *playerData) {
+	int i, j;
 	char str[9];
 
 	playerData->energy = 0x0FFF;
@@ -31,6 +32,12 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gfx_draw_text(200, 98, "coins");
 	gfx_draw_energy_meter();
+
+	for (i = 0; i < 15; ++i) {
+		for (j = 0; j < 8; ++j) {
+			gameData->blockData[i][j] = levelData[gameData->level][i][j];
+		}
+	}
 
 	gfx_draw_all_blocks(gameData);
 	sprintf(str, "%8d", playerData->coins);
@@ -109,6 +116,8 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 				break;
 			}
 		}
+
+		gameData->ballVel.y++;
 
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);

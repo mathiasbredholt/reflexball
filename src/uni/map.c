@@ -32,7 +32,7 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 			if (*lastKey & 4) {
 				if (*focus < NUMBER_OF_LEVELS) {
-					gameData->level = *focus + 1;
+					gameData->level = *focus;
 					*mode = 3;
 				} else {
 					*mode = 0;

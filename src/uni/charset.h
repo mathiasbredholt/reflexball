@@ -378,6 +378,25 @@ rom char game_victory[6][103] = {
   " \\_____\\____/|_| \\_|\\_____|_|  \\_\\/_/    \\_\\_|   \\____/|______/_/    \\_\\_|  |_____\\____/|_| \\_|_____/ "
 };
 
+rom char mapPlanets[1][16][18] = {
+  {
+    "      Gi;jit     ",
+    "    ;f,jt,;jtj   ",
+    "   tjijjjitjfjj  ",
+    "   t;;fjftLjt;f  ",
+    "  ,;;tjttjLLjGDL ",
+    "  ,ttGtjtjLfttLj ",
+    "  jGtfjjtijKGDGt ",
+    "  jEfttff;GfDDLt ",
+    "  jWGjjiDLG;GGfG ",
+    "  ;LGjGDjti:jtjj ",
+    "   GLjG;Ltif;;j  ",
+    "   iffitt;tii,;  ",
+    "    tiii;;i;;j   ",
+    "      tii;i:     "
+  }
+};
+
 #endif
 
 #if defined(__APPLE__) || defined(__WIN32__)

@@ -14,6 +14,7 @@
 #define height 96
 #define striker_height 92
 #define striker_speed 4
+#define bounciness_factor 4
 
 void phy_simulate(GameData *gameData) {
 	unsigned char x, y, sp;
@@ -34,6 +35,7 @@ void phy_simulate(GameData *gameData) {
 		sp = (unsigned char) (gameData->strikerPos >> 8);
 		size = gameData->strikerSize >> 1;
 		gameData->ballVel.y = -gameData->ballVel.y;
+		gameData->ballVel.y -= bounciness_factor;
 		if (x <= sp - size + (size >> 2) + 1) {
 			// Far left
 			util_rotate(&gameData->ballVel, -43);	// ~30 deg
@@ -59,12 +61,9 @@ void phy_simulate(GameData *gameData) {
 		}
 	} else if (y > striker_height + 2) {
 		//Lost ball
-		gameData->ballPos.x = 128 << 8;
+		gameData->ballPos.x = 127 << 8;
 		gameData->ballPos.y = 90 << 8;
 		gameData->ballVel.y = -gameData->ballVel.y;
-	} else if (gameData->ballVel.y == 0) {
-		// Ball will be stuck - so we turn it slighly upwards
-		gameData->ballVel.y = -1;
 	} else {
 		gameData->bouncedStriker = y >= striker_height - 1;
 
