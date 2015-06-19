@@ -198,27 +198,44 @@ void gfx_draw_block(int x, int y, int type) {
 
 	// Sides
 	ansi_load();
-
 	go_down(1);
-	printf("%c", 204);
-
-	if (type == 1) {
-		fg_color(6);
+	if (type == 0 || type == 2 || type == 5 || type == 9 || type == 10) {
+		printf("%c", 204);
+		spacer(14, 206);
+		printf("%c", 185);
+		ansi_load();
+		go_down(2);
+		printf("%c", 204);
+		spacer(14, 206);
+		printf("%c", 185);
+	} else if (type == 1 || type == 3 || type == 6) {
+		printf("%c", 204);
+		spacer(14, 32);
+		printf("%c", 185);
+		ansi_load();
+		go_down(2);
+		printf("%c", 204);
+		spacer(14, 32);
+		printf("%c", 185);
+	} else if (type == 4 || type == 7) {
+		printf("%c", 204);
+		spacer(14, 97);
+		printf("%c", 185);
+		ansi_load();
+		go_down(2);
+		printf("%c", 204);
+		spacer(14, 97);
+		printf("%c", 185);
+	} else if (type == 8) {
+		printf("%c", 204);
+		spacer(14, 99);
+		printf("%c", 185);
+		ansi_load();
+		go_down(2);
+		printf("%c", 204);
+		spacer(14, 99);
+		printf("%c", 185);
 	}
-
-	spacer(2, 206);
-
-	fg_color(color);
-
-	spacer(12, 206);
-	printf("%c", 185);
-	ansi_load();
-	go_down(2);
-	printf("%c", 204);
-	spacer(14, 206);
-	printf("%c", 185);
-
-	fg_color(color);
 
 	// Bottom
 	ansi_load();

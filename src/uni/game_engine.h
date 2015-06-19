@@ -13,7 +13,7 @@ typedef struct PlayerData {
 } PlayerData;
 
 typedef struct GameData {
-	unsigned char blockData[4][15][2];
+	unsigned char blockData[15][8];
 	TVector_8_8 ballOldPos, ballPos;
 	TVector_0_7 ballVel;
 	unsigned int strikerOldPos, strikerPos;
