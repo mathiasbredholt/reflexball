@@ -112,12 +112,10 @@ void gfx_draw_all_blocks(GameData *gameData) {
 	go_to_xy(0, 0);
 	fg_color(1);
 	ansi_save();
+	oldType = 0;
 
 	for (row = 0; row < 15; ++row) { // Rows
 		for (line = 0; line < 4; ++line) { // Lines
-			ansi_load();
-			oldType = 0;
-			go_down(line + (row << 2));
 			for (side = 0; side < 2; ++side) { // Left/right side (byte)
 				for (column = 0; column < 8; ++column) { // Column (bit)
 					for (type = 0; type < 4; ++type) { // Types
@@ -143,6 +141,9 @@ void gfx_draw_all_blocks(GameData *gameData) {
 					}
 				}
 			}
+			ansi_load();
+			oldType = 0;
+			go_down(line + (row << 2) + 1);
 		}
 	}
 
@@ -392,7 +393,7 @@ void gfx_draw_meter(int x, int y, int val) {
 #endif
 }
 
-void gfx_draw_energy_meter(int val) {
+void gfx_draw_energy_meter() {
 	char str[15];
 	int i;
 
@@ -401,30 +402,46 @@ void gfx_draw_energy_meter(int val) {
 	gfx_draw_text(0, 98, str);
 
 	go_to_xy(0, 101);
-	spacer(64, 32);
+	spacer(63, 32);
 
 	for (i = 98; i < 102; ++i) {
 		go_to_xy(24, i);
-		spacer(40, 32);
+		spacer(39, 32);
 	}
 
 	color(15, 0);
 	go_to_xy(0, 102);
-	spacer(64, 205);
+	spacer(63, 205);
 
 	for (i = 98; i < 102; ++i) {
-		go_to_xy(64, i);
+		go_to_xy(63, i);
 		spacer(1, 186);
 	}
 
-	go_to_xy(64, 103);
+	go_to_xy(63, 102);
 	spacer(1, 188);
+
+	for (i = 98; i < 102; ++i) {
+		go_to_xy(-1, i);
+		spacer(1, 186);
+	}
+
+	go_to_xy(-1, 102);
+	spacer(1, 200);
+
+	go_to_xy(-1, 97);
+	spacer(1, 204);
+
+	go_to_xy(63, 97);
+	spacer(1, 203);
 }
 
-void gfx_update_energy_meter(int val) {
-	int level = (val >> 10);
+void gfx_update_energy_meter(PlayerData *playerData) {
+	int level = (playerData->energy >> 9);
 	int i;
-	if ((val & 0x03) == 0) {
+	// go_to_xy(200, 10);
+	// printf("%8d  %8d", level, playerData->energy);
+	if (level >= 0 && (playerData->oldEnergy >> 9) - level > 0) {
 		go_to_xy(level, 98 - 1);
 
 		for (i = 0; i < 4; ++i) {

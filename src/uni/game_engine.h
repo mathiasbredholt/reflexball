@@ -7,6 +7,7 @@
 
 typedef struct PlayerData {
 	int energy;
+	int oldEnergy;
 	int coins;
 	unsigned char items[NUMBER_OF_ITEMS];
 } PlayerData;

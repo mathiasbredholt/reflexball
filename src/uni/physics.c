@@ -147,8 +147,6 @@ void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char 
 	if (analog < -(int)160) analog = -(int)160;
 	else if (analog > -5 && analog < 5) analog = 0;
 	analog *= striker_speed;
-	// go_to_xy(200, 10);
-	// printf("%8u  %8u  %8u  ", gameData->strikerPos, (unsigned int) gameData->strikerSize << 7, ((unsigned int) gameData->strikerSize << 7) - analog);
 	if (gameData->strikerPos < ((unsigned int) gameData->strikerSize << 7) - analog) {
 		gameData->strikerPos = (unsigned int) (gameData->strikerSize - 1) << 7;
 	} else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (gameData->strikerSize) << 7)) {
@@ -158,7 +156,8 @@ void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char 
 	}
 	// printf("%8d", (((int) input - 127) << 1) - 96);
 	// gameData->strikerPos += (((int) input - 127) << 1) - 96;
-	playerData->energy -= input < 128 ? input : input - 128;
+	playerData->oldEnergy = playerData->energy;
+	playerData->energy -= analog < 0 ? -analog >> 3 : analog >> 3;
 }
 
 char phy_hit_block(GameData *gameData, int x, int y) {

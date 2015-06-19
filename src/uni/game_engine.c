@@ -25,12 +25,13 @@
 void game_init(GameData *gameData, PlayerData *playerData) {
 	char str[9];
 
-	playerData->energy = 0x0FFF;
+	playerData->energy = 0x7FFF;
+	playerData->oldEnergy = 0x7FFF;
 
-	gfx_window(-1, -1, 258, 98);
+	gfx_window(-1, -1, 257, 98);
 
 	gfx_draw_text(200, 98, "coins");
-	gfx_draw_energy_meter(255);
+	gfx_draw_energy_meter();
 
 	gfx_draw_all_blocks(gameData);
 	sprintf(str, "%8d", playerData->coins);
@@ -70,7 +71,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 		phy_move_striker(gameData, playerData, hw_read_analog());
 
-		gfx_update_energy_meter(playerData->energy);
+		gfx_update_energy_meter(playerData);
 
 		key = hw_read_key();
 
@@ -88,7 +89,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		}
 
 		// Calculate new ball position
-		for (i = 0; i < 1; ++i) {
+		for (i = 0; i < 8; ++i) {
 			phy_simulate(gameData);
 			if (gameData->blockHit[0]) {
 				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, (gameData->blockHit[0] >> 8) - 1) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
