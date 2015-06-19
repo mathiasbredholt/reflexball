@@ -107,7 +107,7 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_draw_all_blocks(GameData *gameData) {
-	char type, oldType, row, side, column, line;
+	char type, oldType, row, side, column, line, exists;
 
 	go_to_xy(0, 0);
 	fg_color(1);
@@ -118,8 +118,10 @@ void gfx_draw_all_blocks(GameData *gameData) {
 		for (line = 0; line < 4; ++line) { // Lines
 			for (side = 0; side < 2; ++side) { // Left/right side (byte)
 				for (column = 0; column < 8; ++column) { // Column (bit)
+					exists = 0;
 					for (type = 0; type < 4; ++type) { // Types
 						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
+							exists = 1;
 							if (type != oldType) {
 								if (type == 0) {
 									fg_color(1);
@@ -148,6 +150,9 @@ void gfx_draw_all_blocks(GameData *gameData) {
 								printf("%c", 188);  // corner
 							}
 						}
+					}
+					if (!exists) {
+						spacer(16, (int) ' ');
 					}
 				}
 			}
