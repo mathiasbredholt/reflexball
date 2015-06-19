@@ -121,7 +121,17 @@ void gfx_draw_all_blocks(GameData *gameData) {
 					for (type = 0; type < 4; ++type) { // Types
 						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
 							if (type != oldType) {
-								fg_color(type + 1);
+								if (type == 0) {
+									fg_color(1);
+								} else if (type == 2) {
+									fg_color(2);
+								} else if (type == 5) {
+									fg_color(3);
+								} else if (type == 9) {
+									fg_color(4);
+								} else {
+									fg_color(5);
+								}
 								oldType = type;
 							}
 							if (line == 0) {
@@ -155,11 +165,24 @@ void gfx_draw_all_blocks(GameData *gameData) {
 }
 
 void gfx_draw_block(int x, int y, int type) {
+	char color;
 	x = x << 4;
 	y = y << 2;
 
+	if (type == 0) {
+		color = 1;
+	} else if (type <= 2) {
+		color = 2;
+	} else if (type <= 5) {
+		color = 3;
+	} else if (type <= 9) {
+		color = 4;
+	} else {
+		color = 5;
+	}
 
-	fg_color(type + 1);
+	fg_color(color);
+
 	go_to_xy(x, y);
 	ansi_save();
 
@@ -170,15 +193,27 @@ void gfx_draw_block(int x, int y, int type) {
 
 	// Sides
 	ansi_load();
+
 	go_down(1);
 	printf("%c", 204);
-	spacer(14, 206);
+
+	if (type == 1) {
+		fg_color(6);
+	}
+
+	spacer(2, 206);
+
+	fg_color(color);
+
+	spacer(12, 206);
 	printf("%c", 185);
 	ansi_load();
 	go_down(2);
 	printf("%c", 204);
 	spacer(14, 206);
 	printf("%c", 185);
+
+	fg_color(color);
 
 	// Bottom
 	ansi_load();
