@@ -506,6 +506,23 @@ void gfx_draw_game_over() {
 #endif
 }
 
+void gfx_draw_victory() {
+	int i, j;
+	go_to_xy(78, 47);
+	fg_color(2);
+	for (i = 0; i < 102; ++i) {
+		for (j = 0; j <= 5; ++j) {
+			printf("%c", game_victory[j][i]);
+			if (j == 5) {
+				go_up(5);
+			} else {
+				go_down(1);
+				go_left(1);
+			}
+		}
+	}
+}
+
 void gfx_draw_score(PlayerData *playerData) {
 	char str[9];
 	fg_color(15);

@@ -114,9 +114,14 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 	}
 	LED_update();
 }
-void game_end(int *mode) {
-	gfx_window(87, 45, 161, 60);
-	gfx_draw_game_over();
+void game_end(int *mode, int win) {
+	if (win == 0) {
+		gfx_window(87, 45, 161, 60);
+		gfx_draw_game_over();
+	} else {
+		gfx_window(78, 45, 181, 60);
+		gfx_draw_game_victory();
+	}
 	gfx_draw_text(91, 54, "press to continue");
 	while (1) {
 		if (hw_read_key() == 4) {
@@ -125,3 +130,4 @@ void game_end(int *mode) {
 		}
 	}
 }
+
