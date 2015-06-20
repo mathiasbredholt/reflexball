@@ -9,6 +9,7 @@
 #include "ansi.h"
 #include "physics.h"
 #include "util.h"
+#include "hw_sound.h"
 
 #define width 256
 #define height 96
@@ -54,6 +55,8 @@ void phy_simulate(GameData *gameData) {
 		if (gameData->ballVel.y > 0)	{
 			gameData->ballVel.y = -gameData->ballVel.y;
 		}
+
+		hw_sound_play(200, 50, 100);
 	} else if (y == striker_height) {
 		if (x == (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) || x == (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) + 1) {
 			// Hit side of striker
@@ -64,10 +67,11 @@ void phy_simulate(GameData *gameData) {
 		gameData->ballPos.x = 127 << 8;
 		gameData->ballPos.y = 90 << 8;
 		gameData->ballVel.x = gameData->ballVel.x >> 1;
-		if (gameData->ballVel.y > -32) {
-			gameData->ballVel.y = -gameData->ballVel.y >> 1;
+		gameData->ballVel.y = -gameData->ballVel.y;
+		if (gameData->ballVel.y > -50) {
+			//gameData->ballVel.y = -gameData->ballVel.y >> 1;
 		} else {
-			gameData->ballVel.y = -32;
+			//gameData->ballVel.y = -50;
 		}
 
 	} else {
@@ -170,6 +174,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 	type = x & 1 ? gameData->blockData[y][x >> 1] & 0xF : gameData->blockData[y][x >> 1] >> 4;
 
 	if (type) {	// Block exists - damage or remove
+		hw_sound_play(200 + type * 100, 50, 100);
 		if (type != 11) {	// Block is destructible
 			if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
 				gameData->blockData[y][x >> 1] -= x & 1 ? 0x01 : 0x10; 	// Decrements value on left or right block

@@ -411,8 +411,8 @@ rom char mapThumbs[5][15][17] = {
     " #  \\       /  #",
     "     \\MM MM/    ",
     "                "
-  };
-}
+  }
+};
 
 #endif
 
