@@ -378,24 +378,41 @@ rom char game_victory[6][103] = {
   " \\_____\\____/|_| \\_|\\_____|_|  \\_\\/_/    \\_\\_|   \\____/|______/_/    \\_\\_|  |_____\\____/|_| \\_|_____/ "
 };
 
-rom char mapThumbs[1][16][18] = {
+rom char mapThumbs[5][15][17] = {
   {
-    "      Gi;jit     ",
-    "    ;f,jt,;jtj   ",
-    "   tjijjjitjfjj  ",
-    "   t;;fjftLjt;f  ",
-    "  ,;;tjttjLLjGDL ",
-    "  ,ttGtjtjLfttLj ",
-    "  jGtfjjtijKGDGt ",
-    "  jEfttff;GfDDLt ",
-    "  jWGjjiDLG;GGfG ",
-    "  ;LGjGDjti:jtjj ",
-    "   GLjG;Ltif;;j  ",
-    "   iffitt;tii,;  ",
-    "    tiii;;i;;j   ",
-    "      tii;i:     "
-  }
-};
+    "   A        A  ",
+    "  /#\\      /#\\ ",
+    " /###\\    /###\\",
+    " \\###/    \\###/",
+    "  \\#/    A \\#/ ",
+    "   V    /#\\ V  ",
+    "  A    /###\\   ",
+    " /#\\   \\###/   ",
+    "/###\\   \\#/    ",
+    "\\###/    V     ",
+    " \\#/           ",
+    "  V            ",
+    "MWMWMWMWMWMWMWM",
+    "WMWMWMWMWMWMWMW",
+    "               ",
+  }, {
+    "   WW       WW  ",
+    "     |     |    ",
+    "     |_____|    ",
+    "    /#######\\   ",
+    "   /#########\\  ",
+    "  /## #### ###\\ ",
+    "  |## #### ###| ",
+    " ###############",
+    " ###############",
+    " #  \\#######/  #",
+    " # /MMMMMMMMM\\ #",
+    " # ||       || #",
+    " #  \\       /  #",
+    "     \\MM MM/    ",
+    "                "
+  };
+}
 
 #endif
 
@@ -710,7 +727,8 @@ const char mapThumbs[5][15][17] = {
     " #  \\       /  #",
     "     \\MM MM/    ",
     "                "
-  };
+  }
+};
 
 #endif
 #endif /*! _CHARSET_H_ */
