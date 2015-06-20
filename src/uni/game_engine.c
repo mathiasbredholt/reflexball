@@ -84,7 +84,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 
 
-		// if (playerData->energy <= 0) game_end(mode,0s);
+		//if (playerData->energy <= 0) game_end(mode, 0);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
 		// gfx_draw_text(200, 80, debug);
@@ -126,10 +126,10 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 }
 void game_end(int *mode, int win) {
 	if (win == 0) {
-		gfx_window(87, 45, 161, 60);
+		gfx_window(87, 45, 163, 60);
 		gfx_draw_game_over();
 	} else {
-		gfx_window(78, 45, 181, 60);
+		gfx_window(76, 45, 181, 60);
 		gfx_draw_victory();
 	}
 	gfx_draw_text(91, 54, "press to continue");

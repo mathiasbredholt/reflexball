@@ -63,7 +63,13 @@ void phy_simulate(GameData *gameData) {
 		//Lost ball
 		gameData->ballPos.x = 127 << 8;
 		gameData->ballPos.y = 90 << 8;
-		gameData->ballVel.y = -gameData->ballVel.y;
+		gameData->ballVel.x = gameData->ballVel.x >> 1;
+		if (gameData->ballVel.y > -32) {
+			gameData->ballVel.y = -gameData->ballVel.y >> 1;
+		} else {
+			gameData->ballVel.y = -32;
+		}
+
 	} else {
 		gameData->bouncedStriker = y >= striker_height - 1;
 
