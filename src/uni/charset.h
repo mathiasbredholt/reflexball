@@ -555,4 +555,3 @@ rom char image[22][53] =
 };
 
 #endif /*! _CHARSET_H_ */
-

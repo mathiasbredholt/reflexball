@@ -33,8 +33,8 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 			if (*lastKey & 0x02) --(*focus);
 			if (*lastKey & 0x01) ++(*focus);
 
-			*focus %= sizeof(menuButtons) / sizeof(menuButtons[0]) - 1;
-			if (*focus < 0) *focus += sizeof(menuButtons) / sizeof(menuButtons[0]) - 1;
+			*focus %= 3;
+			if (*focus < 0) *focus += 3;
 
 			gfx_draw_btn_focus(108, 24 + 8 * *focus, menuButtons[*focus], 1);
 		}

@@ -15,10 +15,15 @@ void map_show(PlayerData *playerData) {
 
 
 
+	gfx_draw_thumb(32, 16, 0);
 	gfx_draw_btn(32, 32, mapButtons[1], 0);
-	// gfx_draw_planet(32, 16, 0);
+
+	gfx_draw_thumb(32, 40, 1);
 	gfx_draw_btn(32, 56, mapButtons[2], 0);
+
+	gfx_draw_thumb(32, 64, 1);
 	gfx_draw_btn(32, 80, mapButtons[3], 0);
+
 	gfx_draw_btn(212, 90, mapButtons[4], 0);
 }
 
@@ -60,8 +65,8 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 			if (*lastKey & 0x02) --(*focus);
 			if (*lastKey & 0x01) ++(*focus);
 
-			*focus %= sizeof(mapButtons) / sizeof(mapButtons[0]);
-			if (*focus < 0) *focus += sizeof(mapButtons) / sizeof(mapButtons[0]);
+			*focus %= 5;
+			if (*focus < 0) * focus += 5;
 
 			if (*focus == 0) {
 				gfx_draw_btn_focus(6, 6, mapButtons[0], 1);

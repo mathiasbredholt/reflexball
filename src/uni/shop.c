@@ -68,8 +68,6 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 			}
 
-
-
 			// focus handling
 			if (*focus == 8) {
 				gfx_draw_btn_focus(212, 90, "exit", 0);
