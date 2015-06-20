@@ -529,6 +529,7 @@ rom char image[22][53] =
 #if defined(__APPLE__) || defined(__WIN32__)
   const char image[22][53] =
 #endif
+    // its an ufo
 {
   "                        ;LL;                        ",
   "                    C@@q3  4$@@M                    ",
