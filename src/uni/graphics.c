@@ -255,9 +255,9 @@ void gfx_draw_block(int x, int y, int type) {
 		go_to_xy(x + 1, y + 2);
 		spacer(14, 206);
 	} else if (type == 2 || type == 4 || type == 7) {
-		spacer(14, 32);
+		spacer(14, 45);
 		go_to_xy(x + 1, y + 2);
-		spacer(14, 32);
+		spacer(14, 45);
 	} else if (type == 5 || type == 8) {
 		spacer(14, 97);
 		go_to_xy(x + 1, y + 2);

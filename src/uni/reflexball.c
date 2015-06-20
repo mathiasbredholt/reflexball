@@ -5,7 +5,6 @@
 #include "hw_input.h"
 #include "hw_sound.h"
 #include "hw_LED.h"
-#include "levels.h"
 #include "intro.h"
 #include "graphics.h"
 #include "menu.h"
@@ -61,13 +60,13 @@ int main()
 			map_show(&playerData);
 			while (mode == 1) map_update(&mode, &lastKey, &focus, &gameData, &playerData);
 		}
-		if (mode == 3) {
+		if (mode == 2) {
 			game_init(&gameData, &playerData);
-			while (mode == 3) game_update(&mode, &gameData, &playerData);
+			while (mode == 2) game_update(&mode, &gameData, &playerData);
 		}
-		if (mode == 4) {
+		if (mode == 3) {
 			shop_show(&playerData);
-			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData);
+			while (mode == 3) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 		// if (mode == 3) {
 

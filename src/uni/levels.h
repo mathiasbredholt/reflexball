@@ -1,11 +1,8 @@
-
 #if defined(__APPLE__) || defined(__WIN32__)
-#include <stdio.h>
 const char levelData[6][15][8] =
 #endif
 
 #if defined(_Z8F6403)
-#include <sio.h>
     rom char levelData[6][15][8] =
 #endif
 {

@@ -21,11 +21,11 @@ void shop_show(PlayerData *playerData) {
 	gfx_draw_text(8, 6, "what does your heart desire");
 
 	for (i = 0; i < 8; ++i) {
-		gfx_draw_meter(32 + 24 * i, 40, playerData->items[i]);
+		gfx_draw_meter(32 + 40 * i, 40, playerData->items[i]);
 
-		gfx_draw_item(34 + 24 * i, 48, i);
+		gfx_draw_item(34 + 40 * i, 48, i);
 
-		gfx_draw_btn(32 + 24 * i, 64, "buy", i == 0);
+		gfx_draw_btn(32 + 40 * i, 64, "buy", i == 0);
 	}
 
 	gfx_draw_btn(16, 16, "exit", 0);
@@ -73,7 +73,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 			}
 			if (*lastKey & 4 && *focus == 8) {
 				*focus = 0;
-				*mode = 0;
+				*mode = 1;
 			}
 
 			for (i = 0; i < 8; ++i) {

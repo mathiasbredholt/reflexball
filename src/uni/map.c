@@ -4,35 +4,40 @@
 #include "hw_input.h"
 #include "graphics.h"
 
-#define NUMBER_OF_BTNS 3
-#define NUMBER_OF_LEVELS 2
-
+char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
 
 void map_show(PlayerData *playerData) {
 	gfx_window(0, 0, 258, 104);
 
 	gfx_draw_text(6, 2, "the andromeda galaxy");
 
-	gfx_draw_planet(32, 16, 0);
-	gfx_draw_btn(32, 8, "alderaan", 1);
-	gfx_draw_btn(32, 32, "namek", 0);
-	gfx_draw_btn(32, 56, "back", 0);
+	gfx_draw_btn(6, 6, mapButtons[0], 1);
+
+
+
+	gfx_draw_btn(32, 32, mapButtons[1], 0);
+	// gfx_draw_planet(32, 16, 0);
+	gfx_draw_btn(32, 56, mapButtons[2], 0);
+	gfx_draw_btn(32, 80, mapButtons[3], 0);
+	gfx_draw_btn(212, 90, mapButtons[4], 0);
 }
 
 void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, PlayerData *playerData) {
 	char key;
-	char btns[NUMBER_OF_BTNS][9] = { "alderaan", "namek", "back" };
 
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
 
 		key = hw_read_key();
+
 		if (key != *lastKey) {
 			*lastKey = key;
 
 			if (*lastKey & 4) {
-				if (*focus < NUMBER_OF_LEVELS) {
-					gameData->level = *focus;
+				if (*focus > 0 && *focus < 4) {
+					gameData->level = *focus - 1;
+					*mode = 2;
+				} else if (*focus == 0) {
 					*mode = 3;
 				} else {
 					*mode = 0;
@@ -40,14 +45,35 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 				*focus = 0;
 			}
 
-			gfx_draw_btn_focus(32, 8 + 24 * *focus, btns[*focus], 0);
+			if (*focus == 0) {
+				gfx_draw_btn_focus(6, 6, mapButtons[0], 0);
+			} else if (*focus == 1) {
+				gfx_draw_btn_focus(32, 32, mapButtons[1], 0);
+			} else if (*focus == 2) {
+				gfx_draw_btn_focus(32, 56, mapButtons[2], 0);
+			} else if (*focus == 3) {
+				gfx_draw_btn_focus(32, 80, mapButtons[3], 0);
+			} else if (*focus == 4) {
+				gfx_draw_btn_focus(212, 90, mapButtons[4], 0);
+			}
 
 			if (*lastKey & 0x02) --(*focus);
 			if (*lastKey & 0x01) ++(*focus);
-			*focus %= NUMBER_OF_BTNS;
-			if (*focus < 0) *focus += NUMBER_OF_BTNS;
 
-			gfx_draw_btn_focus(32, 8 + 24 * *focus, btns[*focus], 1);
+			*focus %= sizeof(mapButtons) / sizeof(mapButtons[0]);
+			if (*focus < 0) *focus += sizeof(mapButtons) / sizeof(mapButtons[0]);
+
+			if (*focus == 0) {
+				gfx_draw_btn_focus(6, 6, mapButtons[0], 1);
+			} else if (*focus == 1) {
+				gfx_draw_btn_focus(32, 32, mapButtons[1], 1);
+			} else if (*focus == 2) {
+				gfx_draw_btn_focus(32, 56, mapButtons[2], 1);
+			} else if (*focus == 3) {
+				gfx_draw_btn_focus(32, 80, mapButtons[3], 1);
+			} else if (*focus == 4) {
+				gfx_draw_btn_focus(212, 90, mapButtons[4], 1);
+			}
 		}
 	}
 }
