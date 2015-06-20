@@ -59,15 +59,19 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gfx_init_striker(gameData);
 	gfx_init_ball(gameData);
+
+	// Flags used by physics engine to avoid hitting same block twice in consecutive calls to phy_simulate
+	gameData->blockHit[2] = 0;	// Wether or not the ball was touching a block last iteration
+	gameData->bouncedTop = 0;	// Touching top game border
+	gameData->bouncedSide = 0;	// Touching side game border
+	gameData->bouncedStriker = 0;	// Touching the striker
 }
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 	char key, i;
-	char debug[20];
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
 	gameData->blockHit[1] = 0;	// Same as 0, used if two blocks are hit simultaneously
-	gameData->blockHit[2] = 0;	// Wether or not the ball was close to a block last iteration, used by physics to avoid hitting same block twice
 
 	// if (hw_read_key() && hw_time_get_next_frame()) {
 	if (hw_time_get_next_frame()) {
