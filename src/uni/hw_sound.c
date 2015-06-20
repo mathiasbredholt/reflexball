@@ -65,14 +65,14 @@ void hw_sound_update() {
 		_soundNext = 0;
 		T2H = 0;
 		T2L = 0;
-		T2RH   = chord[_soundIndex][1];
-		T2RL   = chord[_soundIndex][2];
-		T2PWMH = chord[_soundIndex][3];
-		T2PWML = chord[_soundIndex][4];
-		T2CTL  = chord[_soundIndex][0] ? 0xBB : 0x3B;
+		T2RH   = theme1[_soundIndex][1];
+		T2RL   = theme1[_soundIndex][2];
+		T2PWMH = theme1[_soundIndex][3];
+		T2PWML = theme1[_soundIndex][4];
+		T2CTL  = theme1[_soundIndex][0] ? 0xBB : 0x3B;
 
 		_soundIndex++;
-		_soundIndex &= 0xF;
+		_soundIndex &= 0x1FF;
 	}
 }
 
