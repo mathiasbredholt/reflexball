@@ -677,22 +677,22 @@ const char game_victory[6][103] = {
   " \\_____\\____/|_| \\_|\\_____|_|  \\_\\/_/    \\_\\_|   \\____/|______/_/    \\_\\_|  |_____\\____/|_| \\_|_____/ "
 };
 
-const char mapPlanets[1][16][17] = {
+const char mapThumbs[1][15][17] = {
   {
-    "      Gi;jit     ",
-    "    ;f,jt,;jtj   ",
-    "   tjijjjitjfjj  ",
-    "   t;;fjftLjt;f  ",
-    "  ,;;tjttjLLjGDL ",
-    "  ,ttGtjtjLfttLj ",
-    "  jGtfjjtijKGDGt ",
-    "  jEfttff;GfDDLt ",
-    "  jWGjjiDLG;GGfG ",
-    "  ;LGjGDjti:jtjj ",
-    "   GLjG;Ltif;;j  ",
-    "   iffitt;tii,;  ",
-    "    tiii;;i;;j   ",
-    "      tii;i:     "
+    "      Gi;jit    ",
+    "    ;f,jt,;jtj  ",
+    "   tjijjjitjfjj ",
+    "   t;;fjftLjt;f ",
+    "  ,;;tjttjLLjGDL",
+    "  ,ttGtjtjLfttLj",
+    "  jGtfjjtijKGDGt",
+    "  jEfttff;GfDDLt",
+    "  jWGjjiDLG;GGfG",
+    "  ;LGjGDjti:jtjj",
+    "   GLjG;Ltif;;j ",
+    "   iffitt;tii,; ",
+    "    tiii;;i;;j  ",
+    "      tii;i:    "
   }
 };
 

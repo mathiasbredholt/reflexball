@@ -635,15 +635,15 @@ void gfx_draw_score(PlayerData *playerData) {
 #endif
 }
 
-void gfx_draw_planet(int x, int y, int planet) {
+void gfx_draw_thumb(int x, int y, int thumb) {
 	int i, j;
 
 	fg_color(15);
 
-	for (i = 0; i < 16; ++i) {
+	for (i = 0; i < 15; ++i) {
 		go_to_xy(x, y + i);
 		for (j = 0; j < 16; ++j) {
-			printf("%c", mapPlanets[planet][i][j]);
+			printf("%c", mapThumbs[thumb][i][j]);
 		}
 	}
 
