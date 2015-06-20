@@ -1,94 +1,82 @@
-#if defined(_Z8F6403)
-#include <ez8.h>
-#include "hw_time.h"
-#include "sound_lib.h"
+// #if defined(_Z8F6403)
+// #include <ez8.h>
+// #include "hw_time.h"
 
-int _soundCount;
-int _soundDuration;
+// int _soundCount;
+// int _soundDuration;
+// int _reload;
+// int _PWM;
 
-void hw_sound_init() {
-	_soundCount = 0;
-	_soundDuration = 0;
+// #pragma
+// void ISR_T3() {
+// 	T3RH    = _reload >> 8;
+// 	T3RL    = _reload & 0xFF;
+// 	T3PWMH =  _PWM >> 8;
+// 	T3PWML =  _PWM & 0xFF;
+// 	T3CTL |=  0x80; // Enable PWM generator
+// }
 
-	// Setup timer 2 (sound generator)
-	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 3 (PWM)
-	T2CTL = 0x3B;
+// void hw_sound_init() {
+// 	_soundCount = 0;
+// 	_soundDuration = 0;
 
-	// Begin timer at 0
-	T2H = 0;
-	T2L = 0;
+// 	_reload = 20945; // 440 Hz
+// 	_PWM = 10472; // 50% duty cycle
 
-	// End timer at 327 (440 Hz)
-	T2RH = 0x01;
-	T2RL = 0x47;
+// 	// Setup timer 3 (sound generator)
+// 	// TEN: 0, TPOL: 0, PRES: 1 (2), TMODE: 3 (PWM)
+// 	T3CTL = 0x8B;
 
-	// 50% duty cycle
-	// T2PWMH = 0x00;
-	// T2PWML = 0xA4;
+// 	T3H = 0;
+// 	T3L = 0;
+// 	T3RH   = _reload >> 8;
+// 	T3RL   = _reload & 0xFF;
+// 	T3PWMH =  _PWM >> 8;
+// 	T3PWML =  _PWM & 0xFF;
 
-	// Enable alternate function
-	PCAF |= 0x80;
+// 	// Enable alternate function
+// 	PDAF |= 0x02;
 
-	// Enable timer2
-	// T2CTL |= 0x80;
+// 	// // Enable timer3 interrupt
+// 	IRQ2 |= 0x80;
 
-	// // Setup timer 3 (sound update)
-	// // TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 1 (cont.)
-	// T3CTL = 0x39;
+// 	// // Set priority to HIGH
+// 	IRQ2ENH |= 0x80;
+// 	IRQ2ENL |= 0x80;
 
-	// // Begin timer at 0
-	// T3H = 0;
-	// T3L = 0;
+// 	// // Enable timer3
+// 	 T3CTL |= 0x80;
 
-	// // End timer at 2250 (64 Hz)
-	// T3RH = 0x11;
-	// T3RL = 0x94;
+// 	SET_VECTOR(TIMER3, ISR_T3);
+// 	EI();
+// }
 
-	// // Enable timer3 interrupt
-	// IRQ2 |= 0x80;
+// void hw_sound_update() {
+// 	if (hw_time_get_LEDflag()) {
+// 		hw_time_set_LEDflag(0);
+// 		++_soundCount;
+// 		if (_soundCount > _soundDuration) {
+// 			T3CTL &= 0x7F; // Disable PWM generator
+// 		}
+// 	}
 
-	// // Set priority to LOW
-	// IRQ2ENH &= 0x7F;
-	// IRQ2ENL |= 0x80;
+// }
 
-	// // Enable timer1
-	// T3CTL |= 0x80;
+// void hw_sound_play(int freq, int width, int dur) {
+// 	int reload = 9216000 / freq; // Calculate reload value from clock freq
+// 	int pwm = reload * width / 100; // Calculate PWM reload
 
-	// SET_VECTOR(TIMER3, ISR_T3);
-	// EI();
-}
 
-void hw_sound_update() {
-	if (_LEDflag) {
-		++_soundCount;
-		if (_soundCount > _soundDuration) {
-			T2CTL = 0x3B; // Disable PWM generator
-		}
-	}
+// 	_soundDuration = dur;
+// 	_soundCount = 0;
+// }
 
-}
+// #endif
 
-void hw_sound_play(int freq, int width, int dur) {
-	int reload = 144000 / freq; // Calculate reload value from clock freq
-	int pwm = reload * width / 100; // Calculate PWM reload
+// #if defined(__APPLE__) || defined(__WIN32__)
+// void hw_sound_init() {};
 
-	T2CTL  = 0xB9; // Enable PWM generator
-	T2RH    = reload >> 8;
-	T2RL    = reload & 0xFF;
-	T2PWMH = pwm >> 8;
-	T2PWML = pwm & 0xFF;
+// void hw_sound_update() {};
 
-	_soundDuration = dur;
-	_soundCount = 0;
-}
-
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-void hw_sound_init() {};
-
-void hw_sound_update() {};
-
-void hw_sound_play(int freq, int width, int dur) {};
-#endif
-
+// void hw_sound_play(int freq, int width, int dur) {};
+// #endif
