@@ -117,11 +117,12 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 			}
 			if (gameData->redraw) {
 				gameData->redraw = 0;
-				break;
+				gfx_draw_ball(gameData);
+				gameData->ballOldPos = gameData->ballPos;
 			}
 		}
 
-		gameData->ballVel.y++;
+		gameData->ballVel.y++;	// Gravity
 
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
