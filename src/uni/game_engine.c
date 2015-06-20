@@ -93,7 +93,6 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 		if (key & 4) {
 			gfx_draw_bullet(gameData->strikerPos, gameData->strikerPos, 0, 0);
-			hw_sound_play(880, 10, 500);
 		}
 
 		// Calculate new ball position

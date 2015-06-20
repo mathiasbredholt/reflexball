@@ -3,15 +3,17 @@
 #include "hw_time.h"
 #include "sound_lib.h"
 
-char _soundIndex;
+int _soundIndex;
+char _soundNext;
 
 #pragma interrupt
 void ISR_T3() {
-	++_soundIndex;
+	_soundNext = 1;
 }
 
 void hw_sound_init() {
 	_soundIndex = 0;
+	_soundNext = 0;
 
 	// Setup timer 2 (sound generator)
 	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 3 (PWM)
@@ -32,7 +34,7 @@ void hw_sound_init() {
 	// Enable alternate function
 	PCAF |= 0x80;
 
-	// Enable timer3
+	// Setup timer3
 	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 1 (cont)
 	T3CTL |= 0x39;
 
@@ -40,7 +42,7 @@ void hw_sound_init() {
 	T3H = 0;
 	T3L = 0;
 
-	// Reload at
+	// Reload at (64 Hz)
 	T3RH   = 0x08;
 	T3RL   = 0xCA;
 
@@ -49,23 +51,29 @@ void hw_sound_init() {
 
 	// Set priority to HIGH
 	IRQ2ENH |= 0x80;
-	IRQ2ENL &= 0x7F;
+	IRQ2ENL |= 0x80;
+
+	// Enable timer3
+	T3CTL |= 0x80;
 
 	SET_VECTOR(TIMER3, ISR_T3);
 	EI();
 }
 
 void hw_sound_update() {
-	T2H = 0;
-	T2L = 0;
-	T2RH    = chord[_soundIndex][1];
-	T2RL    = chord[_soundIndex][2];
-	T2PWMH = chord[_soundIndex][3];
-	T2PWML = chord[_soundIndex][4];
-	T2CTL  = chord[_soundIndex][0] ? 0xBB : 0x3B;
+	if (_soundNext) {
+		_soundNext = 0;
+		T2H = 0;
+		T2L = 0;
+		T2RH   = chord[_soundIndex][1];
+		T2RL   = chord[_soundIndex][2];
+		T2PWMH = chord[_soundIndex][3];
+		T2PWML = chord[_soundIndex][4];
+		T2CTL  = chord[_soundIndex][0] ? 0xBB : 0x3B;
 
-	_soundIndex++;
-	_soundIndex &= 0xF;
+		_soundIndex++;
+		_soundIndex &= 0xF;
+	}
 }
 
 #endif

@@ -33,7 +33,7 @@ const char character_data[95][5] =
 #endif
 
 #if defined(_Z8F6403)
-  rom char levelData[6][15][8] =
+  rom char character_data[95][5] =
 #endif
 {
   {0x00, 0x00, 0x00, 0x00, 0x00},
@@ -415,7 +415,7 @@ rom char game_victory[7][103] =
 };
 
 #if defined(_Z8F6403)
-rom char mapThumbs[7[16][17] =
+rom char mapThumbs[7][16][17] =
 #endif
 
 #if defined(__APPLE__) || defined(__WIN32__)

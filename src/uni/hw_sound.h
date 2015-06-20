@@ -5,6 +5,4 @@ void hw_sound_init();
 
 void hw_sound_update();
 
-void hw_sound_play(int freq, int width, int dur);
-
 #endif
