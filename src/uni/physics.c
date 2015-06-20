@@ -132,10 +132,10 @@ void phy_simulate(GameData *gameData) {
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
 
 			// Only decrease y velocity to a minumum of 32
-			if (gameData->ballVel.y > 32) {
-				gameData->ballVel.y = -(gameData->ballVel.y >> 1);
+			if (gameData->ballVel.y > 50) {
+				// gameData->ballVel.y = -(gameData->ballVel.y >> 1);
 			} else {
-				gameData->ballVel.y = -32;
+				// gameData->ballVel.y = -50;
 			}
 
 		} else {

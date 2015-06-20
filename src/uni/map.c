@@ -21,7 +21,7 @@ void map_show(PlayerData *playerData) {
 	gfx_draw_thumb(32, 40, 1);
 	gfx_draw_btn(32, 56, mapButtons[2], 0);
 
-	gfx_draw_thumb(32, 64, 1);
+	gfx_draw_thumb(32, 64, 2);
 	gfx_draw_btn(32, 80, mapButtons[3], 0);
 
 	gfx_draw_btn(212, 90, mapButtons[4], 0);
