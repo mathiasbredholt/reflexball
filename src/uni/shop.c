@@ -22,9 +22,9 @@ void shop_show(PlayerData *playerData) {
 
 	for (i = 0; i < 2; ++i) {
 		for (j = 0; j < 4; j++) {
-			gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[i + j * 4]);
-			gfx_draw_item(44 + 48 * j, 18 + 32 * i, i + j * 4);
-			gfx_draw_btn(32 + 48 * j, 32  + 32 * i, "buy", i + j * 4 == 0);
+			gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[j + i * 4]);
+			gfx_draw_item(44 + 48 * j, 18 + 32 * i, j + i * 4);
+			gfx_draw_btn(32 + 48 * j, 32  + 32 * i, "buy", j + i * 4 == 0);
 		}
 	}
 
@@ -35,7 +35,6 @@ void shop_show(PlayerData *playerData) {
 }
 
 void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
-	int i, j;
 	char key;
 
 	if (hw_time_get_next_frame()) {
@@ -45,11 +44,43 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 		if (key != *lastKey) {
 			*lastKey = key;
 
-			// if (*focus == 8) {
-			// 	gfx_draw_btn(16, 16, "exit", 0);
-			// } else {
-			// 	gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 0);
-			// }
+			// select event
+			if (*lastKey & 4) {
+				if (*focus != 8) {
+					int i, j;
+
+					char str[15];
+					--playerData->coins;
+					++playerData->items[*focus];
+
+					sprintf(str, "coins %8d", playerData->coins);
+					gfx_draw_text(196, 2, str);
+
+					for (i = 0; i < 2; ++i) {
+						for (j = 0; j < 4; j++) {
+							gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[j + i * 4]);
+						}
+					}
+				} else {
+					*focus = 0;
+					*mode = 1;
+				}
+
+			}
+
+
+
+			// focus handling
+			if (*focus == 8) {
+				gfx_draw_btn_focus(212, 90, "exit", 0);
+			} else {
+				gfx_draw_btn(
+				    32 + 48 * (*focus & 0x03),
+				    32  + 32 * ((*focus & 0x04) >> 2),
+				    "buy",
+				    0
+				);
+			}
 
 			if (*lastKey & 0x01) ++(*focus);
 			if (*lastKey & 0x02) --(*focus);
@@ -57,28 +88,16 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 			*focus %= 9;
 			if (*focus < 0) *focus += 9;
 
-			// if (*focus == 8) {
-			// 	gfx_draw_btn(16, 16, "exit", 1);
-			// } else {
-			// 	gfx_draw_btn_focus(32 + *focus * 24, 64, "buy", 1);
-			// }
-
-			if (*lastKey & 4 && *focus != 8) {
-				char str[15];
-				--playerData->coins;
-				++playerData->items[*focus];
-
-				sprintf(str, "coins %8d", playerData->coins);
-				gfx_draw_text(196, 2, str);
+			if (*focus == 8) {
+				gfx_draw_btn_focus(212, 90, "exit", 1);
+			} else {
+				gfx_draw_btn(
+				    32 + 48 * (*focus & 0x03),
+				    32  + 32 * ((*focus & 0x04) >> 2),
+				    "buy",
+				    1
+				);
 			}
-			if (*lastKey & 4 && *focus == 8) {
-				*focus = 0;
-				*mode = 1;
-			}
-
-			// for (i = 0; i < 8; ++i) {
-			// 	gfx_draw_meter(32 + 24 * i, 40, playerData->items[i]);
-			// }
 		}
 
 
