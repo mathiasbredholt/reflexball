@@ -110,6 +110,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 				// update score
 				playerData->coins += 5;
 				gfx_draw_score(playerData);
+				hw_sound_play(260, 25, 250);
 			}
 			if (gameData->redraw) {
 				gameData->redraw = 0;
@@ -123,6 +124,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	LED_update();
+	hw_sound_update();
 }
 void game_end(int *mode, int win) {
 	if (win == 0) {
