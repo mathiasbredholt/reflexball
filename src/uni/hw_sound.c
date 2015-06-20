@@ -7,6 +7,7 @@ int _soundIndex;
 int _musicIndex;
 char _soundNext;
 char _soundMode;
+char _soundId;
 
 #pragma interrupt
 void ISR_T3() {
@@ -18,6 +19,7 @@ void hw_sound_init() {
 	_soundNext = 0;
 	_musicIndex = 0;
 	_soundMode = 0;
+	_soundId = 0;
 
 	// Setup timer 2 (sound generator)
 	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 3 (PWM)
@@ -71,30 +73,35 @@ void hw_sound_update() {
 		if (_soundMode) {
 			T2H = 0;
 			T2L = 0;
-			T2RH   = soundBuffer[_soundIndex][1];
-			T2RL   = soundBuffer[_soundIndex][2];
-			T2PWMH = soundBuffer[_soundIndex][3];
-			T2PWML = soundBuffer[_soundIndex][4];
-			T2CTL  = soundBuffer[_soundIndex][0] ? 0xBB : 0x3B;
+			T2RH   = soundFX[_soundId][_soundIndex][1];
+			T2RL   = soundFX[_soundId][_soundIndex][2];
+			T2PWMH = soundFX[_soundId][_soundIndex][3];
+			T2PWML = soundFX[_soundId][_soundIndex][4];
+			T2CTL  = soundFX[_soundId][_soundIndex][0] ? 0xBB : 0x3B;
+
+			++_soundIndex;
+			if (_soundIndex == 7) {
+				_soundIndex = 0;
+				_soundMode = 0;
+			}
 		} else {
 			T2H = 0;
 			T2L = 0;
-			T2RH   = bossTheme[_soundIndex][1];
-			T2RL   = bossTheme[_soundIndex][2];
-			T2PWMH = bossTheme[_soundIndex][3];
-			T2PWML = bossTheme[_soundIndex][4];
-			T2CTL  = bossTheme[_soundIndex][0] ? 0xBB : 0x3B;
+			T2RH   = bossTheme[_musicIndex][1];
+			T2RL   = bossTheme[_musicIndex][2];
+			T2PWMH = bossTheme[_musicIndex][3];
+			T2PWML = bossTheme[_musicIndex][4];
+			T2CTL  = bossTheme[_musicIndex][0] ? 0xBB : 0x3B;
 		}
-
-		_soundIndex++;
 
 		++_musicIndex;
 		_musicIndex &= 0x7F;
 	}
 }
 
-void hw_sound_play() {
-
+void hw_sound_play(int which) {
+	_soundId = which;
+	_soundMode = 1;
 }
 
 #endif
@@ -103,4 +110,7 @@ void hw_sound_play() {
 void hw_sound_init() {};
 
 void hw_sound_update() {};
+
+void hw_sound_play(int which);
+
 #endif

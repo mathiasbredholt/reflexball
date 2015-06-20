@@ -9,6 +9,7 @@
 #include "ansi.h"
 #include "physics.h"
 #include "util.h"
+#include "hw_sound.h"
 
 #define width 256
 #define height 96
@@ -332,6 +333,8 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 	if (type) {	// Block exists - damage or remove
 
 		if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
+
+			hw_sound_play(0);
 
 			if (type != 11) {	// Only if block is destructible
 
