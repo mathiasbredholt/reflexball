@@ -73,43 +73,53 @@ void hw_sound_update() {
 
 		if (_soundMode) {
 			if (soundFX[_soundId][_soundIndex][0]) {
-				T2CTL  = 0xBB; // enable sound generator
+				// Enable sound generator
+				T2CTL  = 0xBB;
+				// Reset
 				T2H = 0;
 				T2L = 0;
+				// Set reload and PWM
 				T2RH   = soundFX[_soundId][_soundIndex][1];
 				T2RL   = soundFX[_soundId][_soundIndex][2];
 				T2PWMH = soundFX[_soundId][_soundIndex][3];
 				T2PWML = soundFX[_soundId][_soundIndex][4];
 			} else {
-				T2CTL = 0x3B; // disable sound generator
+				// Disable sound generator
+				T2CTL = 0x3B;
 			}
-
 
 			++_soundIndex;
 			if (_soundIndex == 7) {
+				// Switch to playing music upon reaching end of sound
 				_soundMode = 0;
 			}
 		} else {
-			if (bossTheme[_soundId][_soundIndex][0]) {
-				T2CTL  = 0xBB; // enable sound generator
+			if (bossTheme[_soundIndex][0]) {
+				// Enable sound generator
+				T2CTL  = 0xBB;
+				// Reset
 				T2H = 0;
 				T2L = 0;
+				// Set reload and PWM
 				T2RH   = bossTheme[_soundId][_soundIndex][1];
 				T2RL   = bossTheme[_soundId][_soundIndex][2];
 				T2PWMH = bossTheme[_soundId][_soundIndex][3];
 				T2PWML = bossTheme[_soundId][_soundIndex][4];
 			} else {
-				T2CTL = 0x3B; // disable sound generator
+				// Disable sound generator
+				T2CTL = 0x3B;
 			}
 		}
 
 		++_musicIndex;
+		// Apply modulus on music index to loop around
 		_musicIndex &= 0x7F;
 	}
 }
 
 void hw_sound_play(int which) {
 	_soundId = which;
+	// Switch to playing sound and reset index
 	_soundMode = 1;
 	_soundIndex = 0;
 }
