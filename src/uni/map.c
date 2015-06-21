@@ -175,7 +175,6 @@ void map_info_update(int *mode, char *lastKey) {
 		*lastKey = key;
 		if (*lastKey & 0x01) *mode = 2;
 		if (*lastKey & 0x02) *mode = 1;
-
 	}
 }
 
