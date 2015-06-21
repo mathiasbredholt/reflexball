@@ -1,9 +1,18 @@
+#if defined(__APPLE__)||defined(__WIN32__)
+#include <stdio.h>
+#endif
+
+#if defined(_Z8F6403)
+#include <sio.h>
+#endif
+
 #include "gui.h"
 #include "game_data.h"
 #include "graphics.h"
 #include "hw_input.h"
 #include "hw_time.h"
 
+// OBS FLYT
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
 
