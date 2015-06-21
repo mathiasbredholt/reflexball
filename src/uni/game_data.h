@@ -23,4 +23,9 @@ typedef struct GameData {
 	char level;
 } GameData;
 
+typedef struct AnimationData {
+	int blockDestruction[4];
+	unsigned char projectiles[5];
+} AnimationData;
+
 #endif

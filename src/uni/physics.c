@@ -10,6 +10,7 @@
 #include "physics.h"
 #include "util.h"
 #include "game_data.h"
+#include "hw_sound.h"
 
 #define width 256
 #define height 96
@@ -67,6 +68,11 @@ void phy_simulate(GameData *gameData) {
 
 			// Give the ball a boost upwards
 			gameData->ballVel.y -= bounciness_factor;
+
+			if (gameData->ballVel.y < -(char)100) {
+				// Velocity should not become grater that 100 (ballVel can store a range of -127 to 128)
+				gameData->ballVel.y = -(char)100;
+			}
 
 			// Check striker zones:
 			if (x <= sp - halfSize + (halfSize >> 2) + 1) {
@@ -131,6 +137,7 @@ void phy_simulate(GameData *gameData) {
 			gameData->ballPos.x = 127 << 8;
 			gameData->ballPos.y = 90 << 8;
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
+			gameData->ballVel.y = -(gameData->ballVel.y); //TEMP
 
 			// Only decrease y velocity to a minumum of 32
 			if (gameData->ballVel.y > 50) {
@@ -328,6 +335,8 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 		if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
 
+			hw_sound_play(0);
+
 			if (type != 11) {	// Only if block is destructible
 
 				if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
@@ -347,10 +356,9 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 				gameData->blockHit[numBlock] |= y << 4; // Stores y coordinate in bit 4-7
 				gameData->blockHit[numBlock] |= x; // Stores x coordinate in bit 0-3
 			}
-
+			gameData->redraw = 1; // Redraw ball for nice gfx!
 		}
 
-		gameData->redraw = 1; // Redraw ball for nice gfx!
 		*justHitBlock = 1;
 		return !gameData->blockHit[2];
 	}

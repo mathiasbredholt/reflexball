@@ -117,11 +117,12 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 			}
 			if (gameData->redraw) {
 				gameData->redraw = 0;
-				break;
+				gfx_draw_ball(gameData);
+				gameData->ballOldPos = gameData->ballPos;
 			}
 		}
 
-		gameData->ballVel.y++;
+		gameData->ballVel.y++;	// Gravity
 
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
@@ -133,12 +134,15 @@ void game_end(int *mode, int win) {
 	if (win == 0) {
 		gfx_window(87, 45, 163, 60);
 		gfx_draw_game_over();
+		LED_set_string("YOU DED");
 	} else {
 		gfx_window(76, 45, 181, 60);
 		gfx_draw_victory();
+		LED_set_string("You found your way home!");
 	}
 	gfx_draw_text(91, 54, "press to continue");
 	while (1) {
+		LED_update();
 		if (hw_read_key() == 4) {
 			* mode = 0;
 			break;

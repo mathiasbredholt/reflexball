@@ -4,7 +4,10 @@
 #include "sound_lib.h"
 
 int _soundIndex;
+int _musicIndex;
 char _soundNext;
+char _soundMode;
+char _soundId;
 
 #pragma interrupt
 void ISR_T3() {
@@ -14,6 +17,9 @@ void ISR_T3() {
 void hw_sound_init() {
 	_soundIndex = 0;
 	_soundNext = 0;
+	_musicIndex = 0;
+	_soundMode = 0;
+	_soundId = 0;
 
 	// Setup timer 2 (sound generator)
 	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 3 (PWM)
@@ -42,9 +48,9 @@ void hw_sound_init() {
 	T3H = 0;
 	T3L = 0;
 
-	// Reload at (64 Hz)
-	T3RH   = 0x08;
-	T3RL   = 0xCA;
+	// Reload at (16 Hz)
+	T3RH   = 0x23;
+	T3RL   = 0x28;
 
 	// Enable timer3 interrupt
 	IRQ2 |= 0x80;
@@ -63,17 +69,39 @@ void hw_sound_init() {
 void hw_sound_update() {
 	if (_soundNext) {
 		_soundNext = 0;
-		T2H = 0;
-		T2L = 0;
-		T2RH   = theme1[_soundIndex][1];
-		T2RL   = theme1[_soundIndex][2];
-		T2PWMH = theme1[_soundIndex][3];
-		T2PWML = theme1[_soundIndex][4];
-		T2CTL  = theme1[_soundIndex][0] ? 0xBB : 0x3B;
 
-		_soundIndex++;
-		_soundIndex &= 0x1FF;
+		if (_soundMode) {
+			T2H = 0;
+			T2L = 0;
+			T2RH   = soundFX[_soundId][_soundIndex][1];
+			T2RL   = soundFX[_soundId][_soundIndex][2];
+			T2PWMH = soundFX[_soundId][_soundIndex][3];
+			T2PWML = soundFX[_soundId][_soundIndex][4];
+			T2CTL  = soundFX[_soundId][_soundIndex][0] ? 0xBB : 0x3B;
+
+			++_soundIndex;
+			if (_soundIndex == 7) {
+				_soundIndex = 0;
+				_soundMode = 0;
+			}
+		} else {
+			T2H = 0;
+			T2L = 0;
+			T2RH   = bossTheme[_musicIndex][1];
+			T2RL   = bossTheme[_musicIndex][2];
+			T2PWMH = bossTheme[_musicIndex][3];
+			T2PWML = bossTheme[_musicIndex][4];
+			T2CTL  = bossTheme[_musicIndex][0] ? 0xBB : 0x3B;
+		}
+
+		++_musicIndex;
+		_musicIndex &= 0x7F;
 	}
+}
+
+void hw_sound_play(int which) {
+	_soundId = which;
+	_soundMode = 1;
 }
 
 #endif
@@ -82,4 +110,7 @@ void hw_sound_update() {
 void hw_sound_init() {};
 
 void hw_sound_update() {};
+
+void hw_sound_play(int which);
+
 #endif
