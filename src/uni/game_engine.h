@@ -23,6 +23,11 @@ typedef struct GameData {
 	char level;
 } GameData;
 
+typedef struct AnimationData {
+	int blockDestruction[4];
+	unsigned char projectiles[5];
+} AnimationData;
+
 void game_init(GameData *gameData, PlayerData *playerData);
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData);
