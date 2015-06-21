@@ -2,7 +2,7 @@
 #define _PHYSICS_H_
 
 #include "util.h"
-#include "game_engine.h"
+#include "game_data.h"
 
 void phy_simulate(GameData *gameData);
 

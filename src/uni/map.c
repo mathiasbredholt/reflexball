@@ -1,5 +1,5 @@
 #include "map.h"
-#include "game_engine.h"
+#include "game_data.h"
 #include "hw_time.h"
 #include "hw_input.h"
 #include "graphics.h"

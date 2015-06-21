@@ -1,7 +1,7 @@
 #ifndef _SHOP_H_
 #define _SHOP_H_
 
-#include "game_engine.h"
+#include "game_data.h"
 
 void shop_show(PlayerData *playerData);
 

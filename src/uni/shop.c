@@ -6,7 +6,7 @@
 #include <sio.h>
 #endif
 
-#include "game_engine.h"
+#include "game_data.h"
 #include "graphics.h"
 #include "hw_input.h"
 #include "hw_time.h"

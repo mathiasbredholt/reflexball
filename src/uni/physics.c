@@ -9,6 +9,7 @@
 #include "ansi.h"
 #include "physics.h"
 #include "util.h"
+#include "game_data.h"
 
 #define width 256
 #define height 96

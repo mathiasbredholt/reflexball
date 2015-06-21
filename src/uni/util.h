@@ -4,6 +4,12 @@
 #define FIX8_8_MULT(a,b) ( (a)*(b) >> 8)
 #define FIX8_8_DIV(a,b) ( ((a) << 8) / (b))
 
+typedef struct char_stack {
+	char capacity;
+	char * array;
+	char size;
+} char_stack;
+
 typedef struct TVector_8_8 {
 	// Vector in 8.8 unsigned fixed point notation
 	unsigned int x, y;

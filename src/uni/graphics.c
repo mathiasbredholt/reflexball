@@ -13,7 +13,7 @@
 #include "util.h"
 #include "graphics.h"
 #include "charset.h"
-#include "game_engine.h"
+#include "game_data.h"
 
 #define width 256
 #define height 96

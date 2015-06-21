@@ -1,5 +1,5 @@
 #include "util.h"
-#include "game_engine.h"
+#include "game_data.h"
 
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
