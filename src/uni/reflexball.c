@@ -18,19 +18,23 @@ void main()
 int main()
 #endif
 {
-	// gui variables
-
+	///////////////////
+	// gui variables //
+	///////////////////
 	int mode = 0;
 	int focus = 0;
 	char lastKey = 0;
 
+	// Counters for star animation in start menu
 	int animFrame1 = 0;
 	int animFrame2 = 104;
 
 	PlayerData playerData;
 	GameData gameData;
 
-	// Hardware initialize
+	/////////////////////////
+	// Hardware initialize //
+	/////////////////////////
 	int i;
 	hw_init();
 	hw_time_init();
@@ -40,7 +44,9 @@ int main()
 	//LED_init();
 	//LED_set_string("Welcome");
 
-
+	///////////////////////
+	// Reset player data //
+	///////////////////////
 	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
 		playerData.items[i] = 0;
 	}
@@ -52,27 +58,33 @@ int main()
 
 	while (1) {
 		if (mode == 0) {
+			// Start menu
 			menu_show();
 			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
 		}
 		if (mode == 1) {
+			// Level select
 			map_show(&playerData);
 			while (mode == 1) map_update(&mode, &lastKey, &focus, &gameData, &playerData);
 		}
 		if (mode == 2) {
+			// Game
 			game_init(&gameData, &playerData);
 			while (mode == 2) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 3) {
+			// Shop
+			shop_show(&playerData);
 			while (mode == 3) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 
 		if (mode == 5) {
+			// Level info page
 			while (mode == 5) map_info_update(&mode, &lastKey);
 		}
 
 #if defined(__APPLE__) || defined(__WIN32__)
-		if (mode == 4) break;
+		if (mode == 4) break;	// Exit
 #endif
 	}
 #if defined(__APPLE__) || defined(__WIN32__)
