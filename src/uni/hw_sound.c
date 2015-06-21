@@ -94,17 +94,17 @@ void hw_sound_update() {
 				_soundMode = 0;
 			}
 		} else {
-			if (bossTheme[_soundIndex][0]) {
+			if (mainTheme1[_soundIndex][0]) {
 				// Enable sound generator
 				T2CTL  = 0xBB;
 				// Reset
 				T2H = 0;
 				T2L = 0;
 				// Set reload and PWM
-				T2RH   = bossTheme[_soundId][_soundIndex][1];
-				T2RL   = bossTheme[_soundId][_soundIndex][2];
-				T2PWMH = bossTheme[_soundId][_soundIndex][3];
-				T2PWML = bossTheme[_soundId][_soundIndex][4];
+				T2RH   = mainTheme1[_soundId][_soundIndex][1];
+				T2RL   = mainTheme1[_soundId][_soundIndex][2];
+				T2PWMH = mainTheme1[_soundId][_soundIndex][3];
+				T2PWML = mainTheme1[_soundId][_soundIndex][4];
 			} else {
 				// Disable sound generator
 				T2CTL = 0x3B;
