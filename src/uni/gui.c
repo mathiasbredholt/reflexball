@@ -1,3 +1,4 @@
+#include "gui.h"
 #include "game_data.h"
 #include "graphics.h"
 #include "hw_input.h"
