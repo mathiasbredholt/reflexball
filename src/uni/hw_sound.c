@@ -71,27 +71,35 @@ void hw_sound_update() {
 		_soundNext = 0;
 
 		if (_soundMode) {
-			T2H = 0;
-			T2L = 0;
-			T2RH   = soundFX[_soundId][_soundIndex][1];
-			T2RL   = soundFX[_soundId][_soundIndex][2];
-			T2PWMH = soundFX[_soundId][_soundIndex][3];
-			T2PWML = soundFX[_soundId][_soundIndex][4];
-			T2CTL  = soundFX[_soundId][_soundIndex][0] ? 0xBB : 0x3B;
+			if (soundFX[_soundId][_soundIndex][0]) {
+				T2CTL  = 0xBB; // enable sound generator
+				T2H = 0;
+				T2L = 0;
+				T2RH   = soundFX[_soundId][_soundIndex][1];
+				T2RL   = soundFX[_soundId][_soundIndex][2];
+				T2PWMH = soundFX[_soundId][_soundIndex][3];
+				T2PWML = soundFX[_soundId][_soundIndex][4];
+			} else {
+				T2CTL = 0x3B; // disable sound generator
+			}
+
 
 			++_soundIndex;
 			if (_soundIndex == 7) {
-				_soundIndex = 0;
 				_soundMode = 0;
 			}
 		} else {
-			T2H = 0;
-			T2L = 0;
-			T2RH   = bossTheme[_musicIndex][1];
-			T2RL   = bossTheme[_musicIndex][2];
-			T2PWMH = bossTheme[_musicIndex][3];
-			T2PWML = bossTheme[_musicIndex][4];
-			T2CTL  = bossTheme[_musicIndex][0] ? 0xBB : 0x3B;
+			if (bossTheme[_soundId][_soundIndex][0]) {
+				T2CTL  = 0xBB; // enable sound generator
+				T2H = 0;
+				T2L = 0;
+				T2RH   = bossTheme[_soundId][_soundIndex][1];
+				T2RL   = bossTheme[_soundId][_soundIndex][2];
+				T2PWMH = bossTheme[_soundId][_soundIndex][3];
+				T2PWML = bossTheme[_soundId][_soundIndex][4];
+			} else {
+				T2CTL = 0x3B; // disable sound generator
+			}
 		}
 
 		++_musicIndex;
@@ -102,6 +110,7 @@ void hw_sound_update() {
 void hw_sound_play(int which) {
 	_soundId = which;
 	_soundMode = 1;
+	_soundIndex = 0;
 }
 
 #endif
