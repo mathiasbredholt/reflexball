@@ -8,9 +8,7 @@
 #include "hw_LED.h"
 #include "intro.h"
 #include "graphics.h"
-#include "menu.h"
-#include "shop.h"
-#include "map.h"
+#include "gui.h"
 
 #if defined(_Z8F6403)
 void main()
