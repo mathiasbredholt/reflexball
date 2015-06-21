@@ -65,7 +65,6 @@ int main()
 			while (mode == 2) game_update(&mode, &gameData, &playerData);
 		}
 		if (mode == 3) {
-			shop_show(&playerData);
 			while (mode == 3) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 

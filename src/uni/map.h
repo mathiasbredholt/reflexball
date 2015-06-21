@@ -9,5 +9,5 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 void map_info(int *mode, char *lastKey);
 
-void map_info_show(int *focus);
+void map_info_show(int *map);
 #endif

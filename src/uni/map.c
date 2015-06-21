@@ -42,8 +42,8 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 				if (*focus > 0 && *focus < 4) {
 					gameData->level = *focus - 1;
 					map_info_show(focus);
-					// *mode = 2;
 					*mode = 5;
+					// *mode = 2;
 				} else if (*focus == 0) {
 					*mode = 3;
 				} else {
@@ -172,10 +172,9 @@ void map_info_update(int *mode, char *lastKey) {
 	key = hw_read_key();
 	if (key != *lastKey) {
 		*lastKey = key;
-		if (*lastKey & 1) {
-			*mode = 2;
-		} else if (*lastKey & 2) {
-			*mode = 1;
-		}
+		if (*lastKey & 0x01) *mode = 2;
+		if (*lastKey & 0x02) *mode = 1;
+
 	}
 }
+
