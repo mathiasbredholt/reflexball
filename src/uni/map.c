@@ -4,6 +4,7 @@
 #include "hw_input.h"
 #include "graphics.h"
 
+// OBS - SKAL FLYTTES
 char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
 
 void map_show(PlayerData *playerData) {

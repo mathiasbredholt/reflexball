@@ -25,9 +25,10 @@ void mySleep(int sleepMs) {
 #if defined(_Z8F6403)
 #include <eZ8.h>
 
-unsigned long _millis;
-char _nextFrame;
-char _LEDflag;
+// Global variables used to avoid having to pass pointers to placeholders for hardware specific variables all the way from main
+unsigned long _millis;  // Milliseconds since initialization
+char _nextFrame;    // Flag determining when to update the game loop (30 Hz)
+char _LEDflag;      // Flag determining when to update the LED display (1 kHz)
 
 #pragma interrupt
 void ISR_T0() {

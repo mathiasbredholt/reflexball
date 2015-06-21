@@ -3,11 +3,12 @@
 #include "hw_time.h"
 #include "sound_lib.h"
 
-int _soundIndex;
-int _musicIndex;
-char _soundNext;
-char _soundMode;
-char _soundId;
+// Global variables used to avoid having to pass pointers to placeholders for hardware specific variables all the way from main
+int _soundIndex;	// How far we are in playing the current sound effect
+int _musicIndex;	// How far we are in playing the current background music track
+char _soundNext;	// Flag set high by timer 3 at 16Hz to control the rythm
+char _soundMode;	// Flag determining whether to play a sound effect (1) or the background music (0)
+char _soundId;		// Which sound effect to play
 
 #pragma interrupt
 void ISR_T3() {

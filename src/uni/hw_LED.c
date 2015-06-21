@@ -14,9 +14,10 @@
 #define LED_MAX_STR_LEN 128
 #define LED_REFRESH_RATE 1 // 1st bit of millis, 1 kHz.
 
-char _video_buffer[5][6];
-char _LEDtext[LED_MAX_STR_LEN];
-char _display_column, _scroll_index, _scroll_count, _text_index;
+// Global variables used to avoid having to pass pointers to placeholders for hardware specific variables all the way from main
+char _video_buffer[5][6];	// Contains graphics currently being scrolled across the LED display
+char _LEDtext[LED_MAX_STR_LEN];	// Contains the complete string to be displayed
+char _display_column, _scroll_index, _scroll_count, _text_index;	// Indices used for scrolling and using persistence of vision
 
 void LED_init() {
 // 'resets' the LED displays.

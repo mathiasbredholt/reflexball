@@ -13,7 +13,7 @@ void hw_init() {}
 #include <sys/select.h>
 #include <termios.h>
 
-struct termios orig_termios;
+struct termios orig_termios;	// Used for emulating the way buttons work on the board
 
 void reset_terminal_mode()
 {
@@ -70,6 +70,7 @@ void hw_init() {
 
 #define DEBOUNCE_INTERVAL 15  // ms
 
+// Global variables used for debouncing to avoid having to pass pointers to placeholders for hardware specific variables all the way from main
 char _debounce_flag, _keys, _lastInput;
 
 void hw_init() {
@@ -92,7 +93,7 @@ char hw_read_key() {    // Returns state of push buttons on bit 0-2
 	return input;
 }
 
-// Debounces input keys and returns the keys pressed since last call
+// Debounces input keys and returns the keys pressed
 char hw_keys() {
 	char currentInput = hw_read_key();
 	if ((hw_time_millis() & DEBOUNCE_INTERVAL) == DEBOUNCE_INTERVAL) {

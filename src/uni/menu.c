@@ -2,6 +2,7 @@
 #include "hw_time.h"
 #include "hw_input.h"
 
+// OBS - SKAL FLYTTES
 char menuButtons[4][12] = { "play", "load game", "exit" };
 
 void menu_show() {
