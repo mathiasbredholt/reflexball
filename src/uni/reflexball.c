@@ -69,6 +69,10 @@ int main()
 			while (mode == 3) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 
+		if (mode == 5) {
+			while (mode == 5) map_info_update(&mode, &lastKey);
+		}
+
 #if defined(__APPLE__) || defined(__WIN32__)
 		if (mode == 4) break;
 #endif
