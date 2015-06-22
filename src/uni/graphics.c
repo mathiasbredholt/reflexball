@@ -105,7 +105,8 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_draw_bullets(AnimationData *animationData) {
-	for (int i = 0; i < 5; ++i) {
+	int i;
+	for (i = 0; i < 5; ++i) {
 		if (animationData->projectileType[i] >= 0) {	// Bullet exists
 			if (animationData->projectileType[i] == 0) { // Laser 1
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);

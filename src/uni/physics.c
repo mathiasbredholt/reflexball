@@ -54,6 +54,8 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			// Bounced striker //
 			/////////////////////
 
+			hw_sound_play(0);
+
 			gameData->multiplier = 0;
 			gameData->bouncedStriker = 1;	// Used to avoid hitting striker twice in a row
 			gameData->redraw = 1;
@@ -371,11 +373,11 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 		if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
 
-			hw_sound_play(0);
+			hw_sound_play(2);
 
 			if (type != 11) {	// Only if block is destructible
 
-				++multiplier;	// Increment multiplier
+				++gameData->multiplier;	// Increment multiplier
 
 				if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
 
@@ -467,6 +469,8 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 					gameData->blockHit[numBlock] = blockType << 8; // Stores type value in blockHit bit 8-11
 					gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
 					gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
+
+					animationData->projectileType[i] = -1;
 				}
 			}
 		}

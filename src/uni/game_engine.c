@@ -73,6 +73,20 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	}
 }
 
+void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {	// side: 0 = left, 1 = right
+	int num;
+
+	// Find available slot in animationData->projectilePos
+	for (num = 0; num < 5; ++num) {
+		if (animationData->projectileType[num] >= 0) break;
+	}
+	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
+		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 1 : 3);
+		animationData->projectileType[num] = (char) type;
+	}
+}
+
 void game_update(int *mode, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	char key, i, lostBall = 0;
 	gameData->redraw = 0;
@@ -148,20 +162,6 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData, Animatio
 		gfx_draw_bullets(animationData);
 	}
 	//LED_update();
-}
-
-void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {	// side: 0 = left, 1 = right
-	int num;
-
-	// Find available slot in animationData->projectilePos
-	for (num = 0; num < 5; ++num) {
-		if (animationData->projectileType[num] >= 0) break;
-	}
-	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
-		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
-		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 1 : 3);
-		animationData->projectileType[num] = (char) type;
-	}
 }
 
 void game_end(int *mode, int win) {

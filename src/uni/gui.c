@@ -215,6 +215,7 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 			*lastKey = key;
 
 			if (*lastKey & 4) {
+				hw_sound_play(1);
 				if (*focus < 6) {
 					gameData->level = *focus;
 					*mode = 5;
