@@ -1,12 +1,11 @@
-#ifndef _LORE_H_
-#define _LORE_H_
-
-#if defined(__APPLE__) ||defined(__WIN32__)
-char lore[43][49] =
-#endif
-
 #if defined(_Z8F6403)
-    rom char lore[43][49] =
+
+rom char story[63][49] =
+
+#else
+
+char story[63][49] =
+
 #endif
 {
 	"dokuu",
@@ -49,7 +48,27 @@ char lore[43][49] =
 	"i sure could go for some food",
 	"oh look its the pub at the end of the universe",
 	"boss",
-	"they are out of hotdogs"
-	"this text is for the intro"
+	"they are out of hotdogs",
+	"you are commander boss",
+	"your ship is the striker",
+	"capable of boucing balls",
+	"created by pure energy",
+	"equipped with powerful",
+	"weaponry",
+	"lasers more powerful than",
+	"the sun",
+	"rockets capable of removing",
+	"entire planets in a second",
+	" ",
+	"your only weakness",
+	"is  your incompetent minion",
+	"who just sold your weapons",
+	"to the local hotdog vendor",
+	"luckily he did not know how",
+	"to remove the ultra 11",
+	"elite ball bouncer",
+	" ",
+	"the only way is to search for",
+	"glorious treasure"
+
 };
-#endif

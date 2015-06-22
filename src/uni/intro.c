@@ -6,13 +6,23 @@
 
 #include "graphics.h"
 #include "hw_input.h"
-#include "lore.h"
-// #include "charset.h"
+#include "story.h"
+#include "charset.h"
 
 void intro_play() {
-	gfx_window(6, 16, 75, 90);
+	int i;
+	gfx_window(1, 5, 16, 119, 101);
 	gfx_draw_title(47, 3);
-	gfx_draw_text(9, 7, 17, lore[43]);
+	// story info, window to the left
+	for (i = 1; i < 24; ++i)
+	{
+		gfx_draw_text(9, 7 , 14 + i * 3, story[40 + i]);
+	}
+	// Meta info,
+	gfx_window(0, 139, 16, 252, 101);
+//	for (int i = 0; i < count; ++i)
+//	{
+//	}
 }
 
 void intro_update(int *mode, char *lastKey) {

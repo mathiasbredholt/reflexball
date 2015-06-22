@@ -1,3 +1,6 @@
+#ifndef _LEVELS_H_
+#define _LEVELS_H_
+
 #if defined(_Z8F6403)
 rom char levelData[6][15][8] =
 #else
@@ -102,3 +105,5 @@ const char levelData[6][15][8] =
 		{0x00, 0x00, 0x03, 0x60, 0x3B, 0xA1, 0x00, 0x00}
 	}
 };
+
+#endif

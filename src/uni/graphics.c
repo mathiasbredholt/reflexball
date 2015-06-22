@@ -1,10 +1,9 @@
-#if defined(__APPLE__) || defined(__WIN32__)
-#define GCC
-#include <stdio.h>
-#endif
 
 #if defined(_Z8F6403)
 #include <sio.h>
+#else
+#define GCC
+#include <stdio.h>
 #endif
 
 // graphics.c
@@ -103,7 +102,7 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_update_animation(AnimationData *animationData) {
-	int i, j;
+	int i;
 	for (i = 0; i < 5; ++i) {
 		if (animationData->eraseProjectile[i]) {
 			go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
@@ -297,13 +296,15 @@ void gfx_erase_block(int x, int y) {
 #endif
 }
 
-void gfx_window(int x1, int y1, int x2, int y2) {
+void gfx_window( int clr, int x1, int y1, int x2, int y2) {
 	int w = x2 - x1;
 	int h = y2 - y1;
 	int i;
 
-	clr_scr();
-	hide_csr();
+	if (clr) {
+		clr_scr();
+		hide_csr();
+	}
 	fg_color(10);
 
 	reverse(0);

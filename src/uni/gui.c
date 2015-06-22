@@ -1,10 +1,9 @@
-#if defined(__APPLE__)||defined(__WIN32__)
+#if defined(_Z8F6403)
+#include <sio.h>
+#else
 #include <stdio.h>
 #endif
 
-#if defined(_Z8F6403)
-#include <sio.h>
-#endif
 
 #include "gui.h"
 #include "game_data.h"
@@ -12,7 +11,7 @@
 #include "hw_input.h"
 #include "hw_time.h"
 #include "hw_sound.h"
-#include "lore.h"
+#include "story.h"
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[8][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "shop", "menu" };
@@ -20,7 +19,7 @@ char mapButtons[8][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "
 void menu_show() {
 	// Call drawing functions for GUI creation
 	hw_sound_set_music(0);
-	gfx_window(64, 16, 192, 80);
+	gfx_window(1, 64, 16, 192, 80);
 	gfx_draw_text(9, 68, 18, "reflexball");
 
 	gfx_draw_btn(66, 72, menuButtons[0], 1);
@@ -81,7 +80,7 @@ void shop_show(PlayerData *playerData) {
 	hw_sound_set_music(0);
 	hw_sound_play(1);	// Because a button was pressed to get here
 
-	gfx_window(-1, -1, 257, 104);
+	gfx_window(1, -1, -1, 257, 104);
 
 	gfx_draw_text(9, 8, 2, "welcome to my shop");
 	gfx_draw_text(9, 8, 6, "what does your heart desire");
@@ -116,9 +115,9 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 					int i, j;
 					char str[15];
 
-					if (playerData->items[*focus] < playerData->itemMax[*focus]) {
+					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
 						hw_sound_play(1);
-						playerData->coins -= playerData->itemPrice[*focus];
+						playerData->coins -= itemPrice[*focus];
 						++playerData->items[*focus];
 					} else {
 						hw_sound_play(0);
@@ -129,7 +128,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 					for (i = 0; i < 2; ++i) {
 						for (j = 0; j < 4; j++) {
-							gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[j + i * 4]);
+							gfx_draw_meter(33 + 48 * j, 40 + 25 * i, playerData->items[j + i * 4]);
 						}
 					}
 				} else {
@@ -145,7 +144,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				} else {
 					gfx_draw_btn(
 					    32 + 48 * (*focus & 0x03),
-					    32  + 32 * ((*focus & 0x04) >> 2),
+					    56  + 25 * ((*focus & 0x04) >> 2),
 					    "buy",
 					    0
 					);
@@ -162,7 +161,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				} else {
 					gfx_draw_btn(
 					    32 + 48 * (*focus & 0x03),
-					    32  + 32 * ((*focus & 0x04) >> 2),
+					    56  + 25 * ((*focus & 0x04) >> 2),
 					    "buy",
 					    1
 					);
@@ -175,7 +174,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 void map_show(PlayerData *playerData, int *focus) {
 	hw_sound_set_music(1);
 
-	gfx_window(-1, -1, 257, 104);
+	gfx_window(1, -1, -1, 257, 104);
 
 	gfx_draw_text(9, 6, 2, "the andromeda galaxy");
 
@@ -283,68 +282,70 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 
 void map_info_show(GameData *gameData) {
-	int y, i, j;
-	gfx_window(-1, -1, 257, 104);
+	int y, i;
+	gfx_window(1, -1, -1, 257, 104);
 
 	y = 60;
 
 
 	if (gameData->level == 0) {
+
 		//dokuu
-		gfx_draw_text(9, 119, 35, lore[0]);
+		gfx_draw_text(9, 119, 35, story[0]);
 		gfx_draw_thumb(122, 40, 0);
 
 		for (i = 1; i < 5; ++i) {
-			gfx_draw_text(9, 57, y + i * 3, lore[i]);
-
+			gfx_draw_text(9, 57, y + i * 3, story[i]);
 		}
+
 	} else if (gameData->level == 1) {
+
 		// ALderan
-		gfx_draw_text(9, 113, 35, lore[5]);
+		gfx_draw_text(9, 113, 35, story[5]);
 		gfx_draw_thumb(122, 40, 1);
 
 		for (i = 1; i < 7; ++i) {
-			gfx_draw_text(9, 71, y + i * 3, lore[i + 5]);
+			gfx_draw_text(9, 71, y + i * 3, story[i + 5]);
 		}
 
 	} else if (gameData->level == 2) {
-		// tatoiine
 
-		gfx_draw_text(9, 113, 35, lore[12]);
+		// tatoiine
+		gfx_draw_text(9, 113, 35, story[12]);
 		gfx_draw_thumb(122, 40, 2);
 
 		for (i = 1; i < 8; ++i) {
-			gfx_draw_text(9, 77, y + i * 3, lore[i + 12]);
+			gfx_draw_text(9, 77, y + i * 3, story[i + 12]);
 		}
 
 	} else if (gameData->level == 3) {
 		// darth
 
-		gfx_draw_text(9, 107, 35, lore[20]);
+		gfx_draw_text(9, 107, 35, story[20]);
 		gfx_draw_thumb(122, 40, 3);
 
 		for (i = 1; i < 6; ++i)	{
-			gfx_draw_text(9, 75, y + i * 3, lore[i + 20]);
+			gfx_draw_text(9, 75, y + i * 3, story[i + 20]);
 		}
 
 	} else if (gameData->level == 4) {
 		//	unknown
 
-		gfx_draw_text(9, 95, 35, lore[26]);
+		gfx_draw_text(9, 95, 35, story[26]);
 		gfx_draw_thumb(122, 40, 4);
 
 		for (i = 1; i < 7; ++i) {
-			gfx_draw_text(9, 53, y + i * 3, lore[i + 26]);
+			gfx_draw_text(9, 53, y + i * 3, story[i + 26]);
 		}
 
 	} else if (gameData->level == 5) {
 		// the pub
 
-		gfx_draw_text(9, 70, 35, lore[33]);
+		gfx_draw_text(9, 70, 35, story[33]);
 		gfx_draw_thumb(122, 40, 5);
 
 		for (i = 1; i < 8; ++i) {
-			gfx_draw_text(9, 33, y + i * 3, lore[i + 33]);
+			gfx_draw_text(9, 33, y + i * 3, story[i + 33]);
 		}
 	}
 	gfx_draw_text(9, 5, 90, "press left to warp to starmap");

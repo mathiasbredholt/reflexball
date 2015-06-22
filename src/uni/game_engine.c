@@ -20,7 +20,7 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 
 	playerData->energy = playerData->energyMax;
 
-	gfx_window(-1, -1, 257, 98);
+	gfx_window(1, -1, -1, 257, 98);
 
 	gfx_draw_text(11, 200, 98, "coins");
 	gfx_draw_score(playerData);
@@ -180,13 +180,13 @@ void game_end(int *mode, int win) {
 	hw_sound_mute();
 	if (win == 0) {
 		hw_sound_play(13);
-		gfx_window(87, 45, 163, 60);
+		gfx_window(1, 87, 45, 163, 60);
 		gfx_draw_game_over();
 		LED_set_string("YOU DEAD");
 		nxt = 1;
 	} else {
 		hw_sound_play(12);
-		gfx_window(76, 45, 181, 60);
+		gfx_window(1, 76, 45, 181, 60);
 		gfx_draw_victory();
 		LED_set_string("You found your way home!");
 		nxt = 0;
