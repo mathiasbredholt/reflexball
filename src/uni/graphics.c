@@ -102,7 +102,7 @@ void gfx_erase_striker(GameData *gameData) {
 #endif
 }
 
-void gfx_draw_bullets(AnimationData *animationData) {
+void gfx_update_animation(AnimationData *animationData) {
 	int i;
 	for (i = 0; i < 5; ++i) {
 		if (animationData->eraseProjectile[i]) {
@@ -120,18 +120,21 @@ void gfx_draw_bullets(AnimationData *animationData) {
 			animationData->eraseProjectile[i] = 0;
 		} else if (animationData->projectileType[i] >= 0) {	// Bullet exists
 			if (animationData->projectileType[i] == 0) { // Laser 1
+				fg_color(9);
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
 				printf(" ");
 				go_left(1);
 				go_up(1);
 				printf("*");
 			} else if (animationData->projectileType[i] == 1) { // Laser 2
+				fg_color(9);
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
 				printf(" ");
 				go_left(1);
 				go_up(1);
 				printf("%c", 233);
 			} else { // Rocket
+				fg_color(7);
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 3);
 				printf(" ");
 				go_left(1);
@@ -145,6 +148,17 @@ void gfx_draw_bullets(AnimationData *animationData) {
 				printf("A");
 			}
 		}
+	}
+
+	if (animationData->rocketHit[2]) {
+		go_to_xy(animationData->rocketHit[0] << 4, animationData->rocketHit[1] << 2);
+		ansi_save();
+		for (i = 1; i <= 12; ++i) {
+			spacer(48, (int) ' ');
+			ansi_load();
+			go_down(i);
+		}
+		animationData->rocketHit[2] = 0;
 	}
 }
 

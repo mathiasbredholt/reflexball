@@ -406,7 +406,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 }
 
 void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
-	int i, blockX, blockY, blockType, numBlock;
+	int i, j, blockX, blockY, blockType, numBlock;
 	for (i = 0; i < 5; ++i) {
 		if (animationData->projectileType[i] >= 0) {	// Bullet exists
 			if (animationData->projectilePos[i][1] <= 60 // Bullet is inside the block area
@@ -414,6 +414,8 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 				blockX = animationData->projectilePos[i][0] >> 4;
 				blockY = (animationData->projectilePos[i][1] >> 2) - 1;
 				blockType = (blockX & 1) ? gameData->blockData[blockY][blockX >> 1] & 0xF : gameData->blockData[blockY][blockX >> 1] >> 4;	// Value corresponding to current block in blockData
+				numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
+
 				if (blockType) {
 
 					// Block exists
@@ -445,6 +447,11 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 							}
 						}
 
+						// Encode block data in blockHit
+						gameData->blockHit[numBlock] = blockType << 8; // Stores type value in blockHit bit 8-11
+						gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
+						gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
+
 					} else if (animationData->projectileType[i] == 1) {
 
 						/////////////////
@@ -455,20 +462,27 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 						gameData->blockData[blockY][blockX >> 1] &= (blockX & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
 						blockType = 0;
 
+						// Encode block data in blockHit
+						gameData->blockHit[numBlock] = blockType << 8; // Stores type value in blockHit bit 8-11
+						gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
+						gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
+
 					} else {
 
 						////////////
 						// Rocket //
 						////////////
 
+						animationData->rocketHit[0] = blockX - 1;
+						animationData->rocketHit[1] = blockY - 1;
+
+						for (i = 0; i < 3; ++i) {
+							for (j = 0; j < 3; ++j) {
+								// Mark for demolition
+								gameData->blockData[(blockY + j)][(blockX + i) >> 1] &= ((blockX + i) & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
+							}
+						}
 					}
-
-					numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
-
-					// Encode block data in blockHit
-					gameData->blockHit[numBlock] = blockType << 8; // Stores type value in blockHit bit 8-11
-					gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
-					gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
 
 					animationData->eraseProjectile[i] = 1;
 				}

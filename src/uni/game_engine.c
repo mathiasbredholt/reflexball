@@ -88,7 +88,7 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 	}
 	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
 		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
-		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 1 : 3);
+		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 2 : 4);
 		animationData->projectileType[num] = (char) type;
 	}
 }
@@ -169,7 +169,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
-		gfx_draw_bullets(animationData);
+		gfx_update_animation(animationData);
 	}
 	//LED_update();
 }

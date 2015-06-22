@@ -14,7 +14,7 @@ void gfx_init_striker(GameData *gameData);
 
 void gfx_erase_striker(GameData *gameData);
 
-void gfx_draw_bullets(AnimationData *animationData);
+void gfx_update_animation(AnimationData *animationData);
 
 void gfx_draw_all_blocks(GameData *gameData);
 
