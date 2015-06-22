@@ -30,7 +30,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gfx_window(-1, -1, 257, 98);
 
-	gfx_draw_text(200, 98, "coins");
+	gfx_draw_text(9, 200, 98, "coins");
 	gfx_draw_energy_meter();
 
 	for (i = 0; i < 15; ++i) {
@@ -41,7 +41,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gfx_draw_all_blocks(gameData);
 	sprintf(str, "%8d", playerData->coins);
-	gfx_draw_text(224, 98, str);
+	gfx_draw_text(9, 224, 98, str);
 
 	gameData->strikerPos = 127 << 8;
 
@@ -105,7 +105,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		if (playerData->energy <= 0) game_end(mode, 0);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
-		// gfx_draw_text(200, 80, debug);
+		// gfx_draw_text(9, 200, 80, debug);
 
 		// if (key & 4) *mode = 0;
 
@@ -164,7 +164,7 @@ void game_end(int *mode, int win) {
 		LED_set_string("You found your way home!");
 		nxt = 0;
 	}
-	gfx_draw_text(91, 54, "press to continue");
+	gfx_draw_text(9, 91, 54, "press to continue");
 	while (1) {
 		LED_update();
 		if (hw_read_key() == 4) {
