@@ -90,7 +90,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 
 
-		if (playerData->energy <= 0) game_end(mode, 0);
+		if (playerData->energy <= 0) game_end(mode, 1);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
 		// gfx_draw_text(200, 80, debug);
@@ -136,7 +136,6 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 		gfx_draw_ball(gameData);
 	}
 	//LED_update();
-	hw_sound_update();
 }
 void game_end(int *mode, int win) {
 	char nxt;
