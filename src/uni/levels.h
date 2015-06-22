@@ -1,9 +1,7 @@
-#if defined(__APPLE__) || defined(__WIN32__)
-const char levelData[6][15][8] =
-#endif
-
 #if defined(_Z8F6403)
-    rom char levelData[6][15][8] =
+rom char levelData[6][15][8] =
+#else
+const char levelData[6][15][8] =
 #endif
 {
 	{	// level 1, no impossible blocks, easygoing Asteroid belt

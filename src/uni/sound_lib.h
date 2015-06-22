@@ -1,5 +1,6 @@
 #ifndef _SOUND_LIB_H_
 #define _SOUBD_LIB_H_
+#if defined(_Z8F6403)
 
 // rom char theme1[513][5] = {
 // 	{ 1, 0x02, 0x26, 0x00, 0x37 },
@@ -1201,4 +1202,5 @@ rom char music[4][128][5] = {
 // 	{ 0, 0x04, 0x4C, 0x02, 0x26 },
 // 	{ 0, 0x08, 0x99, 0x04, 0x4C }
 // }};
+#endif
 #endif

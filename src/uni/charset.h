@@ -28,12 +28,10 @@ Note:
 #ifndef _CHARSET_H_
 #define _CHARSET_H_
 
-#if defined(__APPLE__) || defined(__WIN32__)
-const char character_data[95][5] =
-#endif
-
 #if defined(_Z8F6403)
-  rom char character_data[95][5] =
+rom char character_data[95][5] =
+#else
+const char character_data[95][5] =
 #endif
 {
   {0x00, 0x00, 0x00, 0x00, 0x00},
@@ -135,10 +133,8 @@ const char character_data[95][5] =
 
 #if defined(_Z8F6403)
 rom char font_mini[36][3][5] =
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-  const char font_mini[36][3][5] =
+#else
+const char font_mini[36][3][5] =
 #endif
 
 //Alphabet for 'high res'
@@ -292,10 +288,8 @@ rom char font_mini[36][3][5] =
 
 #if defined(_Z8F6403)
 rom char items[8][9][17] =
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-  const char items[8][9][17] =
+#else
+const char items[8][9][17] =
 #endif
 {
   { //Battery
@@ -382,10 +376,8 @@ rom char items[8][9][17] =
 
 #if defined(_Z8F6403)
 rom char game_over[6][63] =
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-  const char game_over[6][63] =
+#else
+const char game_over[6][63] =
 #endif
 
 {
@@ -399,10 +391,8 @@ rom char game_over[6][63] =
 
 #if defined(_Z8F6403)
 rom char game_victory[7][103] =
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-  const char game_victory[7][103] =
+#else
+const char game_victory[7][103] =
 #endif
 
 {
@@ -415,11 +405,9 @@ rom char game_victory[7][103] =
 };
 
 #if defined(_Z8F6403)
-rom char mapThumbs[7][16][17] =
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-  const char mapThumbs[7][15][16] =
+rom char mapThumbs[7][15][17] =
+#else
+const char mapThumbs[7][15][17] =
 #endif
 
 {
@@ -524,12 +512,10 @@ rom char mapThumbs[7][16][17] =
 
 #if defined(_Z8F6403)
 rom char image[22][53] =
+#else
+const char image[22][53] =
 #endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
-  const char image[22][53] =
-#endif
-    // its an ufo
+  // its an ufo
 {
   "                        ;LL;                        ",
   "                    C@@q3  4$@@M                    ",

@@ -95,9 +95,9 @@ void shop_show(PlayerData *playerData) {
 
 	for (i = 0; i < 2; ++i) {
 		for (j = 0; j < 4; j++) {
-			gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[j + i * 4]);
-			gfx_draw_item(44 + 48 * j, 18 + 32 * i, j + i * 4);
-			gfx_draw_btn(32 + 48 * j, 32  + 32 * i, "buy", j + i * 4 == 0);
+			gfx_draw_meter(32 + 48 * j, 40 + 25 * i, playerData->items[j + i * 4]);
+			gfx_draw_item(44 + 48 * j, 42 + 25 * i, j + i * 4);
+			gfx_draw_btn(32 + 48 * j, 56  + 25 * i, "buy", j + i * 4 == 0);
 		}
 	}
 
@@ -119,23 +119,28 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 			// select event
 			if (*lastKey & 4) {
-				hw_sound_play(1);
 				if (*focus != 8) {
 					int i, j;
-
 					char str[15];
-					--playerData->coins;
-					++playerData->items[*focus];
+
+					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
+						hw_sound_play(1);
+						playerData->coins -= itemPrice[*focus];
+						++playerData->items[*focus];
+					} else {
+						hw_sound_play(0);
+					}
 
 					sprintf(str, "coins %8d", playerData->coins);
 					gfx_draw_text(9, 196, 2, str);
 
 					for (i = 0; i < 2; ++i) {
 						for (j = 0; j < 4; j++) {
-							gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[j + i * 4]);
+							gfx_draw_meter(33 + 48 * j, 40 + 25 * i, playerData->items[j + i * 4]);
 						}
 					}
 				} else {
+					hw_sound_play(1);
 					*focus = 0;
 					*mode = 1;
 				}
@@ -147,7 +152,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				} else {
 					gfx_draw_btn(
 					    32 + 48 * (*focus & 0x03),
-					    32  + 32 * ((*focus & 0x04) >> 2),
+					    56  + 25 * ((*focus & 0x04) >> 2),
 					    "buy",
 					    0
 					);
@@ -164,7 +169,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				} else {
 					gfx_draw_btn(
 					    32 + 48 * (*focus & 0x03),
-					    32  + 32 * ((*focus & 0x04) >> 2),
+					    56  + 25 * ((*focus & 0x04) >> 2),
 					    "buy",
 					    1
 					);
@@ -307,7 +312,7 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 
 void map_info_show(GameData *gameData) {
-	int y, i, j;
+	int y, i;
 	gfx_window(-1, -1, 257, 104);
 
 	y = 60;

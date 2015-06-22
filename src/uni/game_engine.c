@@ -18,17 +18,17 @@
 void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	int i, j;
 
-	playerData->energy = 0x7FFF;
+	playerData->energy = playerData->energyMax;
 
 	gfx_window(-1, -1, 257, 98);
 
 	gfx_draw_text(11, 200, 98, "coins");
 	gfx_draw_score(playerData);
-	gfx_draw_energy_meter();
+	gfx_draw_energy_meter(playerData);
 
 	for (i = 0; i < 15; ++i) {
 		for (j = 0; j < 8; ++j) {
-			gameData->blockData[i][j] = levelData[gameData->level][i][j];
+			gameData->blockData[i][j] = levelData[(int) gameData->level][i][j];
 		}
 	}
 

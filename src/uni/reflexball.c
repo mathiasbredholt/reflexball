@@ -12,9 +12,7 @@
 
 #if defined(_Z8F6403)
 void main()
-#endif
-
-#if defined(__APPLE__) || defined(__WIN32__)
+#else
 int main()
 #endif
 {
@@ -54,6 +52,7 @@ int main()
 
 	playerData.coins = 0;
 	playerData.progress = 0;
+	playerData.energyMax = 0x7FFF;
 
 	gameData.strikerSize = 48;
 

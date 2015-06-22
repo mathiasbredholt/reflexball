@@ -12,14 +12,14 @@
 // #include "charset.h"
 
 void intro_play() {
-	gfx_window(6, 4, 50, 50);
-	gfx_draw_title(86, 5);
+  gfx_window(6, 4, 50, 50);
+  gfx_draw_title(86, 5);
 }
 
 void intro_update(int *mode, char *lastKey) {
-	char key;
-	key = hw_read_key();
-	if (key != *lastKey) {
-		//	if (*lastKey & 4) *mode = 0;
-	}
+  char key;
+  key = hw_read_key();
+  if (key != *lastKey) {
+    //  if (*lastKey & 4) *mode = 0;
+  }
 }
