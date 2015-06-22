@@ -5,7 +5,7 @@
 
 void game_init(GameData *gameData, PlayerData *playerData);
 
-void game_update(int *mode, GameData *gameData, PlayerData *playerData);
+void game_update(int *mode, GameData *gameData, PlayerData *playerData, AnimationData *animationData);
 
 void game_end(int *mode, int win);
 

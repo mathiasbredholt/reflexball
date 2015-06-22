@@ -31,6 +31,7 @@ int main()
 
 	PlayerData playerData;
 	GameData gameData;
+	AnimationData animationData;
 
 	/////////////////////////
 	// Hardware initialize //
@@ -64,13 +65,13 @@ int main()
 		}
 		if (mode == 1) {
 			// Level select
-			map_show(&playerData);
+			map_show(&playerData, &focus);
 			while (mode == 1) map_update(&mode, &lastKey, &focus, &gameData, &playerData);
 		}
 		if (mode == 2) {
 			// Game
 			game_init(&gameData, &playerData);
-			while (mode == 2) game_update(&mode, &gameData, &playerData);
+			while (mode == 2) game_update(&mode, &gameData, &playerData, &animationData);
 		}
 		if (mode == 3) {
 			// Shop
@@ -80,7 +81,7 @@ int main()
 
 		if (mode == 5) {
 			// Level info page
-			map_info_show(&focus);
+			map_info_show(&gameData);
 			while (mode == 5) map_info_update(&mode, &lastKey);
 		}
 

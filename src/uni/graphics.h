@@ -14,6 +14,8 @@ void gfx_init_striker(GameData *gameData);
 
 void gfx_erase_striker(GameData *gameData);
 
+void gfx_draw_bullets(AnimationData *animationData);
+
 void gfx_draw_all_blocks(GameData *gameData);
 
 void gfx_draw_block(int x, int y, int type);
@@ -22,7 +24,7 @@ void gfx_erase_block(int x, int y);
 
 void gfx_window(int x1, int y1, int x2, int y2);
 
-void gfx_draw_text(int x, int y, char *str);
+void gfx_draw_text(int col, int x, int y, char *str);
 
 void gfx_draw_btn(int x, int y, char *str, int focus);
 

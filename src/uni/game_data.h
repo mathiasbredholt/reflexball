@@ -4,6 +4,9 @@
 #define _GAME_DATA_
 
 #define NUMBER_OF_ITEMS 8
+#define striker_height 92
+#define game_width 256
+#define game_height 96
 
 typedef struct PlayerData {
 	int energy;
@@ -21,11 +24,13 @@ typedef struct GameData {
 	int blockHit[3];
 	int ballSpeed;
 	char level;
+	char multiplier;
 } GameData;
 
 typedef struct AnimationData {
 	int blockDestruction[4];
-	unsigned char projectiles[5];
+	unsigned char projectilePos[5][2];
+	char projectileType[5];
 } AnimationData;
 
 #endif

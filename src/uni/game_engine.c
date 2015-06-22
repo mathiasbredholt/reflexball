@@ -1,11 +1,3 @@
-#if defined(__APPLE__) || defined(__WIN32__)
-#include <stdio.h>
-#endif
-
-#if defined(_Z8F6403)
-#include <stdio.h>
-#endif
-
 // game_engine.c
 
 #include "game_engine.h"
@@ -24,13 +16,13 @@
 
 void game_init(GameData *gameData, PlayerData *playerData) {
 	int i, j;
-	char str[9];
 
 	playerData->energy = 0x7FFF;
 
 	gfx_window(-1, -1, 257, 98);
 
-	gfx_draw_text(200, 98, "coins");
+	gfx_draw_text(11, 200, 98, "coins");
+	gfx_draw_score(playerData);
 	gfx_draw_energy_meter();
 
 	for (i = 0; i < 15; ++i) {
@@ -40,8 +32,6 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	}
 
 	gfx_draw_all_blocks(gameData);
-	sprintf(str, "%8d", playerData->coins);
-	gfx_draw_text(224, 98, str);
 
 	gameData->strikerPos = 127 << 8;
 
@@ -55,6 +45,8 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gameData->ballSpeed = 3;
 
+	gameData->multiplier = 0;
+
 	gameData->strikerSize = 24;
 
 	gfx_init_striker(gameData);
@@ -66,10 +58,22 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	gameData->bouncedSide = 0;	// Touching side game border
 	gameData->bouncedStriker = 0;	// Touching the striker
 
-	hw_sound_set_music(2);
+	if (gameData->level < 0) {
+		hw_sound_set_music(1);
+	} else if (gameData->level == 1) {
+		hw_sound_set_music(2);
+	} else if (gameData->level == 2) {
+		hw_sound_set_music(3);
+	} else if (gameData->level == 3) {
+		hw_sound_set_music(2);
+	} else if (gameData->level == 4) {
+		hw_sound_set_music(3);
+	} else if (gameData->level == 5) {
+		hw_sound_set_music(0);
+	}
 }
 
-void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
+void game_update(int *mode, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	char key, i, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
@@ -86,20 +90,14 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 		gfx_update_energy_meter(playerData);
 
-		key = hw_read_key();
-
-
-
 		if (playerData->energy <= 0) game_end(mode, 0);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
-		// gfx_draw_text(200, 80, debug);
+		// gfx_draw_text(9, 200, 80, debug);
 
 		// if (key & 4) *mode = 0;
 
-		if (key & 4) {
-			gfx_draw_bullet(gameData->strikerPos, gameData->strikerPos, 0, 0);
-		}
+		phy_update_bullets(gameData, animationData);
 
 		// Calculate new ball position
 		for (i = 0; i < 8; ++i) {
@@ -110,11 +108,11 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 				if (gameData->blockHit[1]) {
 					(gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, gameData->blockHit[1] >> 8) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
 					gameData->blockHit[1] = 0;
-					playerData->coins += 5;
+					playerData->coins += 5 * gameData->multiplier;
 				}
 
 				// update score
-				playerData->coins += 5;
+				playerData->coins += 5 * gameData->multiplier;
 				gfx_draw_score(playerData);
 			}
 			if (gameData->redraw) {
@@ -134,11 +132,38 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 		gameData->ballVel.y++;	// Gravity
 
+		key = hw_read_key();
+		if (key & 1) {
+			create_bullet(gameData, animationData, 0, 1);
+		}
+		if (key & 2) {
+			create_bullet(gameData, animationData, 1, 0);
+		}
+		if (key & 4) {
+			create_bullet(gameData, animationData, 2, 0);
+		}
+
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
+		gfx_draw_bullets(animationData);
 	}
 	//LED_update();
 }
+
+void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {	// side: 0 = left, 1 = right
+	int num;
+
+	// Find available slot in animationData->projectilePos
+	for (num = 0; num < 5; ++num) {
+		if (animationData->projectileType[num] >= 0) break;
+	}
+	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
+		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 1 : 3);
+		animationData->projectileType[num] = (char) type;
+	}
+}
+
 void game_end(int *mode, int win) {
 	char nxt;
 	if (win == 0) {
@@ -152,7 +177,7 @@ void game_end(int *mode, int win) {
 		LED_set_string("You found your way home!");
 		nxt = 0;
 	}
-	gfx_draw_text(91, 54, "press to continue");
+	gfx_draw_text(9, 91, 54, "press to continue");
 	while (1) {
 		LED_update();
 		if (hw_read_key() == 4) {
