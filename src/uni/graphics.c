@@ -15,9 +15,6 @@
 #include "charset.h"
 #include "game_data.h"
 
-#define width 256
-#define height 96
-#define striker_height 92
 #define BTN_WIDTH 40
 
 void gfx_draw_ball(GameData *gameData) {

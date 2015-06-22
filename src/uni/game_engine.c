@@ -45,6 +45,8 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	gameData->ballSpeed = 3;
 
+	gameData->multiplier = 0;
+
 	gameData->strikerSize = 24;
 
 	gfx_init_striker(gameData);
@@ -71,7 +73,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	}
 }
 
-void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
+void game_update(int *mode, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	char key, i, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
@@ -112,11 +114,11 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 				if (gameData->blockHit[1]) {
 					(gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, gameData->blockHit[1] >> 8) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
 					gameData->blockHit[1] = 0;
-					playerData->coins += 5;
+					playerData->coins += 5 * gameData->multiplier;
 				}
 
 				// update score
-				playerData->coins += 5;
+				playerData->coins += 5 * gameData->multiplier;
 				gfx_draw_score(playerData);
 			}
 			if (gameData->redraw) {
@@ -141,6 +143,21 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 	}
 	//LED_update();
 }
+
+void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {
+	int num;
+
+	// Find available slot in animationData->projectilePos
+	for (num = 0; num < 5; ++num) {
+		if (animationData->projectileType[num] >= 0) break;
+	}
+	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
+		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 1 : 3);
+		animationData->projectileType[num] = (char) type;
+	}
+}
+
 void game_end(int *mode, int win) {
 	char nxt;
 	if (win == 0) {
