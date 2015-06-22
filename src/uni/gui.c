@@ -16,6 +16,7 @@
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[8][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "shop", "menu" };
+char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
@@ -87,10 +88,10 @@ void shop_show(PlayerData *playerData) {
 	gfx_draw_text(9, 8, 6, "what does your heart desire");
 
 	for (i = 0; i < 2; ++i) {
-		for (j = 0; j < 4; j++) {
-			gfx_draw_meter(32 + 48 * j, 40 + 25 * i, playerData->items[j + i * 4]);
-			gfx_draw_item(44 + 48 * j, 42 + 25 * i, j + i * 4);
-			gfx_draw_btn(32 + 48 * j, 56  + 25 * i, "buy", j + i * 4 == 0);
+		for (j = 0; j < 3; j++) {
+			gfx_draw_meter(37 + 64 * j, 40 + 25 * i, playerData->items[j + i * 3]);
+			gfx_draw_item(48 + 64 * j, 42 + 25 * i, j + i * 3);
+			gfx_draw_btn(36 + 64 * j, 56  + 25 * i, playerData->items[j + i * 3] == itemMax[j + i * 3] ? "max" : "buy", j + i * 3 == 0);
 		}
 	}
 
@@ -112,8 +113,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 			// select event
 			if (*lastKey & 4) {
-				if (*focus != 8) {
-					int i, j;
+				if (*focus != 6) {
 					char str[15];
 
 					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
@@ -127,11 +127,12 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 					sprintf(str, "coins %8d", playerData->coins);
 					gfx_draw_text(9, 196, 2, str);
 
-					for (i = 0; i < 2; ++i) {
-						for (j = 0; j < 4; j++) {
-							gfx_draw_meter(33 + 48 * j, 40 + 25 * i, playerData->items[j + i * 4]);
-						}
+					gfx_draw_meter(37 + 64 * (*focus % 3), 40 + 25 * (*focus / 3), playerData->items[*focus]);
+
+					if (playerData->items[*focus] == itemMax[*focus]) {
+						gfx_draw_btn(36 + 64 * (*focus % 3), 56  + 25 * (*focus / 3), "max", 1);
 					}
+
 				} else {
 					hw_sound_play(1);
 					*focus = 0;
@@ -140,13 +141,15 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 			} else if (*lastKey & 0x03) {
 				// focus handling
-				if (*focus == 8) {
+				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 0);
 				} else {
+					gfx_draw_text(9, 12, 14, shopDescriptions[*focus][0]);
+					gfx_draw_text(9, 12, 17, shopDescriptions[*focus][1]);
 					gfx_draw_btn(
-					    32 + 48 * (*focus & 0x03),
-					    56  + 25 * ((*focus & 0x04) >> 2),
-					    "buy",
+					    36 + 64 * (*focus % 3),
+					    56  + 25 * (*focus / 3),
+					    playerData->items[*focus] == itemMax[*focus] ? "max" : "buy",
 					    0
 					);
 				}
@@ -154,16 +157,16 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				if (*lastKey & 0x01) ++(*focus);
 				if (*lastKey & 0x02) --(*focus);
 
-				*focus %= 9;
-				if (*focus < 0) *focus += 9;
+				*focus %= 7;
+				if (*focus < 0) *focus += 7;
 
-				if (*focus == 8) {
+				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 1);
 				} else {
 					gfx_draw_btn(
-					    32 + 48 * (*focus & 0x03),
-					    56  + 25 * ((*focus & 0x04) >> 2),
-					    "buy",
+					    36 + 64 * (*focus % 3),
+					    56  + 25 * (*focus / 3),
+					    playerData->items[*focus] == itemMax[*focus] ? "max" : "buy",
 					    1
 					);
 				}
