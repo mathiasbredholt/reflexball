@@ -104,6 +104,38 @@ void gfx_erase_striker(GameData *gameData) {
 #endif
 }
 
+void gfx_draw_bullets(AnimationData *animationData) {
+	for (int i = 0; i < 5; ++i) {
+		if (animationData->projectileType[i] >= 0) {	// Bullet exists
+			if (animationData->projectileType[i] == 0) { // Laser 1
+				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
+				printf(" ");
+				go_left(1);
+				go_up(1);
+				printf("*");
+			} else if (animationData->projectileType[i] == 1) { // Laser 2
+				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
+				printf(" ");
+				go_left(1);
+				go_up(1);
+				printf("%c", 233);
+			} else { // Rocket
+				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 3);
+				printf(" ");
+				go_left(1);
+				go_up(1);
+				printf("^");
+				go_left(1);
+				go_up(1);
+				printf("H");
+				go_left(1);
+				go_up(1);
+				printf("A");
+			}
+		}
+	}
+}
+
 void gfx_draw_all_blocks(GameData *gameData) {
 	char type, oldType, row, column, line, nibble;
 
@@ -481,16 +513,16 @@ void gfx_update_energy_meter(PlayerData *playerData) {
 #endif
 }
 
-void gfx_draw_bullet(int x, int newY, int oldY, int type) {
-	int i;
-	fg_color(1);
-	go_to_xy(x >> 8, 90);
-	for (i = 0; i < 80; ++i) {
-		go_up(1);
-		printf("|");
-		go_left(1);
-	}
-}
+// void gfx_draw_bullet(int x, int newY, int oldY, int type) {
+// 	int i;
+// 	fg_color(1);
+// 	go_to_xy(x >> 8, 90);
+// 	for (i = 0; i < 80; ++i) {
+// 		go_up(1);
+// 		printf("|");
+// 		go_left(1);
+// 	}
+// }
 
 void gfx_draw_stars(int frame) {
 	int i, j;

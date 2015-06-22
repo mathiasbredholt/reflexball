@@ -90,10 +90,6 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData, Animatio
 
 		gfx_update_energy_meter(playerData);
 
-		key = hw_read_key();
-
-
-
 		if (playerData->energy <= 0) game_end(mode, 0);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
@@ -101,9 +97,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData, Animatio
 
 		// if (key & 4) *mode = 0;
 
-		if (key & 4) {
-			gfx_draw_bullet(gameData->strikerPos, gameData->strikerPos, 0, 0);
-		}
+		phy_update_bullets(gameData, animationData);
 
 		// Calculate new ball position
 		for (i = 0; i < 8; ++i) {
@@ -138,13 +132,25 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData, Animatio
 
 		gameData->ballVel.y++;	// Gravity
 
+		key = hw_read_key();
+		if (key & 1) {
+			create_bullet(gameData, animationData, 0, 1);
+		}
+		if (key & 2) {
+			create_bullet(gameData, animationData, 1, 0);
+		}
+		if (key & 4) {
+			create_bullet(gameData, animationData, 2, 0);
+		}
+
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
+		gfx_draw_bullets(animationData);
 	}
 	//LED_update();
 }
 
-void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {
+void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {	// side: 0 = left, 1 = right
 	int num;
 
 	// Find available slot in animationData->projectilePos
