@@ -40,8 +40,8 @@ int main()
 	hw_time_init();
 	hw_ADC_init();
 	hw_sound_init();
-
-	//LED_init();
+	LED_init();
+	//LED_display_column(0xFF, 0, 0);
 	//LED_set_string("Welcome");
 
 	///////////////////////

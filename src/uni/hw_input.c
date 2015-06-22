@@ -86,9 +86,9 @@ void hw_ROM_to_RAM(char *dest, rom char *src) {
 char hw_read_key() {    // Returns state of push buttons on bit 0-2
 	char input = 0;
 	PFDD |= 0xC0;
+	PHDD |= 0x0F;
 	PDDD |= 4;
-	PGDD |= 0x0F;
-	input |= PGIN & 0xF;
+	input |= PHIN & 0xF;
 	input |= ~PFIN >> 3 & 0x10;
 	input |= ~PFIN & 0x20;
 	input |= ~PDIN << 3 & 0x40;

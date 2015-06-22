@@ -59,7 +59,6 @@ void ISR_T3() {
 
 void hw_sound_init() {
 	_soundIndex = 0;
-	_soundNext = 0;
 	_musicIndex = 0;
 	_soundMode = 0;
 	_soundId = 0;

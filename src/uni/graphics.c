@@ -518,17 +518,23 @@ void gfx_draw_energy_meter() {
 }
 
 void gfx_update_energy_meter(PlayerData *playerData) {
-	int level = (playerData->energy >> 9);
+	int newLevel = (playerData->energy >> 9), level;
 	int i;
 	// go_to_xy(200, 10);
 	// printf("%8d  %8d", level, playerData->energy);
-	if (level >= 0 && (playerData->oldEnergy >> 9) - level > 0) {
+	if (newLevel >= 0 && (playerData->oldEnergy >> 9) - newLevel > 0) {
+		level = (playerData->oldEnergy >> 9) - 1;
 		go_to_xy(level, 98 - 1);
 
-		for (i = 0; i < 4; ++i) {
-			go_down(1);
-			printf(" ");
+		while (level >= newLevel) {
+			for (i = 0; i < 4; ++i) {
+				go_down(1);
+				printf(" ");
+				go_left(1);
+			}
 			go_left(1);
+			go_up(4);
+			--level;
 		}
 	}
 #ifdef GCC
