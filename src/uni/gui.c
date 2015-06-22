@@ -15,7 +15,7 @@
 
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
-char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
+char mapButtons[5][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "shop", "menu" };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
@@ -175,16 +175,28 @@ void map_show(PlayerData *playerData) {
 
 
 
-	gfx_draw_thumb(32, 16, 0);
-	gfx_draw_btn(32, 32, mapButtons[1], 0);
 
-	gfx_draw_thumb(32, 40, 1);
-	gfx_draw_btn(32, 56, mapButtons[2], 0);
 
-	gfx_draw_thumb(32, 64, 2);
-	gfx_draw_btn(32, 80, mapButtons[3], 0);
+	gfx_draw_thumb(4, 4, 0);
+	gfx_draw_btn(32, 56, mapButtons[0], 1);
 
-	gfx_draw_btn(212, 90, mapButtons[4], 0);
+	gfx_draw_thumb(4, 20, 1);
+	gfx_draw_btn(32, 80, mapButtons[1], 0);
+
+	gfx_draw_thumb(32, 16, 2);
+	gfx_draw_btn(32, 32, mapButtons[2], 0);
+
+	gfx_draw_thumb(64, 40, 3);
+	gfx_draw_btn(32, 56, mapButtons[3], 0);
+
+	gfx_draw_thumb(128, 32, 4);
+	gfx_draw_btn(128, 80, mapButtons[4], 0);
+
+	gfx_draw_thumb(128, 64, 5);
+	gfx_draw_btn(128, 80, mapButtons[5], 0);
+
+	gfx_draw_btn(164, 90, mapButtons[7], 0);
+	gfx_draw_btn(212, 90, mapButtons[8], 0);
 }
 
 void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, PlayerData *playerData) {
