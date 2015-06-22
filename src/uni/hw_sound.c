@@ -6,14 +6,15 @@
 // Global variables used to avoid having to pass pointers to placeholders for hardware specific variables all the way from main
 int _soundIndex;	// How far we are in playing the current sound effect
 int _musicIndex;	// How far we are in playing the current background music track
-char _soundMode;	// Flag determining whether to play a sound effect (1) or the background music (0)
+char _fxMode;	// Flag determining whether to play a sound effect (1) or the background music (0)
 char _soundId;		// Which sound effect to play
 char _musicId;		// Which music track to play
+char _mute;
 
 #pragma interrupt
 void ISR_T3() {
-	if (_soundMode) {
-		if (soundFX[_soundId][_soundIndex][0]) {
+	if (_fxMode) {
+		if (soundFX[_soundId][_soundIndex][0] == 1) {
 			// Enable sound generator
 			T2CTL  = 0xBB;
 			// Reset
@@ -24,6 +25,8 @@ void ISR_T3() {
 			T2RL   = soundFX[_soundId][_soundIndex][2];
 			T2PWMH = soundFX[_soundId][_soundIndex][3];
 			T2PWML = soundFX[_soundId][_soundIndex][4];
+		} else if (soundFX[_soundId][_soundIndex][0] == 3) {
+			_fxMode = 0;
 		} else {
 			// Disable sound generator
 			T2CTL = 0x3B;
@@ -32,9 +35,10 @@ void ISR_T3() {
 		++_soundIndex;
 		if (_soundIndex == 7) {
 			// Switch to playing music upon reaching end of sound
-			_soundMode = 0;
+			_fxMode = 0;
+			T2CTL = 0x3B;
 		}
-	} else {
+	} else if (!_mute) {
 		if (music[_musicId][_musicIndex][0] == 1) {
 			// Enable sound generator
 			T2CTL  = 0xBB;
@@ -60,7 +64,7 @@ void ISR_T3() {
 void hw_sound_init() {
 	_soundIndex = 0;
 	_musicIndex = 0;
-	_soundMode = 0;
+	_fxMode = 0;
 	_soundId = 0;
 	_musicId = 0;
 
@@ -112,14 +116,20 @@ void hw_sound_init() {
 void hw_sound_play(int which) {
 	_soundId = which;
 	// Switch to playing sound and reset index
-	_soundMode = 1;
+	_fxMode = 1;
 	_soundIndex = 0;
+}
+
+void hw_sound_mute() {
+	T2CTL = 0x3B;
+	_mute = 1;
 }
 
 void hw_sound_set_music(int which) {
 	_musicId = which;
-	_soundMode = 0;
+	_fxMode = 0;
 	_musicIndex = 0;
+	_mute = 0;
 }
 
 #endif
@@ -132,5 +142,7 @@ void hw_sound_update() {};
 void hw_sound_play(int which) {};
 
 void hw_sound_set_music(int which) {};
+
+void hw_sound_mute() {};
 
 #endif

@@ -1,6 +1,7 @@
 // game_engine.c
 
 #include "game_engine.h"
+#include "game_data.h"
 #include "hw_time.h"
 #include "hw_input.h"
 #include "hw_LED.h"
@@ -14,7 +15,7 @@
 // #include "ansi.h"
 
 
-void game_init(GameData *gameData, PlayerData *playerData) {
+void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	int i, j;
 
 	playerData->energy = 0x7FFF;
@@ -52,6 +53,11 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	gfx_init_striker(gameData);
 	gfx_init_ball(gameData);
 
+	for (i = 0; i < 5; ++i) {
+		animationData->projectileType[i] = -1;
+		animationData->eraseProjectile[i] = 0;
+	}
+
 	// Flags used by physics engine to avoid hitting same block twice in consecutive calls to phy_simulate
 	gameData->blockHit[2] = 0;	// Wether or not the ball was touching a block last iteration
 	gameData->bouncedTop = 0;	// Touching top game border
@@ -78,16 +84,17 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 
 	// Find available slot in animationData->projectilePos
 	for (num = 0; num < 5; ++num) {
-		if (animationData->projectileType[num] >= 0) break;
+		if (animationData->projectileType[num] == -1) break;
 	}
 	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
-		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
-		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 1 : 3);
+		hw_sound_play(9 + type);
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) : (-(gameData->strikerSize >> 1) + 1));
+		animationData->projectilePos[num][1] = striker_height - (type < 2 ? 1 : 3);
 		animationData->projectileType[num] = (char) type;
 	}
 }
 
-void game_update(int *mode, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
+void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	char key, i, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
@@ -147,31 +154,38 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData, Animatio
 		gameData->ballVel.y++;	// Gravity
 
 		key = hw_read_key();
-		if (key & 1) {
-			create_bullet(gameData, animationData, 0, 1);
-		}
-		if (key & 2) {
-			create_bullet(gameData, animationData, 1, 0);
-		}
-		if (key & 4) {
-			create_bullet(gameData, animationData, 2, 0);
+		// If key is rising edge
+		if (key != *lastKey) {
+			*lastKey = key;
+			if (key & 1) {
+				create_bullet(gameData, animationData, 0, 1);
+			}
+			if (key & 2) {
+				create_bullet(gameData, animationData, 1, 0);
+			}
+			if (key & 4) {
+				create_bullet(gameData, animationData, 2, 0);
+			}
 		}
 
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
-		gfx_draw_bullets(animationData);
+		gfx_update_animation(animationData);
 	}
 	//LED_update();
 }
 
 void game_end(int *mode, int win) {
 	char nxt;
+	hw_sound_mute();
 	if (win == 0) {
+		hw_sound_play(13);
 		gfx_window(87, 45, 163, 60);
 		gfx_draw_game_over();
 		LED_set_string("YOU DEAD");
 		nxt = 1;
 	} else {
+		hw_sound_play(12);
 		gfx_window(76, 45, 181, 60);
 		gfx_draw_victory();
 		LED_set_string("You found your way home!");

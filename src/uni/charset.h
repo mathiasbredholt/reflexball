@@ -560,7 +560,7 @@ rom char image[22][53] =
 // #endif
 
 // #if defined(__APPLE__) || defined(__WIN32__)
-const char small_title[5][86] =
+const char title[5][86] =
 // #endif
 {
   "   _____ ____  ___   ____________   ____  ____  __________    _____ ____  ____  ____ ",
@@ -570,8 +570,6 @@ const char small_title[5][86] =
   "/____/_/   /_/  |_\\____/_____/  /_____/\\____//____/____/   /____/\\____/\\____/\\____/  "
 };
 #if defined(__APPLE__) || defined(__WIN32__)
-const char small_title[5][86] =
-
-
-
+//const char small_title[5][86] =
+#endif
 #endif /*! _CHARSET_H_ */

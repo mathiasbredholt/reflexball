@@ -3,9 +3,9 @@
 #ifndef _GAME_ENGINE_H_
 #define _GAME_ENGINE_H_
 
-void game_init(GameData *gameData, PlayerData *playerData);
+void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animationData);
 
-void game_update(int *mode, GameData *gameData, PlayerData *playerData, AnimationData *animationData);
+void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData);
 
 void game_end(int *mode, int win);
 

@@ -44,8 +44,8 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 
 			// Select key is pressed
 			if (*lastKey & 4) {
-				//*mode = *focus + 1;
-				*mode = 6;
+				hw_sound_play(1);
+				*mode = *focus + 1;
 				*focus = 0;
 			} else if (*lastKey & 0x03) {
 				// Blur button currently in focus
@@ -79,6 +79,7 @@ void shop_show(PlayerData *playerData) {
 	char str[15];
 
 	hw_sound_set_music(0);
+	hw_sound_play(1);	// Because a button was pressed to get here
 
 	gfx_window(-1, -1, 257, 104);
 
@@ -111,6 +112,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 			// select event
 			if (*lastKey & 4) {
+				hw_sound_play(1);
 				if (*focus != 8) {
 					int i, j;
 
@@ -281,10 +283,10 @@ void map_info_show(GameData *gameData) {
 
 	y = 60;
 
+
 	if (gameData->level == 0) {
 		//dokuu
 		gfx_draw_text(9, 119, 35, lore[0]);
-
 		gfx_draw_thumb(122, 40, 0);
 
 		for (i = 1; i < 5; ++i) {
@@ -339,7 +341,6 @@ void map_info_show(GameData *gameData) {
 		for (i = 1; i < 8; ++i) {
 			gfx_draw_text(9, 33, y + i * 3, lore[i + 33]);
 		}
-
 	}
 	gfx_draw_text(9, 5, 90, "press left to warp to starmap");
 	gfx_draw_text(9, 170, 90, "press right to engage");

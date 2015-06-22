@@ -102,23 +102,39 @@ void gfx_erase_striker(GameData *gameData) {
 #endif
 }
 
-void gfx_draw_bullets(AnimationData *animationData) {
-	int i;
+void gfx_update_animation(AnimationData *animationData) {
+	int i, j;
 	for (i = 0; i < 5; ++i) {
-		if (animationData->projectileType[i] >= 0) {	// Bullet exists
+		if (animationData->eraseProjectile[i]) {
+			go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
+			printf(" ");
+			if (animationData->projectileType[i] == 2) {	// Rocket
+				go_left(1);
+				go_down(1);
+				printf(" ");
+				go_left(1);
+				go_down(1);
+				printf(" ");
+			}
+			animationData->projectileType[i] = -1;
+			animationData->eraseProjectile[i] = 0;
+		} else if (animationData->projectileType[i] >= 0) {	// Bullet exists
 			if (animationData->projectileType[i] == 0) { // Laser 1
+				fg_color(9);
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
 				printf(" ");
 				go_left(1);
 				go_up(1);
 				printf("*");
 			} else if (animationData->projectileType[i] == 1) { // Laser 2
+				fg_color(9);
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
 				printf(" ");
 				go_left(1);
 				go_up(1);
 				printf("%c", 233);
-			} else { // Rocket
+			} else if (animationData->projectileType[i] == 2) { // Rocket
+				fg_color(7);
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 3);
 				printf(" ");
 				go_left(1);
@@ -132,6 +148,19 @@ void gfx_draw_bullets(AnimationData *animationData) {
 				printf("A");
 			}
 		}
+	}
+
+	if (animationData->rocketHit[2]) {
+		// Erase blocks in custom order for more explosiony look
+		gfx_erase_block(animationData->rocketHit[0], animationData->rocketHit[1]);
+		gfx_erase_block(animationData->rocketHit[0], animationData->rocketHit[1] - 1);
+		gfx_erase_block(animationData->rocketHit[0] - 1, animationData->rocketHit[1] - 1);
+		gfx_erase_block(animationData->rocketHit[0] + 1, animationData->rocketHit[1] - 1);
+		gfx_erase_block(animationData->rocketHit[0] - 1, animationData->rocketHit[1]);
+		gfx_erase_block(animationData->rocketHit[0] + 1, animationData->rocketHit[1]);
+		gfx_erase_block(animationData->rocketHit[0] - 1, animationData->rocketHit[1] + 1);
+		gfx_erase_block(animationData->rocketHit[0] + 1, animationData->rocketHit[1] + 1);
+		animationData->rocketHit[2] = 0;
 	}
 }
 
@@ -240,26 +269,28 @@ void gfx_draw_block(int x, int y, int type) {
 }
 
 void gfx_erase_block(int x, int y) {
-	x = x << 4;
-	y = y << 2;
+	if (x >= 0 && x < 16 && y >= 0 && x < 15) {
+		x = x << 4;
+		y = y << 2;
 
-	fg_color(15);
-	go_to_xy(x, y);
-	ansi_save();
+		fg_color(15);
+		go_to_xy(x, y);
+		ansi_save();
 
-	spacer(16, (int) ' '); // top line
-	// go_to_xy(x, y + 1);
-	ansi_load();
-	go_down(1);
-	spacer(16, (int) ' '); // middle line
-	// go_to_xy(x, y + 2);
-	ansi_load();
-	go_down(2);
-	spacer(16, (int) ' '); // middle line
-	// go_to_xy(x, y + 3);
-	ansi_load();
-	go_down(3);
-	spacer(16, (int) ' '); // bottom line
+		spacer(16, (int) ' '); // top line
+		// go_to_xy(x, y + 1);
+		ansi_load();
+		go_down(1);
+		spacer(16, (int) ' '); // middle line
+		// go_to_xy(x, y + 2);
+		ansi_load();
+		go_down(2);
+		spacer(16, (int) ' '); // middle line
+		// go_to_xy(x, y + 3);
+		ansi_load();
+		go_down(3);
+		spacer(16, (int) ' '); // bottom line
+	}
 
 #ifdef GCC
 	fflush(stdout);

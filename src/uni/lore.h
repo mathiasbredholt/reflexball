@@ -1,4 +1,3 @@
-
 #ifndef _LORE_H_
 #define _LORE_H_
 
