@@ -1,8 +1,8 @@
-#include "util.h"
-#include "game_data.h"
 
 #ifndef _GRAPHICS_H_
 #define _GRAPHICS_H_
+#include "util.h"
+#include "game_data.h"
 
 void gfx_draw_ball(GameData *gameData);
 
@@ -49,5 +49,7 @@ void gfx_draw_victory();
 void gfx_draw_score(PlayerData *playerData);
 
 void gfx_draw_thumb(int x, int y, int thumb);
+
+void gfx_draw_title(int x, int y);
 
 #endif

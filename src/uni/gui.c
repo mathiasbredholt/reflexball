@@ -12,9 +12,7 @@
 #include "hw_input.h"
 #include "hw_time.h"
 #include "hw_sound.h"
-
 #include "lore.h"
-#include "ansi.h"
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[8][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "shop", "menu" };
@@ -285,69 +283,70 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 
 void map_info_show(GameData *gameData) {
-	int y, i;
+	int y, i, j;
 	gfx_window(-1, -1, 257, 104);
 
 	y = 60;
 
-	// if (gameData->level == 0) {
-	// 	gfx_draw_text(119, 35, lore[1]);
 
+	if (gameData->level == 0) {
+		//dokuu
+		gfx_draw_text(9, 119, 35, lore[0]);
+		gfx_draw_thumb(122, 40, 0);
 
-	// 	gfx_draw_thumb(122, 40, 0);
+		for (i = 1; i < 5; ++i) {
+			gfx_draw_text(9, 57, y + i * 3, lore[i]);
 
-	// 	for (i = 1; i < 5; ++i) {
-	// 		gfx_draw_text(100, y + i * 3, lore[i]);
-	// 	}
+		}
+	} else if (gameData->level == 1) {
+		// ALderan
+		gfx_draw_text(9, 113, 35, lore[5]);
+		gfx_draw_thumb(122, 40, 1);
 
-	// } else if (gameData->level == 1) {
+		for (i = 1; i < 7; ++i) {
+			gfx_draw_text(9, 71, y + i * 3, lore[i + 5]);
+		}
 
-	// 	gfx_draw_text(113, 35, lore[4]);
-	// 	gfx_draw_thumb(122, 40, 1);
+	} else if (gameData->level == 2) {
+		// tatoiine
 
-	// 	for (i = 1; i < 7; ++i) {
-	// 		gfx_draw_text(71, y + i * 3, lore[i + 4]);
-	// 	}
+		gfx_draw_text(9, 113, 35, lore[12]);
+		gfx_draw_thumb(122, 40, 2);
 
-	// } else if (gameData->level == 2) {
+		for (i = 1; i < 8; ++i) {
+			gfx_draw_text(9, 77, y + i * 3, lore[i + 12]);
+		}
 
+	} else if (gameData->level == 3) {
+		// darth
 
-	// 	gfx_draw_text(113, 35, lore[11]);
-	// 	gfx_draw_thumb(122, 40, 2);
+		gfx_draw_text(9, 107, 35, lore[20]);
+		gfx_draw_thumb(122, 40, 3);
 
-	// 	for (i = 1; i < 8; ++i) {
-	// 		gfx_draw_text(77, y + i * 3, lore[i + 11]);
-	// 	}
+		for (i = 1; i < 6; ++i)	{
+			gfx_draw_text(9, 75, y + i * 3, lore[i + 20]);
+		}
 
-	// } else if (gameData->level == 3) {
+	} else if (gameData->level == 4) {
+		//	unknown
 
-	// 	gfx_draw_text(107, 35, lore[19]);
-	// 	gfx_draw_thumb(122, 40, 3);
+		gfx_draw_text(9, 95, 35, lore[26]);
+		gfx_draw_thumb(122, 40, 4);
 
-	// 	for (i = 1; i < 6; ++i)	{
-	// 		gfx_draw_text(75, y + i * 3, lore[i + 19]);
-	// 	}
+		for (i = 1; i < 7; ++i) {
+			gfx_draw_text(9, 53, y + i * 3, lore[i + 26]);
+		}
 
-	// } else if (gameData->level == 4) {
+	} else if (gameData->level == 5) {
+		// the pub
 
+		gfx_draw_text(9, 70, 35, lore[33]);
+		gfx_draw_thumb(122, 40, 5);
 
-	// 	gfx_draw_text(95, 35, lore[25]);
-	// 	gfx_draw_thumb(122, 40, 4);
-
-	// 	for (i = 1; i < 7; ++i) {
-	// 		gfx_draw_text(53, y + i * 3, lore[i + 25]);
-	// 	}
-
-	// } else if (gameData->level == 5) {
-
-	// 	gfx_draw_text(70, 35, lore[32]);
-	// 	gfx_draw_thumb(122, 40, 5);
-
-	// 	for (i = 1; i < 8; ++i) {
-	// 		gfx_draw_text(33, y + i * 3, lore[i + 32]);
-	// 	}
-	// }
-
+		for (i = 1; i < 8; ++i) {
+			gfx_draw_text(9, 33, y + i * 3, lore[i + 33]);
+		}
+	}
 	gfx_draw_text(9, 5, 90, "press left to warp to starmap");
 	gfx_draw_text(9, 170, 90, "press right to engage");
 }
