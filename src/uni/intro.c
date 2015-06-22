@@ -1,19 +1,20 @@
-#if defined(__APPLE__) || defined(__WIN32__)
-#include <stdio.h>
-#endif
-
 #if defined(_Z8F6403)
 #include <sio.h>
+#else
+#include <stdio.h>
 #endif
 
 #include "graphics.h"
 #include "hw_input.h"
-// #include "lore.h"
+#include "lore.h"
 // #include "charset.h"
 
 void intro_play() {
-	gfx_window(6, 4, 50, 50);
-	gfx_draw_title(86, 5);
+	gfx_window(6, 16, 75, 90);
+	gfx_draw_title(47, 3);
+
+
+	gfx_draw_text(9, 7, 17, lore[43]);
 }
 
 void intro_update(int *mode, char *lastKey) {

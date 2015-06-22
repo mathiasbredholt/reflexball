@@ -2,11 +2,11 @@
 #define _LORE_H_
 
 #if defined(__APPLE__) ||defined(__WIN32__)
-char lore[42][49] =
+char lore[43][49] =
 #endif
 
 #if defined(_Z8F6403)
-    rom char lore[42][49] =
+    rom char lore[43][49] =
 #endif
 {
 	"dokuu",
@@ -50,5 +50,6 @@ char lore[42][49] =
 	"oh look its the pub at the end of the universe",
 	"boss",
 	"they are out of hotdogs"
+	"this text is for the intro"
 };
 #endif

@@ -659,13 +659,13 @@ void gfx_draw_thumb(int x, int y, int thumb) {
 #endif
 }
 
-void gfx_draw_title(int x, int y) {
+void gfx_draw_small_title(int x, int y) {
 	int i, j;
 	fg_color(6);
 	go_to_xy(x, y);
 	for (i = 0; i < 85 ; ++i) {
 		for (j = 0; j <= 4; ++j) {
-			printf("%c", title[j][i]);
+			printf("%c", small_title[j][i]);
 			if (j == 4) {
 				go_up(4);
 			} else {
@@ -679,3 +679,22 @@ void gfx_draw_title(int x, int y) {
 #endif
 }
 
+void gfx_draw_title(int x, int y) {
+	int i, j;
+	fg_color(6);
+	go_to_xy(x, y);
+	for (i = 0; i < 164 ; ++i) {
+		for (j = 0; j <= 8; ++j) {
+			printf("%c", title[j][i]);
+			if (j == 8) {
+				go_up(8);
+			} else {
+				go_down(1);
+				go_left(1);
+			}
+		}
+	}
+#ifdef GCC
+	fflush(stdout);
+#endif
+}

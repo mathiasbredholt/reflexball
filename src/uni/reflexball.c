@@ -59,9 +59,10 @@ int main()
 
 	while (1) {
 		if (mode == 0) {
+			mode = 6;
 			// Start menu
-			menu_show();
-			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
+			// menu_show();
+			// while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
 		}
 		if (mode == 1) {
 			// Level select
