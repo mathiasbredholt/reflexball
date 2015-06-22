@@ -103,7 +103,7 @@ void gfx_erase_striker(GameData *gameData) {
 }
 
 void gfx_update_animation(AnimationData *animationData) {
-	int i, j;
+	int i;
 	for (i = 0; i < 5; ++i) {
 		if (animationData->eraseProjectile[i]) {
 			go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);

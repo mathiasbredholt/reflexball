@@ -116,9 +116,9 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 					int i, j;
 					char str[15];
 
-					if (playerData->items[*focus] < playerData->itemMax[*focus]) {
+					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
 						hw_sound_play(1);
-						playerData->coins -= playerData->itemPrice[*focus];
+						playerData->coins -= itemPrice[*focus];
 						++playerData->items[*focus];
 					} else {
 						hw_sound_play(0);
@@ -129,7 +129,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 					for (i = 0; i < 2; ++i) {
 						for (j = 0; j < 4; j++) {
-							gfx_draw_meter(32 + 48 * j, 16 + 32 * i, playerData->items[j + i * 4]);
+							gfx_draw_meter(33 + 48 * j, 40 + 25 * i, playerData->items[j + i * 4]);
 						}
 					}
 				} else {
@@ -145,7 +145,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				} else {
 					gfx_draw_btn(
 					    32 + 48 * (*focus & 0x03),
-					    32  + 32 * ((*focus & 0x04) >> 2),
+					    56  + 25 * ((*focus & 0x04) >> 2),
 					    "buy",
 					    0
 					);
@@ -162,7 +162,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				} else {
 					gfx_draw_btn(
 					    32 + 48 * (*focus & 0x03),
-					    32  + 32 * ((*focus & 0x04) >> 2),
+					    56  + 25 * ((*focus & 0x04) >> 2),
 					    "buy",
 					    1
 					);
@@ -283,7 +283,7 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 
 void map_info_show(GameData *gameData) {
-	int y, i, j;
+	int y, i;
 	gfx_window(-1, -1, 257, 104);
 
 	y = 60;
