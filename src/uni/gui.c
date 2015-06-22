@@ -213,15 +213,14 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 			if (*lastKey & 4) {
 				if (*focus > 0 && *focus < 4) {
 					gameData->level = *focus - 1;
-					map_info_show(focus);
 					*mode = 5;
-					// *mode = 2;
 				} else if (*focus == 0) {
 					*mode = 3;
+					*focus = 0;
 				} else {
 					*mode = 0;
+					*focus = 0;
 				}
-				*focus = 0;
 			}
 
 			if (*focus == 0) {
