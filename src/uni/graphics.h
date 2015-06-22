@@ -48,7 +48,7 @@ void gfx_draw_victory();
 
 void gfx_draw_score(PlayerData *playerData);
 
-void gfx_draw_thumb(int x, int y, int thumb);
+void gfx_draw_thumb(int x, int y, int thumb, int col);
 
 void gfx_draw_title(int x, int y);
 

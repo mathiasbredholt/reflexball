@@ -644,10 +644,10 @@ void gfx_draw_score(PlayerData *playerData) {
 #endif
 }
 
-void gfx_draw_thumb(int x, int y, int thumb) {
+void gfx_draw_thumb(int x, int y, int thumb, int col) {
 	int i, j;
 
-	fg_color(thumb + 9);
+	fg_color(col);
 
 	for (i = 0; i < 15; ++i) {
 		go_to_xy(x, y + i);
