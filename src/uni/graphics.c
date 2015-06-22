@@ -475,7 +475,9 @@ void gfx_draw_meter(int x, int y, int val) {
 #endif
 }
 
-void gfx_draw_energy_meter() {
+void gfx_draw_energy_meter(PlayerData *playerData) {
+	int level = (playerData->energy >> 10);
+
 	char str[15];
 	int i;
 
@@ -484,23 +486,23 @@ void gfx_draw_energy_meter() {
 	gfx_draw_text(0, 0, 98, str);
 
 	go_to_xy(0, 101);
-	spacer(63, 32);
+	spacer(level, 32);
 
 	for (i = 98; i < 102; ++i) {
 		go_to_xy(24, i);
-		spacer(39, 32);
+		spacer(level - 24, 32);
 	}
 
 	color(10, 0);
 	go_to_xy(0, 102);
-	spacer(63, 205);
+	spacer(127, 205);
 
 	for (i = 98; i < 102; ++i) {
-		go_to_xy(63, i);
+		go_to_xy(127, i);
 		spacer(1, 186);
 	}
 
-	go_to_xy(63, 102);
+	go_to_xy(127, 102);
 	spacer(1, 188);
 
 	for (i = 98; i < 102; ++i) {
@@ -514,17 +516,17 @@ void gfx_draw_energy_meter() {
 	go_to_xy(-1, 97);
 	spacer(1, 204);
 
-	go_to_xy(63, 97);
+	go_to_xy(127, 97);
 	spacer(1, 203);
 }
 
 void gfx_update_energy_meter(PlayerData *playerData) {
-	int newLevel = (playerData->energy >> 9), level;
+	int newLevel = (playerData->energy >> 10), level;
 	int i;
 	// go_to_xy(200, 10);
 	// printf("%8d  %8d", level, playerData->energy);
-	if (newLevel >= 0 && (playerData->oldEnergy >> 9) - newLevel > 0) {
-		level = (playerData->oldEnergy >> 9) - 1;
+	if (newLevel >= 0 && (playerData->oldEnergy >> 10) - newLevel > 0) {
+		level = (playerData->oldEnergy >> 10) - 1;
 		go_to_xy(level, 98 - 1);
 
 		while (level >= newLevel) {

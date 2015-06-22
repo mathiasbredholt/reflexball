@@ -14,7 +14,7 @@
 #include "hw_input.h"
 
 void intro_play() {
-  int i, index = 0;
+  // int i, index = 0;
   // string title
   // rom char title[42][8] = {
   //   "aaasdggt",
