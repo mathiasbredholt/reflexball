@@ -12,10 +12,11 @@
 #include "hw_input.h"
 #include "hw_time.h"
 #include "hw_sound.h"
+#include "hw_flash.h"
 #include "lore.h"
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
-char mapButtons[8][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "shop", "menu" };
+char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
@@ -23,12 +24,12 @@ void menu_show() {
 	gfx_window(64, 16, 192, 80);
 	gfx_draw_text(9, 68, 18, "reflexball");
 
-	gfx_draw_btn(66, 72, menuButtons[0], 1);
-	gfx_draw_btn(108, 72, menuButtons[1], 0);
-	gfx_draw_btn(150, 72, menuButtons[2], 0);
+	gfx_draw_btn(66, 73, menuButtons[0], 1);
+	gfx_draw_btn(108, 73, menuButtons[1], 0);
+	gfx_draw_btn(150, 73, menuButtons[2], 0);
 }
 
-void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *animFrame2) {
+void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *animFrame2, PlayerData *playerData) {
 	char key;
 
 	// Wait for frame interrupt flag
@@ -45,11 +46,17 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 			// Select key is pressed
 			if (*lastKey & 4) {
 				hw_sound_play(1);
-				*mode = *focus + 1;
+				*mode = 1;
+				if (*focus == 1) {
+					hw_flash_load(playerData);
+				} else if (*focus == 2) {
+					*mode = 6;
+				}
 				*focus = 0;
+
 			} else if (*lastKey & 0x03) {
 				// Blur button currently in focus
-				gfx_draw_btn_focus(66 + 42 * *focus, 72, menuButtons[*focus], 0);
+				gfx_draw_btn_focus(66 + 42 * *focus, 73, menuButtons[*focus], 0);
 
 				// If left or right key is pressed increment or decrement focus index
 				if (*lastKey & 0x02) --(*focus);
@@ -60,7 +67,7 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 				if (*focus < 0) *focus += 3;
 
 				// Focus button at the new focus index
-				gfx_draw_btn_focus(66 + 42 * *focus, 72, menuButtons[*focus], 1);
+				gfx_draw_btn_focus(66 + 42 * *focus, 73, menuButtons[*focus], 1);
 			}
 		}
 
@@ -176,34 +183,37 @@ void map_show(PlayerData *playerData, int *focus) {
 
 
 	// level 1
-	gfx_draw_thumb(16, 8, 0);
+	gfx_draw_thumb(16, 8, 0, 9);
 	gfx_draw_btn(4, 25, mapButtons[0], *focus == 0);
 
 	// level 2
-	gfx_draw_thumb(32, 40, 1);
+	gfx_draw_thumb(32, 40, 1, playerData->progress >= 1 ? 10 : 7);
 	gfx_draw_btn(20, 57, mapButtons[1], *focus == 1);
 
 	// level 3
-	gfx_draw_thumb(68, 76, 2);
+	gfx_draw_thumb(68, 76, 2, playerData->progress >= 2 ? 11 : 7);
 	gfx_draw_btn(56, 93, mapButtons[2], *focus == 2);
 
 	// level 4
-	gfx_draw_thumb(116, 36, 3);
+	gfx_draw_thumb(116, 36, 3, playerData->progress >= 3 ? 12 : 7);
 	gfx_draw_btn(104, 53, mapButtons[3], *focus == 3);
 
 	// level 5
-	gfx_draw_thumb(224, 48, 4);
+	gfx_draw_thumb(224, 48, 4, playerData->progress >= 4 ? 13 : 7);
 	gfx_draw_btn(212, 65, mapButtons[4], *focus == 4);
 
 	// level 6
-	gfx_draw_thumb(204, 6, 5);
+	gfx_draw_thumb(204, 6, 5, playerData->progress >= 5 ? 14 : 7);
 	gfx_draw_btn(192, 23, mapButtons[5], *focus == 5);
 
+	// save
+	gfx_draw_btn(131, 96, mapButtons[6], 0);
+
 	// shop
-	gfx_draw_btn(164, 96, mapButtons[6], 0);
+	gfx_draw_btn(173, 96, mapButtons[7], 0);
 
 	// menu
-	gfx_draw_btn(212, 96, mapButtons[7], 0);
+	gfx_draw_btn(215, 96, mapButtons[8], 0);
 }
 
 void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, PlayerData *playerData) {
@@ -221,9 +231,11 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 				hw_sound_play(1);
 				if (*focus < 6) {
 					gameData->level = *focus;
-					*mode = 5;
+					*mode = 2;
 				} else if (*focus == 6) {
-					*mode = 3;
+					hw_flash_save(playerData);
+				} else if (*focus == 7) {
+					*mode = 4;
 					*focus = 0;
 				} else {
 					*mode = 0;
@@ -243,23 +255,37 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 				} else if (*focus == 5) {
 					gfx_draw_btn_focus(192, 23, mapButtons[5], 0);
 				} else if (*focus == 6) {
-					gfx_draw_btn_focus(164, 96, mapButtons[6], 0);
+					gfx_draw_btn_focus(131, 96, mapButtons[6], 0);
 				} else if (*focus == 7) {
-					gfx_draw_btn_focus(212, 96, mapButtons[7], 0);
+					gfx_draw_btn_focus(173, 96, mapButtons[7], 0);
+				} else if (*focus == 8) {
+					gfx_draw_btn_focus(215, 96, mapButtons[8], 0);
 				}
 
-				if (*lastKey & 0x02) --(*focus);
-				if (*lastKey & 0x01) ++(*focus);
+				if (*lastKey & 0x02) {
+					if (*focus == 6) {
+						*focus -= 6 - playerData->progress;
+					} else {
+						--*focus;
+					}
+				}
+				if (*lastKey & 0x01) {
+					if (*focus == playerData->progress) {
+						*focus += 6 - playerData->progress;
+					} else {
+						++*focus;
+					}
+				}
 
-				*focus &= 0x07;
-				if (*focus < 0) * focus += 8;
+				*focus %= 9;
+				if (*focus < 0) * focus += 9;
 
 				if (*focus == 0) {
-					gfx_draw_btn_focus(4, 25, mapButtons[0],   1);
+					gfx_draw_btn_focus(4, 25, mapButtons[0], 1);
 				} else if (*focus == 1) {
-					gfx_draw_btn_focus(20, 57, mapButtons[1],  1);
+					gfx_draw_btn_focus(20, 57, mapButtons[1], 1);
 				} else if (*focus == 2) {
-					gfx_draw_btn_focus(56, 93, mapButtons[2],  1);
+					gfx_draw_btn_focus(56, 93, mapButtons[2], 1);
 				} else if (*focus == 3) {
 					gfx_draw_btn_focus(104, 53, mapButtons[3], 1);
 				} else if (*focus == 4) {
@@ -267,10 +293,13 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 				} else if (*focus == 5) {
 					gfx_draw_btn_focus(192, 23, mapButtons[5], 1);
 				} else if (*focus == 6) {
-					gfx_draw_btn_focus(164, 96, mapButtons[6], 1);
+					gfx_draw_btn_focus(131, 96, mapButtons[6], 1);
 				} else if (*focus == 7) {
-					gfx_draw_btn_focus(212, 96, mapButtons[7], 1);
+					gfx_draw_btn_focus(173, 96, mapButtons[7], 1);
+				} else if (*focus == 8) {
+					gfx_draw_btn_focus(215, 96, mapButtons[8], 1);
 				}
+
 			}
 		}
 	}
@@ -287,7 +316,7 @@ void map_info_show(GameData *gameData) {
 	if (gameData->level == 0) {
 		//dokuu
 		gfx_draw_text(9, 119, 35, lore[0]);
-		gfx_draw_thumb(122, 40, 0);
+		gfx_draw_thumb(122, 40, 0, 9);
 
 		for (i = 1; i < 5; ++i) {
 			gfx_draw_text(9, 57, y + i * 3, lore[i]);
@@ -296,7 +325,7 @@ void map_info_show(GameData *gameData) {
 	} else if (gameData->level == 1) {
 		// ALderan
 		gfx_draw_text(9, 113, 35, lore[5]);
-		gfx_draw_thumb(122, 40, 1);
+		gfx_draw_thumb(122, 40, 1, 10);
 
 		for (i = 1; i < 7; ++i) {
 			gfx_draw_text(9, 71, y + i * 3, lore[i + 5]);
@@ -306,7 +335,7 @@ void map_info_show(GameData *gameData) {
 		// tatoiine
 
 		gfx_draw_text(9, 113, 35, lore[12]);
-		gfx_draw_thumb(122, 40, 2);
+		gfx_draw_thumb(122, 40, 2, 11);
 
 		for (i = 1; i < 8; ++i) {
 			gfx_draw_text(9, 77, y + i * 3, lore[i + 12]);
@@ -316,7 +345,7 @@ void map_info_show(GameData *gameData) {
 		// darth
 
 		gfx_draw_text(9, 107, 35, lore[20]);
-		gfx_draw_thumb(122, 40, 3);
+		gfx_draw_thumb(122, 40, 3, 12);
 
 		for (i = 1; i < 6; ++i)	{
 			gfx_draw_text(9, 75, y + i * 3, lore[i + 20]);
@@ -326,7 +355,7 @@ void map_info_show(GameData *gameData) {
 		//	unknown
 
 		gfx_draw_text(9, 95, 35, lore[26]);
-		gfx_draw_thumb(122, 40, 4);
+		gfx_draw_thumb(122, 40, 4, 13);
 
 		for (i = 1; i < 7; ++i) {
 			gfx_draw_text(9, 53, y + i * 3, lore[i + 26]);
@@ -336,7 +365,7 @@ void map_info_show(GameData *gameData) {
 		// the pub
 
 		gfx_draw_text(9, 70, 35, lore[33]);
-		gfx_draw_thumb(122, 40, 5);
+		gfx_draw_thumb(122, 40, 5, 14);
 
 		for (i = 1; i < 8; ++i) {
 			gfx_draw_text(9, 33, y + i * 3, lore[i + 33]);
@@ -351,7 +380,7 @@ void map_info_update(int *mode, char *lastKey) {
 	key = hw_read_key();
 	if (key != *lastKey) {
 		*lastKey = key;
-		if (*lastKey & 0x01) *mode = 2;
+		if (*lastKey & 0x01) *mode = 3;
 		if (*lastKey & 0x02) *mode = 1;
 
 	}

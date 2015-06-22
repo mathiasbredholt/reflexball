@@ -14,6 +14,7 @@ typedef struct PlayerData {
 	int oldEnergy;
 	int coins;
 	unsigned char items[NUMBER_OF_ITEMS];
+	unsigned char progress;
 } PlayerData;
 
 typedef struct GameData {

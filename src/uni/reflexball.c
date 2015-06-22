@@ -53,6 +53,7 @@ int main()
 	}
 
 	playerData.coins = 0;
+	playerData.progress = 0;
 
 	gameData.strikerSize = 48;
 
@@ -61,7 +62,7 @@ int main()
 		if (mode == 0) {
 			// Start menu
 			menu_show();
-			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2);
+			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2, &playerData);
 		}
 		if (mode == 1) {
 			// Level select
@@ -69,30 +70,28 @@ int main()
 			while (mode == 1) map_update(&mode, &lastKey, &focus, &gameData, &playerData);
 		}
 		if (mode == 2) {
-			// Game
-			game_init(&gameData, &playerData, &animationData);
-			while (mode == 2) game_update(&mode, &lastKey, &gameData, &playerData, &animationData);
+			// Level info page
+			map_info_show(&gameData);
+			while (mode == 2) map_info_update(&mode, &lastKey);
 		}
 		if (mode == 3) {
+			// Game
+			game_init(&gameData, &playerData, &animationData);
+			while (mode == 3) game_update(&mode, &lastKey, &gameData, &playerData, &animationData);
+		}
+		if (mode == 4) {
 			// Shop
 			shop_show(&playerData);
-			while (mode == 3) shop_update(&mode, &lastKey, &focus, &playerData);
+			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData);
 		}
 
 		if (mode == 5) {
-			// Level info page
-			map_info_show(&gameData);
-			while (mode == 5) map_info_update(&mode, &lastKey);
-		}
-
-		if (mode == 6) {
 			intro_play();
-			while (mode == 6) intro_update(&mode, &lastKey);
+			while (mode == 5) intro_update(&mode, &lastKey);
 		}
-
 
 #if defined(__APPLE__) || defined(__WIN32__)
-		if (mode == 4) break;	// Exit
+		if (mode == 6) break;	// Exit
 #endif
 	}
 #if defined(__APPLE__) || defined(__WIN32__)
