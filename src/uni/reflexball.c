@@ -70,8 +70,8 @@ int main()
 		}
 		if (mode == 2) {
 			// Game
-			game_init(&gameData, &playerData);
-			while (mode == 2) game_update(&mode, &gameData, &playerData, &animationData);
+			game_init(&gameData, &playerData, &animationData);
+			while (mode == 2) game_update(&mode, &lastKey, &gameData, &playerData, &animationData);
 		}
 		if (mode == 3) {
 			// Shop

@@ -46,6 +46,7 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 
 			// Select key is pressed
 			if (*lastKey & 4) {
+				hw_sound_play(1);
 				*mode = *focus + 1;
 				*focus = 0;
 			} else if (*lastKey & 0x03) {
@@ -80,6 +81,7 @@ void shop_show(PlayerData *playerData) {
 	char str[15];
 
 	hw_sound_set_music(0);
+	hw_sound_play(1);	// Because a button was pressed to get here
 
 	gfx_window(-1, -1, 257, 104);
 
@@ -112,6 +114,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 			// select event
 			if (*lastKey & 4) {
+				hw_sound_play(1);
 				if (*focus != 8) {
 					int i, j;
 

@@ -31,6 +31,7 @@ typedef struct AnimationData {
 	int blockDestruction[4];
 	unsigned char projectilePos[5][2];
 	char projectileType[5];
+	char eraseProjectile[5];
 } AnimationData;
 
 #endif

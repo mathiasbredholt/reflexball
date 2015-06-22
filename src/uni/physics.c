@@ -373,7 +373,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 		if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
 
-			hw_sound_play(2);
+			hw_sound_play(2 + (gameData->multiplier > 6 ? 6 : gameData->multiplier));
 
 			if (type != 11) {	// Only if block is destructible
 
@@ -470,7 +470,7 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 					gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
 					gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
 
-					animationData->projectileType[i] = -1;
+					animationData->eraseProjectile[i] = 1;
 				}
 			}
 		}

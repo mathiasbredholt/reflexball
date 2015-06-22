@@ -105,7 +105,20 @@ void gfx_erase_striker(GameData *gameData) {
 void gfx_draw_bullets(AnimationData *animationData) {
 	int i;
 	for (i = 0; i < 5; ++i) {
-		if (animationData->projectileType[i] >= 0) {	// Bullet exists
+		if (animationData->eraseProjectile[i]) {
+			go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
+			printf(" ");
+			if (animationData->projectileType[i] == 2) {	// Rocket
+				go_left(1);
+				go_down(1);
+				printf(" ");
+				go_left(1);
+				go_down(1);
+				printf(" ");
+			}
+			animationData->projectileType[i] = -1;
+			animationData->eraseProjectile[i] = 0;
+		} else if (animationData->projectileType[i] >= 0) {	// Bullet exists
 			if (animationData->projectileType[i] == 0) { // Laser 1
 				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
 				printf(" ");

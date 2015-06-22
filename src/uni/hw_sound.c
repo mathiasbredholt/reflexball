@@ -13,7 +13,7 @@ char _musicId;		// Which music track to play
 #pragma interrupt
 void ISR_T3() {
 	if (_soundMode) {
-		if (soundFX[_soundId][_soundIndex][0]) {
+		if (soundFX[_soundId][_soundIndex][0] == 1) {
 			// Enable sound generator
 			T2CTL  = 0xBB;
 			// Reset
@@ -24,6 +24,8 @@ void ISR_T3() {
 			T2RL   = soundFX[_soundId][_soundIndex][2];
 			T2PWMH = soundFX[_soundId][_soundIndex][3];
 			T2PWML = soundFX[_soundId][_soundIndex][4];
+		} else if (soundFX[_soundId][_soundIndex][0] == 3) {
+			_soundMode = 0;
 		} else {
 			// Disable sound generator
 			T2CTL = 0x3B;
