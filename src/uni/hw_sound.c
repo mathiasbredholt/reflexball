@@ -6,13 +6,55 @@
 // Global variables used to avoid having to pass pointers to placeholders for hardware specific variables all the way from main
 int _soundIndex;	// How far we are in playing the current sound effect
 int _musicIndex;	// How far we are in playing the current background music track
-char _soundNext;	// Flag set high by timer 3 at 16Hz to control the rythm
 char _soundMode;	// Flag determining whether to play a sound effect (1) or the background music (0)
 char _soundId;		// Which sound effect to play
+char _musicId;		// Which music track to play
 
 #pragma interrupt
 void ISR_T3() {
-	_soundNext = 1;
+	if (_soundMode) {
+		if (soundFX[_soundId][_soundIndex][0]) {
+			// Enable sound generator
+			T2CTL  = 0xBB;
+			// Reset
+			T2H = 0;
+			T2L = 0;
+			// Set reload and PWM
+			T2RH   = soundFX[_soundId][_soundIndex][1];
+			T2RL   = soundFX[_soundId][_soundIndex][2];
+			T2PWMH = soundFX[_soundId][_soundIndex][3];
+			T2PWML = soundFX[_soundId][_soundIndex][4];
+		} else {
+			// Disable sound generator
+			T2CTL = 0x3B;
+		}
+
+		++_soundIndex;
+		if (_soundIndex == 7) {
+			// Switch to playing music upon reaching end of sound
+			_soundMode = 0;
+		}
+	} else {
+		if (music[_musicId][_musicIndex][0] == 1) {
+			// Enable sound generator
+			T2CTL  = 0xBB;
+			// Reset
+			T2H = 0;
+			T2L = 0;
+			// Set reload and PWM
+			T2RH   = music[_musicId][_musicIndex][1];
+			T2RL   = music[_musicId][_musicIndex][2];
+			T2PWMH = music[_musicId][_musicIndex][3];
+			T2PWML = music[_musicId][_musicIndex][4];
+		} else if (music[_musicId][_musicIndex][0] == 0) {
+			// Disable sound generator
+			T2CTL = 0x3B;
+		}
+	}
+
+	++_musicIndex;
+	// Apply modulus on music index to loop around
+	_musicIndex &= 0x7F;
 }
 
 void hw_sound_init() {
@@ -21,6 +63,7 @@ void hw_sound_init() {
 	_musicIndex = 0;
 	_soundMode = 0;
 	_soundId = 0;
+	_musicId = 0;
 
 	// Setup timer 2 (sound generator)
 	// TEN: 0, TPOL: 0, PRES: 7 (128), TMODE: 3 (PWM)
@@ -67,61 +110,17 @@ void hw_sound_init() {
 	EI();
 }
 
-void hw_sound_update() {
-	if (_soundNext) {
-		_soundNext = 0;
-
-		if (_soundMode) {
-			if (soundFX[_soundId][_soundIndex][0]) {
-				// Enable sound generator
-				T2CTL  = 0xBB;
-				// Reset
-				T2H = 0;
-				T2L = 0;
-				// Set reload and PWM
-				T2RH   = soundFX[_soundId][_soundIndex][1];
-				T2RL   = soundFX[_soundId][_soundIndex][2];
-				T2PWMH = soundFX[_soundId][_soundIndex][3];
-				T2PWML = soundFX[_soundId][_soundIndex][4];
-			} else {
-				// Disable sound generator
-				T2CTL = 0x3B;
-			}
-
-			++_soundIndex;
-			if (_soundIndex == 7) {
-				// Switch to playing music upon reaching end of sound
-				_soundMode = 0;
-			}
-		} else {
-			if (mainTheme2[_musicIndex][0]) {
-				// Enable sound generator
-				T2CTL  = 0xBB;
-				// Reset
-				T2H = 0;
-				T2L = 0;
-				// Set reload and PWM
-				T2RH   = mainTheme2[_musicIndex][1];
-				T2RL   = mainTheme2[_musicIndex][2];
-				T2PWMH = mainTheme2[_musicIndex][3];
-				T2PWML = mainTheme2[_musicIndex][4];
-			} else {
-				// Disable sound generator
-				T2CTL = 0x3B;
-			}
-		}
-
-		++_musicIndex;
-		// Apply modulus on music index to loop around
-		_musicIndex &= 0x7F;
-	}
-}
-
 void hw_sound_play(int which) {
 	_soundId = which;
 	// Switch to playing sound and reset index
 	_soundMode = 1;
 	_soundIndex = 0;
+}
+
+void hw_sound_set_music(int which) {
+	_musicId = which;
+	_soundMode = 0;
+	_musicIndex = 0;
 }
 
 #endif

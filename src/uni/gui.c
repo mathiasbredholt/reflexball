@@ -11,6 +11,7 @@
 #include "graphics.h"
 #include "hw_input.h"
 #include "hw_time.h"
+#include "hw_sound.h"
 
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
@@ -18,6 +19,7 @@ char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
+	hw_sound_set_music(0);
 	gfx_window(64, 16, 192, 80);
 	gfx_draw_text(68, 18, "reflexball");
 
@@ -74,6 +76,8 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 void shop_show(PlayerData *playerData) {
 	int i, j;
 	char str[15];
+
+	hw_sound_set_music(0);
 
 	gfx_window(-1, -1, 257, 104);
 
@@ -157,12 +161,12 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				);
 			}
 		}
-
-
 	}
 }
 
 void map_show(PlayerData *playerData) {
+	hw_sound_set_music(1);
+
 	gfx_window(-1, -1, 257, 104);
 
 	gfx_draw_text(6, 2, "the andromeda galaxy");
@@ -320,7 +324,6 @@ void map_info_show(int *map) {
 
 	gfx_draw_text(5, 90, "press left to warp to starmap");
 	gfx_draw_text(170, 90, "press right to engage");
-
 }
 
 void map_info_update(int *mode, char *lastKey) {

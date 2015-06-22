@@ -65,6 +65,8 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	gameData->bouncedTop = 0;	// Touching top game border
 	gameData->bouncedSide = 0;	// Touching side game border
 	gameData->bouncedStriker = 0;	// Touching the striker
+
+	hw_sound_set_music(2);
 }
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
@@ -123,6 +125,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 			if (lostBall) {
 				playerData->oldEnergy = playerData->energy;
 				playerData->energy -= 0x1000;
+				lostBall = 0;
 
 			}
 		}
@@ -136,20 +139,23 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 	hw_sound_update();
 }
 void game_end(int *mode, int win) {
+	char nxt;
 	if (win == 0) {
 		gfx_window(87, 45, 163, 60);
 		gfx_draw_game_over();
 		LED_set_string("YOU DEAD");
+		nxt = 1;
 	} else {
 		gfx_window(76, 45, 181, 60);
 		gfx_draw_victory();
 		LED_set_string("You found your way home!");
+		nxt = 0;
 	}
 	gfx_draw_text(91, 54, "press to continue");
 	while (1) {
 		LED_update();
 		if (hw_read_key() == 4) {
-			* mode = 0;
+			* mode = nxt;
 			break;
 		}
 	}

@@ -7,4 +7,6 @@ void hw_sound_update();
 
 void hw_sound_play(int which);
 
+void hw_sound_set_music(int which);
+
 #endif
