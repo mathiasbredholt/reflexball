@@ -419,7 +419,7 @@ rom char mapThumbs[7][16][17] =
 #endif
 
 #if defined(__APPLE__) || defined(__WIN32__)
-                     const char mapThumbs[7][15][16] =
+  const char mapThumbs[7][15][16] =
 #endif
 
 {

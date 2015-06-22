@@ -96,8 +96,6 @@ void gfx_init_striker(GameData *gameData) {
 }
 
 void gfx_erase_striker(GameData *gameData) {
-	unsigned char x = (char) (gameData->strikerPos >> 8);
-
 	go_to_xy((int) ((gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1), striker_height);
 	spacer(gameData->strikerSize, (int) ' ');
 
