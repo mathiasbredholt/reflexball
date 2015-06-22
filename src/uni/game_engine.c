@@ -28,7 +28,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 
 	playerData->energy = 0x7FFF;
 
-	gfx_window(-1, -1, 258, 98);
+	gfx_window(-1, -1, 257, 98);
 
 	gfx_draw_text(200, 98, "coins");
 	gfx_draw_energy_meter();
@@ -68,7 +68,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 }
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
-	char key, i;
+	char key, i, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
 	gameData->blockHit[1] = 0;	// Same as 0, used if two blocks are hit simultaneously
@@ -88,7 +88,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 
 
-		//if (playerData->energy <= 0) game_end(mode, 0);
+		if (playerData->energy <= 0) game_end(mode, 0);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
 		// gfx_draw_text(200, 80, debug);
@@ -101,7 +101,7 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 
 		// Calculate new ball position
 		for (i = 0; i < 8; ++i) {
-			phy_simulate(gameData);
+			phy_simulate(gameData, &lostBall);
 			if (gameData->blockHit[0]) {
 				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, gameData->blockHit[0] >> 8) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
 				gameData->blockHit[0] = 0;
@@ -120,6 +120,11 @@ void game_update(int *mode, GameData *gameData, PlayerData *playerData) {
 				gfx_draw_ball(gameData);
 				gameData->ballOldPos = gameData->ballPos;
 			}
+			if (lostBall) {
+				playerData->oldEnergy = playerData->energy;
+				playerData->energy -= 0x1000;
+
+			}
 		}
 
 		gameData->ballVel.y++;	// Gravity
@@ -134,7 +139,7 @@ void game_end(int *mode, int win) {
 	if (win == 0) {
 		gfx_window(87, 45, 163, 60);
 		gfx_draw_game_over();
-		LED_set_string("YOU DED");
+		LED_set_string("YOU DEAD");
 	} else {
 		gfx_window(76, 45, 181, 60);
 		gfx_draw_victory();
