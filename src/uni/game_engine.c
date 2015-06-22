@@ -66,7 +66,19 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	gameData->bouncedSide = 0;	// Touching side game border
 	gameData->bouncedStriker = 0;	// Touching the striker
 
-	hw_sound_set_music(2);
+	if (gameData->level < 0) {
+		hw_sound_set_music(1);
+	} else if (gameData->level == 1) {
+		hw_sound_set_music(2);
+	} else if (gameData->level == 2) {
+		hw_sound_set_music(3);
+	} else if (gameData->level == 3) {
+		hw_sound_set_music(2);
+	} else if (gameData->level == 4) {
+		hw_sound_set_music(3);
+	} else if (gameData->level == 5) {
+		hw_sound_set_music(0);
+	}
 }
 
 void game_update(int *mode, GameData *gameData, PlayerData *playerData) {

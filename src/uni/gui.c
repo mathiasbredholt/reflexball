@@ -164,7 +164,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 	}
 }
 
-void map_show(PlayerData *playerData) {
+void map_show(PlayerData *playerData, int *focus) {
 	hw_sound_set_music(1);
 
 	gfx_window(-1, -1, 257, 104);
@@ -173,30 +173,33 @@ void map_show(PlayerData *playerData) {
 
 
 	// level 1
-	gfx_draw_thumb(4, 8, 0);
-	gfx_draw_btn(32, 48, mapButtons[0], 1);
+	gfx_draw_thumb(16, 8, 0);
+	gfx_draw_btn(4, 25, mapButtons[0], *focus == 0);
 
 	// level 2
-	gfx_draw_thumb(4, 20, 1);
-	gfx_draw_btn(32, 80, mapButtons[1], 0);
+	gfx_draw_thumb(32, 40, 1);
+	gfx_draw_btn(20, 57, mapButtons[1], *focus == 1);
 
 	// level 3
-	gfx_draw_thumb(32, 16, 2);
-	gfx_draw_btn(32, 32, mapButtons[2], 0);
+	gfx_draw_thumb(68, 76, 2);
+	gfx_draw_btn(56, 93, mapButtons[2], *focus == 2);
 
 	// level 4
-	gfx_draw_thumb(64, 40, 3);
-	gfx_draw_btn(32, 56, mapButtons[3], 0);
+	gfx_draw_thumb(116, 36, 3);
+	gfx_draw_btn(104, 53, mapButtons[3], *focus == 3);
 
 	// level 5
-	gfx_draw_thumb(128, 32, 4);
-	gfx_draw_btn(128, 80, mapButtons[4], 0);
+	gfx_draw_thumb(224, 48, 4);
+	gfx_draw_btn(212, 65, mapButtons[4], *focus == 4);
 
 	// level 6
-	gfx_draw_thumb(128, 64, 5);
-	gfx_draw_btn(128, 80, mapButtons[5], 0);
+	gfx_draw_thumb(204, 6, 5);
+	gfx_draw_btn(192, 23, mapButtons[5], *focus == 5);
 
+	// shop
 	gfx_draw_btn(164, 90, mapButtons[6], 0);
+
+	// menu
 	gfx_draw_btn(212, 90, mapButtons[7], 0);
 }
 
@@ -212,10 +215,10 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 			*lastKey = key;
 
 			if (*lastKey & 4) {
-				if (*focus > 0 && *focus < 4) {
-					gameData->level = *focus - 1;
+				if (*focus > 0 && *focus < 6) {
+					gameData->level = *focus;
 					*mode = 5;
-				} else if (*focus == 0) {
+				} else if (*focus == 6) {
 					*mode = 3;
 					*focus = 0;
 				} else {
@@ -225,40 +228,52 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 			}
 
 			if (*focus == 0) {
-				gfx_draw_btn_focus(6, 6, mapButtons[0], 0);
+				gfx_draw_btn_focus(4, 25, mapButtons[0], 0);
 			} else if (*focus == 1) {
-				gfx_draw_btn_focus(32, 32, mapButtons[1], 0);
+				gfx_draw_btn_focus(20, 57, mapButtons[1], 0);
 			} else if (*focus == 2) {
-				gfx_draw_btn_focus(32, 56, mapButtons[2], 0);
+				gfx_draw_btn_focus(56, 93, mapButtons[2], 0);
 			} else if (*focus == 3) {
-				gfx_draw_btn_focus(32, 80, mapButtons[3], 0);
+				gfx_draw_btn_focus(104, 53, mapButtons[3], 0);
 			} else if (*focus == 4) {
-				gfx_draw_btn_focus(212, 90, mapButtons[4], 0);
+				gfx_draw_btn_focus(212, 65, mapButtons[4], 0);
+			} else if (*focus == 5) {
+				gfx_draw_btn_focus(192, 23, mapButtons[5], 0);
+			} else if (*focus == 6) {
+				gfx_draw_btn_focus(164, 90, mapButtons[6], 0);
+			} else if (*focus == 7) {
+				gfx_draw_btn_focus(212, 90, mapButtons[7], 0);
 			}
 
 			if (*lastKey & 0x02) --(*focus);
 			if (*lastKey & 0x01) ++(*focus);
 
-			*focus %= 5;
-			if (*focus < 0) * focus += 5;
+			*focus &= 0x07;
+			if (*focus < 0) * focus += 8;
 
 			if (*focus == 0) {
-				gfx_draw_btn_focus(6, 6, mapButtons[0], 1);
+				gfx_draw_btn_focus(4, 25, mapButtons[0],   1);
 			} else if (*focus == 1) {
-				gfx_draw_btn_focus(32, 32, mapButtons[1], 1);
+				gfx_draw_btn_focus(20, 57, mapButtons[1],  1);
 			} else if (*focus == 2) {
-				gfx_draw_btn_focus(32, 56, mapButtons[2], 1);
+				gfx_draw_btn_focus(56, 93, mapButtons[2],  1);
 			} else if (*focus == 3) {
-				gfx_draw_btn_focus(32, 80, mapButtons[3], 1);
+				gfx_draw_btn_focus(104, 53, mapButtons[3], 1);
 			} else if (*focus == 4) {
-				gfx_draw_btn_focus(212, 90, mapButtons[4], 1);
+				gfx_draw_btn_focus(212, 65, mapButtons[4], 1);
+			} else if (*focus == 5) {
+				gfx_draw_btn_focus(192, 23, mapButtons[5], 1);
+			} else if (*focus == 6) {
+				gfx_draw_btn_focus(164, 90, mapButtons[6], 1);
+			} else if (*focus == 7) {
+				gfx_draw_btn_focus(212, 90, mapButtons[7], 1);
 			}
 		}
 	}
 }
 
 
-void map_info_show(int *map) {
+void map_info_show(GameData *gameData) {
 	int y;
 
 	//--map;
@@ -266,7 +281,7 @@ void map_info_show(int *map) {
 
 	y = 60;
 
-	if (*map == 1) {
+	if (gameData->level == 0) {
 
 		gfx_draw_text(119, 35, "dokuu");
 		gfx_draw_thumb(122, 40, 0);
@@ -275,7 +290,7 @@ void map_info_show(int *map) {
 		gfx_draw_text(57, y + 6, "its blocking our way past dokuu");
 		gfx_draw_text(57, y + 9, "prepare the balls for max bounciness");
 
-	} else if (*map == 2) {
+	} else if (gameData->level == 1) {
 
 		gfx_draw_text(113, 35, "alderaan");
 		gfx_draw_thumb(122, 40, 1);
@@ -286,7 +301,7 @@ void map_info_show(int *map) {
 		gfx_draw_text(71, y + 12, "an evil alderaan has appeared");
 		gfx_draw_text(71, y + 15, "what are your orders");
 
-	} else if (*map == 3) {
+	} else if (gameData->level == 2) {
 
 
 		gfx_draw_text(113, 35, "tatoiine");
@@ -299,7 +314,7 @@ void map_info_show(int *map) {
 		gfx_draw_text(77, y + 15, "and its opening fire");
 		gfx_draw_text(77, y + 18, "boss");
 
-	} else if (*map == 4) {
+	} else if (gameData->level == 3) {
 
 		gfx_draw_text(107, 35, "darth vader");
 		gfx_draw_thumb(122, 40, 3);
@@ -309,7 +324,7 @@ void map_info_show(int *map) {
 		gfx_draw_text(75, y + 9, "its the feared pirate queen");
 		gfx_draw_text(75, y + 12, "darth vader");
 
-	} else if (*map == 5) {
+	} else if (gameData->level == 4) {
 
 		gfx_draw_text(95, 35, "somewhere unknown");
 		gfx_draw_thumb(122, 40, 4);
@@ -320,7 +335,7 @@ void map_info_show(int *map) {
 		gfx_draw_text(43, y + 12, "and its filled with generic arkanoid levels");
 		gfx_draw_text(43, y + 15, "good thing we brought our best balls");
 
-	} else if (*map == 6) {
+	} else if (gameData->level == 5) {
 
 		gfx_draw_text(70, 35, "pub at the end of the universe");
 		gfx_draw_thumb(122, 40, 5);
