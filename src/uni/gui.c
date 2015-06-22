@@ -12,7 +12,7 @@
 #include "hw_input.h"
 #include "hw_time.h"
 
-// OBS FLYT
+
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
 

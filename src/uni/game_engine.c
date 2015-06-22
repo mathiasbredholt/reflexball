@@ -26,7 +26,7 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	int i, j;
 	char str[9];
 
-	playerData->energy = 0x0FFF;
+	playerData->energy = 0x7FFF;
 
 	gfx_window(-1, -1, 258, 98);
 
