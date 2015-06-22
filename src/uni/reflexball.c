@@ -80,6 +80,7 @@ int main()
 
 		if (mode == 5) {
 			// Level info page
+			map_info_show(&focus);
 			while (mode == 5) map_info_update(&mode, &lastKey);
 		}
 
