@@ -46,7 +46,7 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 			if (*lastKey & 4) {
 				*mode = *focus + 1;
 				*focus = 0;
-			} else {
+			} else if (*lastKey & 0x03) {
 				// Blur button currently in focus
 				gfx_draw_btn_focus(66 + 42 * *focus, 72, menuButtons[*focus], 0);
 
@@ -130,7 +130,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 					*mode = 1;
 				}
 
-			} else {
+			} else if (*lastKey & 0x03) {
 				// focus handling
 				if (*focus == 8) {
 					gfx_draw_btn_focus(212, 90, "exit", 0);
@@ -225,7 +225,7 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 					*mode = 0;
 					*focus = 0;
 				}
-			} else {
+			} else if (*lastKey & 0x03) {
 				if (*focus == 0) {
 					gfx_draw_btn_focus(4, 25, mapButtons[0], 0);
 				} else if (*focus == 1) {

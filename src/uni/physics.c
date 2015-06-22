@@ -131,8 +131,8 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			// Lost ball //
 			///////////////
 
-			// Reset position and decrease velocity
-			gameData->ballPos.x = 127 << 8;
+			// Reset position to striker and decrease velocity
+			gameData->ballPos.x = gameData->strikerPos;
 			gameData->ballPos.y = 90 << 8;
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
 
