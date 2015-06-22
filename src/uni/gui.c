@@ -285,63 +285,63 @@ void map_info_show(GameData *gameData) {
 
 	y = 60;
 
-	if (gameData->level == 0) {
-		gfx_draw_text(119, 35, lore[1]);
+	// if (gameData->level == 0) {
+	// 	gfx_draw_text(119, 35, lore[1]);
 
 
-		gfx_draw_thumb(122, 40, 0);
+	// 	gfx_draw_thumb(122, 40, 0);
 
-		for (i = 1; i < 5; ++i) {
-			gfx_draw_text(100, y + i * 3, lore[i]);
-		}
+	// 	for (i = 1; i < 5; ++i) {
+	// 		gfx_draw_text(100, y + i * 3, lore[i]);
+	// 	}
 
-	} else if (gameData->level == 1) {
+	// } else if (gameData->level == 1) {
 
-		gfx_draw_text(113, 35, lore[4]);
-		gfx_draw_thumb(122, 40, 1);
+	// 	gfx_draw_text(113, 35, lore[4]);
+	// 	gfx_draw_thumb(122, 40, 1);
 
-		for (i = 1; i < 7; ++i) {
-			gfx_draw_text(71, y + i * 3, lore[i + 4]);
-		}
+	// 	for (i = 1; i < 7; ++i) {
+	// 		gfx_draw_text(71, y + i * 3, lore[i + 4]);
+	// 	}
 
-	} else if (gameData->level == 2) {
-
-
-		gfx_draw_text(113, 35, lore[11]);
-		gfx_draw_thumb(122, 40, 2);
-
-		for (i = 1; i < 8; ++i) {
-			gfx_draw_text(77, y + i * 3, lore[i + 11]);
-		}
-
-	} else if (gameData->level == 3) {
-
-		gfx_draw_text(107, 35, lore[19]);
-		gfx_draw_thumb(122, 40, 3);
-
-		for (i = 1; i < 6; ++i)	{
-			gfx_draw_text(75, y + i * 3, lore[i + 19]);
-		}
-
-	} else if (gameData->level == 4) {
+	// } else if (gameData->level == 2) {
 
 
-		gfx_draw_text(95, 35, lore[25]);
-		gfx_draw_thumb(122, 40, 4);
+	// 	gfx_draw_text(113, 35, lore[11]);
+	// 	gfx_draw_thumb(122, 40, 2);
 
-		for (i = 1; i < 7; ++i) {
-			gfx_draw_text(53, y + i * 3, lore[i + 25]);
-		}
+	// 	for (i = 1; i < 8; ++i) {
+	// 		gfx_draw_text(77, y + i * 3, lore[i + 11]);
+	// 	}
 
-	} else if (gameData->level == 5) {
+	// } else if (gameData->level == 3) {
 
-		gfx_draw_text(70, 35, lore[32]);
-		gfx_draw_thumb(122, 40, 5);
+	// 	gfx_draw_text(107, 35, lore[19]);
+	// 	gfx_draw_thumb(122, 40, 3);
 
-		for (i = 1; i < 8; ++i) {
-			gfx_draw_text(33, y + i * 3, lore[i + 32]);
-		}
-	}
+	// 	for (i = 1; i < 6; ++i)	{
+	// 		gfx_draw_text(75, y + i * 3, lore[i + 19]);
+	// 	}
+
+	// } else if (gameData->level == 4) {
+
+
+	// 	gfx_draw_text(95, 35, lore[25]);
+	// 	gfx_draw_thumb(122, 40, 4);
+
+	// 	for (i = 1; i < 7; ++i) {
+	// 		gfx_draw_text(53, y + i * 3, lore[i + 25]);
+	// 	}
+
+	// } else if (gameData->level == 5) {
+
+	// 	gfx_draw_text(70, 35, lore[32]);
+	// 	gfx_draw_thumb(122, 40, 5);
+
+	// 	for (i = 1; i < 8; ++i) {
+	// 		gfx_draw_text(33, y + i * 3, lore[i + 32]);
+	// 	}
+	// }
 
 	gfx_draw_text(9, 5, 90, "press left to warp to starmap");
 	gfx_draw_text(9, 170, 90, "press right to engage");

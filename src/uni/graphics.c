@@ -114,7 +114,7 @@ void gfx_update_animation(AnimationData *animationData) {
 				printf(" ");
 				go_left(1);
 				go_down(1);
-				printf(" ");
+				printf(" erase");
 			}
 			animationData->projectileType[i] = -1;
 			animationData->eraseProjectile[i] = 0;

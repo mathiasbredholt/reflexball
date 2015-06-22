@@ -87,8 +87,9 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 		if (animationData->projectileType[num] == -1) break;
 	}
 	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
-		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) - 1 : (-(gameData->strikerSize >> 1) + 1));
-		animationData->projectilePos[num][1] = striker_height + (type < 2 ? 2 : 4);
+		hw_sound_play(9 + type);
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) : (-(gameData->strikerSize >> 1) + 1));
+		animationData->projectilePos[num][1] = striker_height - (type < 2 ? 1 : 3);
 		animationData->projectileType[num] = (char) type;
 	}
 }
@@ -176,12 +177,15 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 
 void game_end(int *mode, int win) {
 	char nxt;
+	hw_sound_mute();
 	if (win == 0) {
+		hw_sound_play(13);
 		gfx_window(87, 45, 163, 60);
 		gfx_draw_game_over();
 		LED_set_string("YOU DEAD");
 		nxt = 1;
 	} else {
+		hw_sound_play(12);
 		gfx_window(76, 45, 181, 60);
 		gfx_draw_victory();
 		LED_set_string("You found your way home!");

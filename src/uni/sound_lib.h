@@ -517,7 +517,7 @@
 // 	{ 0, 0x01, 0x23, 0x00, 0x91 }
 // };
 
-rom char soundFX[9][8][5] = {
+rom char soundFX[14][8][5] = {
 	{
 		// striker
 		{ 1, 0x08, 0x99, 0x04, 0x4C },

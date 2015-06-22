@@ -38,6 +38,8 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 		// Bounced top wall //
 		//////////////////////
 
+		hw_sound_play(0);
+
 		if (!gameData->bouncedTop) {	// Only if it didn't already bounce the top in the last iteration
 			gameData->ballVel.y = -gameData->ballVel.y;	// Reverse y velocity
 			gameData->redraw = 1;	// Forces ball to be redrawn at current position, to make sure it is seen as close enough to the wall
@@ -132,6 +134,8 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			///////////////
 			// Lost ball //
 			///////////////
+
+			hw_sound_play(13);
 
 			// Reset position to striker and decrease velocity
 			gameData->ballPos.x = gameData->strikerPos;
@@ -336,6 +340,8 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			// Bounced side wall //
 			///////////////////////
 
+			hw_sound_play(0);
+
 			if (!gameData->bouncedSide) {	// Only if it didn't already bounce a side wall in the last iteration
 				gameData->ballVel.x = -gameData->ballVel.x;
 				gameData->redraw = 1;	// Forces ball to be redrawn at current position, to make sure it is seen as close enough to the wall
@@ -475,20 +481,27 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 
 						animationData->rocketHit[0] = blockX - 1;
 						animationData->rocketHit[1] = blockY - 1;
+						animationData->rocketHit[2] = 1;
 
-						for (i = 0; i < 3; ++i) {
-							for (j = 0; j < 3; ++j) {
+						for (i = -1; i < 2; ++i) {
+							for (j = -1; j < 2; ++j) {
 								// Mark for demolition
 								gameData->blockData[(blockY + j)][(blockX + i) >> 1] &= ((blockX + i) & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
 							}
 						}
 					}
 
+					hw_sound_play(14);
+
 					animationData->eraseProjectile[i] = 1;
 				}
 			}
+			if (animationData->projectilePos[i] < 2) {
+				animationData->projectileType[i] = -1;
+				animationData->eraseProjectile[i] = 1;
+			}
+			--animationData->projectilePos[i][1];
 		}
-		--animationData->projectilePos[i][1];
 	}
 }
 
