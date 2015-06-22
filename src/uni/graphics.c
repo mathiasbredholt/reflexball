@@ -165,69 +165,6 @@ void gfx_draw_all_blocks(GameData *gameData) {
 #endif
 }
 
-// void gfx_draw_all_blocks(GameData *gameData) {
-// 	char type, oldType, row, side, column, line, exists;
-
-// 	go_to_xy(0, 0);
-// 	fg_color(1);
-// 	ansi_save();
-// 	oldType = 0;
-
-// 	for (row = 0; row < 15; ++row) { // Rows
-// 		for (line = 0; line < 4; ++line) { // Lines
-// 			for (side = 0; side < 2; ++side) { // Left/right side (byte)
-// 				for (column = 0; column < 8; ++column) { // Column (bit)
-// 					exists = 0;
-// 					for (type = 0; type < 4; ++type) { // Types
-// 						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
-// 							exists = 1;
-// 							if (type != oldType) {
-// 								if (type == 0) {
-// 									fg_color(1);
-// 								} else if (type == 2) {
-// 									fg_color(2);
-// 								} else if (type == 5) {
-// 									fg_color(3);
-// 								} else if (type == 9) {
-// 									fg_color(4);
-// 								} else {
-// 									fg_color(5);
-// 								}
-// 								oldType = type;
-// 							}
-// 							if (line == 0) {
-// 								printf("%c", 201);  // top left corner
-// 								spacer(14, 203); // top line
-// 								printf("%c", 187);	// top right corner
-// 							} else if (line < 3) {
-// 								printf("%c", 204);
-// 								spacer(14, 206);
-// 								printf("%c", 185);
-// 							} else {
-// 								printf("%c", 200);  // corner
-// 								spacer(14, 202);
-// 								printf("%c", 188);  // corner
-// 							}
-// 						}
-// 					}
-// 					if (!exists) {
-// 						spacer(16, (int) ' ');
-// 					}
-// 				}
-// 			}
-// 			ansi_load();
-// 			oldType = 0;
-// 			go_down(line + (row << 2) + 1);
-// 		}
-// 	}
-
-// 	fg_color(15);
-
-// #ifdef GCC
-// 	fflush(stdout);
-// #endif
-// }
-
 void gfx_draw_block(int x, int y, int type) {
 	char color;
 	x = x << 4;
@@ -485,7 +422,7 @@ void gfx_draw_energy_meter() {
 
 	color(0, 6);
 	sprintf(str, "energy");
-	gfx_draw_text(9, 0, 98, str);
+	gfx_draw_text(0, 0, 98, str);
 
 	go_to_xy(0, 101);
 	spacer(63, 32);
@@ -637,10 +574,9 @@ void gfx_draw_victory() {
 }
 
 void gfx_draw_score(PlayerData *playerData) {
-	char str[9];
-	fg_color(15);
+	char str[9];;
 	sprintf(str, "%8d", playerData->coins);
-	gfx_draw_text(9, 224, 98, str);
+	gfx_draw_text(11, 224, 98, str);
 
 #ifdef GCC
 	fflush(stdout);

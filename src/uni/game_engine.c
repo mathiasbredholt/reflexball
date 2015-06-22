@@ -1,11 +1,3 @@
-#if defined(__APPLE__) || defined(__WIN32__)
-#include <stdio.h>
-#endif
-
-#if defined(_Z8F6403)
-#include <stdio.h>
-#endif
-
 // game_engine.c
 
 #include "game_engine.h"
@@ -24,13 +16,13 @@
 
 void game_init(GameData *gameData, PlayerData *playerData) {
 	int i, j;
-	char str[9];
 
 	playerData->energy = 0x7FFF;
 
 	gfx_window(-1, -1, 257, 98);
 
-	gfx_draw_text(9, 200, 98, "coins");
+	gfx_draw_text(11, 200, 98, "coins");
+	gfx_draw_score(playerData);
 	gfx_draw_energy_meter();
 
 	for (i = 0; i < 15; ++i) {
@@ -40,8 +32,6 @@ void game_init(GameData *gameData, PlayerData *playerData) {
 	}
 
 	gfx_draw_all_blocks(gameData);
-	sprintf(str, "%8d", playerData->coins);
-	gfx_draw_text(9, 224, 98, str);
 
 	gameData->strikerPos = 127 << 8;
 
