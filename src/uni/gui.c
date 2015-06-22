@@ -12,7 +12,7 @@
 #include "hw_input.h"
 #include "hw_time.h"
 
-// OBS FLYT
+
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[5][9] = { "shop", "dokuu", "alderaan", "tatoiine", "menu" };
 
@@ -75,7 +75,7 @@ void shop_show(PlayerData *playerData) {
 	int i, j;
 	char str[15];
 
-	gfx_window(-1, -1, 258, 104);
+	gfx_window(-1, -1, 257, 104);
 
 	gfx_draw_text(8, 2, "welcome to my shop");
 	gfx_draw_text(8, 6, "what does your heart desire");
@@ -163,7 +163,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 }
 
 void map_show(PlayerData *playerData) {
-	gfx_window(0, 0, 258, 104);
+	gfx_window(-1, -1, 257, 104);
 
 	gfx_draw_text(6, 2, "the andromeda galaxy");
 
@@ -246,7 +246,7 @@ void map_info_show(int *map) {
 	int y;
 
 	//--map;
-	gfx_window(0, 0, 258, 104);
+	gfx_window(-1, -1, 257, 104);
 
 	y = 60;
 

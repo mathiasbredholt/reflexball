@@ -18,7 +18,7 @@
 #define striker_speed 4
 #define bounciness_factor 4
 
-void phy_simulate(GameData *gameData) {
+void phy_simulate(GameData *gameData, char *lostBall) {
 	unsigned char x, y, sp;
 	char justHitBlock, reverseX, reverseY;
 	int dx, dy, halfSize;
@@ -137,14 +137,15 @@ void phy_simulate(GameData *gameData) {
 			gameData->ballPos.x = 127 << 8;
 			gameData->ballPos.y = 90 << 8;
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
-			gameData->ballVel.y = -(gameData->ballVel.y); //TEMP
 
 			// Only decrease y velocity to a minumum of 32
 			if (gameData->ballVel.y > 50) {
-				// gameData->ballVel.y = -(gameData->ballVel.y >> 1);
+				gameData->ballVel.y = -(gameData->ballVel.y >> 1);
 			} else {
-				// gameData->ballVel.y = -50;
+				gameData->ballVel.y = -50;
 			}
+
+			*lostBall = 1;
 
 		} else {
 
@@ -380,7 +381,7 @@ void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char 
 	// printf("%8d", (((int) input - 127) << 1) - 96);
 	// gameData->strikerPos += (((int) input - 127) << 1) - 96;
 	playerData->oldEnergy = playerData->energy;
-	playerData->energy -= analog < 0 ? -analog >> 3 : analog >> 3;
+	playerData->energy -= analog < 0 ? -analog >> 5 : analog >> 5;
 }
 
 // char phy_hit_block(GameData *gameData, int x, int y) {
