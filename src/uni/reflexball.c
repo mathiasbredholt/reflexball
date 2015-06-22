@@ -85,6 +85,12 @@ int main()
 			while (mode == 5) map_info_update(&mode, &lastKey);
 		}
 
+		if (mode == 6) {
+			intro_play();
+			while (mode == 6) intro_update(&mode, &lastKey);
+		}
+
+
 #if defined(__APPLE__) || defined(__WIN32__)
 		if (mode == 4) break;	// Exit
 #endif

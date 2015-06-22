@@ -1,7 +1,8 @@
-#include "util.h"
 
 #ifndef _GAME_DATA_
 #define _GAME_DATA_
+
+#include "util.h"
 
 #define NUMBER_OF_ITEMS 8
 #define striker_height 92
