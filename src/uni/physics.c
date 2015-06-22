@@ -12,9 +12,6 @@
 #include "game_data.h"
 #include "hw_sound.h"
 
-#define width 256
-#define height 96
-#define striker_height 92
 #define striker_speed 4
 #define bounciness_factor 4
 
@@ -57,6 +54,9 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			// Bounced striker //
 			/////////////////////
 
+			hw_sound_play(0);
+
+			gameData->multiplier = 0;
 			gameData->bouncedStriker = 1;	// Used to avoid hitting striker twice in a row
 			gameData->redraw = 1;
 
@@ -133,8 +133,8 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			// Lost ball //
 			///////////////
 
-			// Reset position and decrease velocity
-			gameData->ballPos.x = 127 << 8;
+			// Reset position to striker and decrease velocity
+			gameData->ballPos.x = gameData->strikerPos;
 			gameData->ballPos.y = 90 << 8;
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
 
@@ -330,7 +330,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			}
 		}
 
-		if (x == 0 || x == width - 2) {
+		if (x == 0 || x == game_width - 2) {
 
 			///////////////////////
 			// Bounced side wall //
@@ -373,9 +373,11 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 		if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
 
-			hw_sound_play(0);
+			hw_sound_play(2);
 
 			if (type != 11) {	// Only if block is destructible
+
+				++gameData->multiplier;	// Increment multiplier
 
 				if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
 
@@ -403,7 +405,80 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 	return 0;
 }
 
-void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char input) {
+void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
+	int i, blockX, blockY, blockType, numBlock;
+	for (i = 0; i < 5; ++i) {
+		if (animationData->projectileType[i] >= 0) {	// Bullet exists
+			if (animationData->projectilePos[i][1] <= 60 // Bullet is inside the block area
+			        && (animationData->projectilePos[i][1] & 3) == 0) {	// Bullet is potentially touching lower edge of block
+				blockX = animationData->projectilePos[i][0] >> 4;
+				blockY = (animationData->projectilePos[i][1] >> 2) - 1;
+				blockType = (blockX & 1) ? gameData->blockData[blockY][blockX >> 1] & 0xF : gameData->blockData[blockY][blockX >> 1] >> 4;	// Value corresponding to current block in blockData
+				if (blockType) {
+
+					// Block exists
+
+					if (animationData->projectileType[i] == 0) {
+
+						/////////////////
+						// Lvl 1 laser //
+						/////////////////
+
+						if (blockType != 11) {
+
+							// Only if block is destructible
+
+							if (blockType != 1 && blockType != 2 && blockType != 4 && blockType != 7) {
+
+								// Block has a hardened surface (only gets damaged)
+
+								gameData->blockData[blockY][blockX >> 1] -= (blockX & 1) ? 0x01 : 0x10; 	// Decrements value on left or right block
+								--blockType;
+
+							} else {
+
+								// Mark for demolition
+
+								gameData->blockData[blockY][blockX >> 1] &= (blockX & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
+								blockType = 0;
+
+							}
+						}
+
+					} else if (animationData->projectileType[i] == 1) {
+
+						/////////////////
+						// Lvl 2 laser //
+						/////////////////
+
+						// Mark for demolition
+						gameData->blockData[blockY][blockX >> 1] &= (blockX & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
+						blockType = 0;
+
+					} else {
+
+						////////////
+						// Rocket //
+						////////////
+
+					}
+
+					numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
+
+					// Encode block data in blockHit
+					gameData->blockHit[numBlock] = blockType << 8; // Stores type value in blockHit bit 8-11
+					gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
+					gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
+
+					animationData->projectileType[i] = -1;
+				}
+			}
+		}
+		--animationData->projectilePos[i][1];
+	}
+}
+
+void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned char input) {
 	int analog = (((int) input - 127) << 1) - 96;
 	if (analog < -(int)160) analog = -(int)160;
 	else if (analog > -5 && analog < 5) analog = 0;

@@ -31,6 +31,7 @@ int main()
 
 	PlayerData playerData;
 	GameData gameData;
+	AnimationData animationData;
 
 	/////////////////////////
 	// Hardware initialize //
@@ -70,7 +71,7 @@ int main()
 		if (mode == 2) {
 			// Game
 			game_init(&gameData, &playerData);
-			while (mode == 2) game_update(&mode, &gameData, &playerData);
+			while (mode == 2) game_update(&mode, &gameData, &playerData, &animationData);
 		}
 		if (mode == 3) {
 			// Shop

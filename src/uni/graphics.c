@@ -15,9 +15,6 @@
 #include "charset.h"
 #include "game_data.h"
 
-#define width 256
-#define height 96
-#define striker_height 92
 #define BTN_WIDTH 40
 
 void gfx_draw_ball(GameData *gameData) {
@@ -63,7 +60,7 @@ void gfx_draw_striker(GameData *gameData) 	{
 	unsigned char oldX = (char) (gameData->strikerOldPos >> 8);
 	unsigned char newX = (char) (gameData->strikerPos >> 8);
 	char dX = (char) newX - (char) oldX;
-	fg_color(15);
+	fg_color(10);
 	if (dX > 0) {
 		go_to_xy(oldX - (gameData->strikerSize >> 1) + 1, striker_height);
 		spacer(dX, (int) ' ');
@@ -89,6 +86,7 @@ void gfx_draw_striker(GameData *gameData) 	{
 }
 
 void gfx_init_striker(GameData *gameData) {
+	fg_color(10);
 	go_to_xy((gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1, striker_height);
 	printf("%c", 204);
 	spacer(gameData->strikerSize - 2, 205);
@@ -102,6 +100,39 @@ void gfx_erase_striker(GameData *gameData) {
 #ifdef GCC
 	fflush(stdout);
 #endif
+}
+
+void gfx_draw_bullets(AnimationData *animationData) {
+	int i;
+	for (i = 0; i < 5; ++i) {
+		if (animationData->projectileType[i] >= 0) {	// Bullet exists
+			if (animationData->projectileType[i] == 0) { // Laser 1
+				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
+				printf(" ");
+				go_left(1);
+				go_up(1);
+				printf("*");
+			} else if (animationData->projectileType[i] == 1) { // Laser 2
+				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 1);
+				printf(" ");
+				go_left(1);
+				go_up(1);
+				printf("%c", 233);
+			} else { // Rocket
+				go_to_xy(animationData->projectilePos[i][0], animationData->projectilePos[i][1] + 3);
+				printf(" ");
+				go_left(1);
+				go_up(1);
+				printf("^");
+				go_left(1);
+				go_up(1);
+				printf("H");
+				go_left(1);
+				go_up(1);
+				printf("A");
+			}
+		}
+	}
 }
 
 void gfx_draw_all_blocks(GameData *gameData) {
@@ -161,69 +192,6 @@ void gfx_draw_all_blocks(GameData *gameData) {
 	fflush(stdout);
 #endif
 }
-
-// void gfx_draw_all_blocks(GameData *gameData) {
-// 	char type, oldType, row, side, column, line, exists;
-
-// 	go_to_xy(0, 0);
-// 	fg_color(1);
-// 	ansi_save();
-// 	oldType = 0;
-
-// 	for (row = 0; row < 15; ++row) { // Rows
-// 		for (line = 0; line < 4; ++line) { // Lines
-// 			for (side = 0; side < 2; ++side) { // Left/right side (byte)
-// 				for (column = 0; column < 8; ++column) { // Column (bit)
-// 					exists = 0;
-// 					for (type = 0; type < 4; ++type) { // Types
-// 						if (gameData->blockData[type][row][side] & (0x80 >> column)) {	// Block exists
-// 							exists = 1;
-// 							if (type != oldType) {
-// 								if (type == 0) {
-// 									fg_color(1);
-// 								} else if (type == 2) {
-// 									fg_color(2);
-// 								} else if (type == 5) {
-// 									fg_color(3);
-// 								} else if (type == 9) {
-// 									fg_color(4);
-// 								} else {
-// 									fg_color(5);
-// 								}
-// 								oldType = type;
-// 							}
-// 							if (line == 0) {
-// 								printf("%c", 201);  // top left corner
-// 								spacer(14, 203); // top line
-// 								printf("%c", 187);	// top right corner
-// 							} else if (line < 3) {
-// 								printf("%c", 204);
-// 								spacer(14, 206);
-// 								printf("%c", 185);
-// 							} else {
-// 								printf("%c", 200);  // corner
-// 								spacer(14, 202);
-// 								printf("%c", 188);  // corner
-// 							}
-// 						}
-// 					}
-// 					if (!exists) {
-// 						spacer(16, (int) ' ');
-// 					}
-// 				}
-// 			}
-// 			ansi_load();
-// 			oldType = 0;
-// 			go_down(line + (row << 2) + 1);
-// 		}
-// 	}
-
-// 	fg_color(15);
-
-// #ifdef GCC
-// 	fflush(stdout);
-// #endif
-// }
 
 void gfx_draw_block(int x, int y, int type) {
 	char color;
@@ -305,7 +273,7 @@ void gfx_window(int x1, int y1, int x2, int y2) {
 
 	clr_scr();
 	hide_csr();
-	fg_color(15);
+	fg_color(10);
 
 	reverse(0);
 	go_to_xy(x1, y1);
@@ -335,11 +303,13 @@ void gfx_window(int x1, int y1, int x2, int y2) {
 #endif
 }
 
-void gfx_draw_text(int x, int y, char *str) {
+void gfx_draw_text(int col, int x, int y, char *str) {
 	int i, j, k;
 	int index;
 	char length = util_strlen(str);
 	char line[5];
+
+	fg_color(col);
 
 	go_to_xy(x, y);
 	ansi_save();
@@ -372,7 +342,7 @@ void gfx_draw_text(int x, int y, char *str) {
 }
 
 void gfx_draw_btn(int x, int y, char *str, int focus) {
-	fg_color(15);
+	fg_color(10);
 
 	// left corners
 	go_to_xy(x, y);
@@ -381,9 +351,9 @@ void gfx_draw_btn(int x, int y, char *str, int focus) {
 	printf("%c", 200);
 
 	// right corners
-	go_to_xy(x + BTN_WIDTH, y);
+	go_to_xy(x + BTN_WIDTH - 1, y);
 	printf("%c", 187);
-	go_to_xy(x + BTN_WIDTH, y + 5);
+	go_to_xy(x + BTN_WIDTH - 1, y + 5);
 	printf("%c", 188);
 
 
@@ -396,21 +366,21 @@ void gfx_draw_btn(int x, int y, char *str, int focus) {
 	printf("%c", 186);
 	go_to_xy(x, y + 4);
 	printf("%c", 186);
-	go_to_xy(x + BTN_WIDTH, y + 1);
+	go_to_xy(x + BTN_WIDTH - 1, y + 1);
 	printf("%c", 186);
-	go_to_xy(x + BTN_WIDTH, y + 2);
+	go_to_xy(x + BTN_WIDTH - 1, y + 2);
 	printf("%c", 186);
-	go_to_xy(x + BTN_WIDTH, y + 3);
+	go_to_xy(x + BTN_WIDTH - 1, y + 3);
 	printf("%c", 186);
-	go_to_xy(x + BTN_WIDTH, y + 4);
+	go_to_xy(x + BTN_WIDTH - 1, y + 4);
 	printf("%c", 186);
 
 
 	// top and bottom
 	go_to_xy(x + 1, y);
-	spacer(BTN_WIDTH - 1, 205);
+	spacer(BTN_WIDTH - 2, 205);
 	go_to_xy(x + 1, y + 5);
-	spacer(BTN_WIDTH - 1, 205);
+	spacer(BTN_WIDTH - 2, 205);
 
 	gfx_draw_btn_focus(x, y, str, focus);
 
@@ -424,16 +394,18 @@ void gfx_draw_btn_focus(int x, int y, char * str, int focus) {
 	int padding = BTN_WIDTH - textW;
 	int i;
 
-	fg_color(15);
+	focus ? bg_color(2) : bg_color(0);
 
-	focus ? bg_color(3) : bg_color(0);
+	go_to_xy(x + 1, y + 1);
+	ansi_save();
 
 	for (i = 0; i < 4; ++i) {
-		go_to_xy(x + 2, y + 1 + i);
-		spacer(BTN_WIDTH - 3, 32);
+		ansi_load();
+		go_vert(i);
+		spacer(BTN_WIDTH - 2, 32);
 	}
 
-	gfx_draw_text(x + padding / 2 + 1, y + 1, str);
+	focus ? gfx_draw_text(0, x + padding / 2 + 1, y + 1, str) : gfx_draw_text(9, x + padding / 2 + 1, y + 1, str);
 
 	bg_color(0);
 
@@ -478,7 +450,7 @@ void gfx_draw_energy_meter() {
 
 	color(0, 6);
 	sprintf(str, "energy");
-	gfx_draw_text(0, 98, str);
+	gfx_draw_text(0, 0, 98, str);
 
 	go_to_xy(0, 101);
 	spacer(63, 32);
@@ -488,7 +460,7 @@ void gfx_draw_energy_meter() {
 		spacer(39, 32);
 	}
 
-	color(15, 0);
+	color(10, 0);
 	go_to_xy(0, 102);
 	spacer(63, 205);
 
@@ -540,21 +512,22 @@ void gfx_update_energy_meter(PlayerData *playerData) {
 #endif
 }
 
-void gfx_draw_bullet(int x, int newY, int oldY, int type) {
-	int i;
-	fg_color(1);
-	go_to_xy(x >> 8, 90);
-	for (i = 0; i < 80; ++i) {
-		go_up(1);
-		printf("|");
-		go_left(1);
-	}
-}
+// void gfx_draw_bullet(int x, int newY, int oldY, int type) {
+// 	int i;
+// 	fg_color(1);
+// 	go_to_xy(x >> 8, 90);
+// 	for (i = 0; i < 80; ++i) {
+// 		go_up(1);
+// 		printf("|");
+// 		go_left(1);
+// 	}
+// }
 
 void gfx_draw_stars(int frame) {
 	int i, j;
 	int randomX[5] = { 6, 62, 43, 34, 10 };
 	int randomY[8] = { 6, 9, 2, 11, 7, 3, 6, 4 };
+	fg_color(15);
 	for (i = 0; i < 8; ++i) {
 		for (j = 0; j < 4; ++j) {
 			int posX = j * 64 + randomX[i];
@@ -629,10 +602,9 @@ void gfx_draw_victory() {
 }
 
 void gfx_draw_score(PlayerData *playerData) {
-	char str[9];
-	fg_color(15);
+	char str[9];;
 	sprintf(str, "%8d", playerData->coins);
-	gfx_draw_text(224, 98, str);
+	gfx_draw_text(11, 224, 98, str);
 
 #ifdef GCC
 	fflush(stdout);
@@ -642,7 +614,7 @@ void gfx_draw_score(PlayerData *playerData) {
 void gfx_draw_thumb(int x, int y, int thumb) {
 	int i, j;
 
-	fg_color(15);
+	fg_color(thumb + 9);
 
 	for (i = 0; i < 15; ++i) {
 		go_to_xy(x, y + i);

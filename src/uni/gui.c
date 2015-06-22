@@ -23,11 +23,11 @@ void menu_show() {
 	// Call drawing functions for GUI creation
 	hw_sound_set_music(0);
 	gfx_window(64, 16, 192, 80);
-	gfx_draw_text(68, 18, "reflexball");
+	gfx_draw_text(9, 68, 18, "reflexball");
 
-	gfx_draw_btn(108, 24, menuButtons[0], 1);
-	gfx_draw_btn(108, 32, menuButtons[1], 0);
-	gfx_draw_btn(108, 40, menuButtons[2], 0);
+	gfx_draw_btn(66, 72, menuButtons[0], 1);
+	gfx_draw_btn(108, 72, menuButtons[1], 0);
+	gfx_draw_btn(150, 72, menuButtons[2], 0);
 }
 
 void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *animFrame2) {
@@ -48,21 +48,21 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 			if (*lastKey & 4) {
 				*mode = *focus + 1;
 				*focus = 0;
+			} else if (*lastKey & 0x03) {
+				// Blur button currently in focus
+				gfx_draw_btn_focus(66 + 42 * *focus, 72, menuButtons[*focus], 0);
+
+				// If left or right key is pressed increment or decrement focus index
+				if (*lastKey & 0x02) --(*focus);
+				if (*lastKey & 0x01) ++(*focus);
+
+				// Apply modulus to focus index to make sure it stays in range
+				*focus %= 3;
+				if (*focus < 0) *focus += 3;
+
+				// Focus button at the new focus index
+				gfx_draw_btn_focus(66 + 42 * *focus, 72, menuButtons[*focus], 1);
 			}
-
-			// Blur button currently in focus
-			gfx_draw_btn_focus(108, 24 + 8 * *focus, menuButtons[*focus], 0);
-
-			// If left or right key is pressed increment or decrement focus index
-			if (*lastKey & 0x02) --(*focus);
-			if (*lastKey & 0x01) ++(*focus);
-
-			// Apply modulus to focus index to make sure it stays in range
-			*focus %= 3;
-			if (*focus < 0) *focus += 3;
-
-			// Focus button at the new focus index
-			gfx_draw_btn_focus(108, 24 + 8 * *focus, menuButtons[*focus], 1);
 		}
 
 		// Update background animation
@@ -83,8 +83,8 @@ void shop_show(PlayerData *playerData) {
 
 	gfx_window(-1, -1, 257, 104);
 
-	gfx_draw_text(8, 2, "welcome to my shop");
-	gfx_draw_text(8, 6, "what does your heart desire");
+	gfx_draw_text(9, 8, 2, "welcome to my shop");
+	gfx_draw_text(9, 8, 6, "what does your heart desire");
 
 	for (i = 0; i < 2; ++i) {
 		for (j = 0; j < 4; j++) {
@@ -97,7 +97,7 @@ void shop_show(PlayerData *playerData) {
 	gfx_draw_btn(212, 90, "exit", 0);
 
 	sprintf(str, "coins %8d", playerData->coins);
-	gfx_draw_text(196, 2, str);
+	gfx_draw_text(9, 196, 2, str);
 }
 
 void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
@@ -120,7 +120,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 					++playerData->items[*focus];
 
 					sprintf(str, "coins %8d", playerData->coins);
-					gfx_draw_text(196, 2, str);
+					gfx_draw_text(9, 196, 2, str);
 
 					for (i = 0; i < 2; ++i) {
 						for (j = 0; j < 4; j++) {
@@ -132,35 +132,35 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 					*mode = 1;
 				}
 
-			}
+			} else if (*lastKey & 0x03) {
+				// focus handling
+				if (*focus == 8) {
+					gfx_draw_btn_focus(212, 90, "exit", 0);
+				} else {
+					gfx_draw_btn(
+					    32 + 48 * (*focus & 0x03),
+					    32  + 32 * ((*focus & 0x04) >> 2),
+					    "buy",
+					    0
+					);
+				}
 
-			// focus handling
-			if (*focus == 8) {
-				gfx_draw_btn_focus(212, 90, "exit", 0);
-			} else {
-				gfx_draw_btn(
-				    32 + 48 * (*focus & 0x03),
-				    32  + 32 * ((*focus & 0x04) >> 2),
-				    "buy",
-				    0
-				);
-			}
+				if (*lastKey & 0x01) ++(*focus);
+				if (*lastKey & 0x02) --(*focus);
 
-			if (*lastKey & 0x01) ++(*focus);
-			if (*lastKey & 0x02) --(*focus);
+				*focus %= 9;
+				if (*focus < 0) *focus += 9;
 
-			*focus %= 9;
-			if (*focus < 0) *focus += 9;
-
-			if (*focus == 8) {
-				gfx_draw_btn_focus(212, 90, "exit", 1);
-			} else {
-				gfx_draw_btn(
-				    32 + 48 * (*focus & 0x03),
-				    32  + 32 * ((*focus & 0x04) >> 2),
-				    "buy",
-				    1
-				);
+				if (*focus == 8) {
+					gfx_draw_btn_focus(212, 90, "exit", 1);
+				} else {
+					gfx_draw_btn(
+					    32 + 48 * (*focus & 0x03),
+					    32  + 32 * ((*focus & 0x04) >> 2),
+					    "buy",
+					    1
+					);
+				}
 			}
 		}
 	}
@@ -171,7 +171,7 @@ void map_show(PlayerData *playerData, int *focus) {
 
 	gfx_window(-1, -1, 257, 104);
 
-	gfx_draw_text(6, 2, "the andromeda galaxy");
+	gfx_draw_text(9, 6, 2, "the andromeda galaxy");
 
 
 	// level 1
@@ -199,10 +199,10 @@ void map_show(PlayerData *playerData, int *focus) {
 	gfx_draw_btn(192, 23, mapButtons[5], *focus == 5);
 
 	// shop
-	gfx_draw_btn(164, 90, mapButtons[6], 0);
+	gfx_draw_btn(164, 96, mapButtons[6], 0);
 
 	// menu
-	gfx_draw_btn(212, 90, mapButtons[7], 0);
+	gfx_draw_btn(212, 96, mapButtons[7], 0);
 }
 
 void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, PlayerData *playerData) {
@@ -217,7 +217,8 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 			*lastKey = key;
 
 			if (*lastKey & 4) {
-				if (*focus > 0 && *focus < 6) {
+				hw_sound_play(1);
+				if (*focus < 6) {
 					gameData->level = *focus;
 					*mode = 5;
 				} else if (*focus == 6) {
@@ -227,48 +228,48 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 					*mode = 0;
 					*focus = 0;
 				}
-			}
+			} else if (*lastKey & 0x03) {
+				if (*focus == 0) {
+					gfx_draw_btn_focus(4, 25, mapButtons[0], 0);
+				} else if (*focus == 1) {
+					gfx_draw_btn_focus(20, 57, mapButtons[1], 0);
+				} else if (*focus == 2) {
+					gfx_draw_btn_focus(56, 93, mapButtons[2], 0);
+				} else if (*focus == 3) {
+					gfx_draw_btn_focus(104, 53, mapButtons[3], 0);
+				} else if (*focus == 4) {
+					gfx_draw_btn_focus(212, 65, mapButtons[4], 0);
+				} else if (*focus == 5) {
+					gfx_draw_btn_focus(192, 23, mapButtons[5], 0);
+				} else if (*focus == 6) {
+					gfx_draw_btn_focus(164, 96, mapButtons[6], 0);
+				} else if (*focus == 7) {
+					gfx_draw_btn_focus(212, 96, mapButtons[7], 0);
+				}
 
-			if (*focus == 0) {
-				gfx_draw_btn_focus(4, 25, mapButtons[0], 0);
-			} else if (*focus == 1) {
-				gfx_draw_btn_focus(20, 57, mapButtons[1], 0);
-			} else if (*focus == 2) {
-				gfx_draw_btn_focus(56, 93, mapButtons[2], 0);
-			} else if (*focus == 3) {
-				gfx_draw_btn_focus(104, 53, mapButtons[3], 0);
-			} else if (*focus == 4) {
-				gfx_draw_btn_focus(212, 65, mapButtons[4], 0);
-			} else if (*focus == 5) {
-				gfx_draw_btn_focus(192, 23, mapButtons[5], 0);
-			} else if (*focus == 6) {
-				gfx_draw_btn_focus(164, 90, mapButtons[6], 0);
-			} else if (*focus == 7) {
-				gfx_draw_btn_focus(212, 90, mapButtons[7], 0);
-			}
+				if (*lastKey & 0x02) --(*focus);
+				if (*lastKey & 0x01) ++(*focus);
 
-			if (*lastKey & 0x02) --(*focus);
-			if (*lastKey & 0x01) ++(*focus);
+				*focus &= 0x07;
+				if (*focus < 0) * focus += 8;
 
-			*focus &= 0x07;
-			if (*focus < 0) * focus += 8;
-
-			if (*focus == 0) {
-				gfx_draw_btn_focus(4, 25, mapButtons[0],   1);
-			} else if (*focus == 1) {
-				gfx_draw_btn_focus(20, 57, mapButtons[1],  1);
-			} else if (*focus == 2) {
-				gfx_draw_btn_focus(56, 93, mapButtons[2],  1);
-			} else if (*focus == 3) {
-				gfx_draw_btn_focus(104, 53, mapButtons[3], 1);
-			} else if (*focus == 4) {
-				gfx_draw_btn_focus(212, 65, mapButtons[4], 1);
-			} else if (*focus == 5) {
-				gfx_draw_btn_focus(192, 23, mapButtons[5], 1);
-			} else if (*focus == 6) {
-				gfx_draw_btn_focus(164, 90, mapButtons[6], 1);
-			} else if (*focus == 7) {
-				gfx_draw_btn_focus(212, 90, mapButtons[7], 1);
+				if (*focus == 0) {
+					gfx_draw_btn_focus(4, 25, mapButtons[0],   1);
+				} else if (*focus == 1) {
+					gfx_draw_btn_focus(20, 57, mapButtons[1],  1);
+				} else if (*focus == 2) {
+					gfx_draw_btn_focus(56, 93, mapButtons[2],  1);
+				} else if (*focus == 3) {
+					gfx_draw_btn_focus(104, 53, mapButtons[3], 1);
+				} else if (*focus == 4) {
+					gfx_draw_btn_focus(212, 65, mapButtons[4], 1);
+				} else if (*focus == 5) {
+					gfx_draw_btn_focus(192, 23, mapButtons[5], 1);
+				} else if (*focus == 6) {
+					gfx_draw_btn_focus(164, 96, mapButtons[6], 1);
+				} else if (*focus == 7) {
+					gfx_draw_btn_focus(212, 96, mapButtons[7], 1);
+				}
 			}
 		}
 	}
@@ -283,6 +284,7 @@ void map_info_show(GameData *gameData) {
 
 	if (gameData->level == 0) {
 		gfx_draw_text(119, 35, lore[1]);
+
 
 		gfx_draw_thumb(122, 40, 0);
 
@@ -300,6 +302,7 @@ void map_info_show(GameData *gameData) {
 		}
 
 	} else if (gameData->level == 2) {
+
 
 		gfx_draw_text(113, 35, lore[11]);
 		gfx_draw_thumb(122, 40, 2);
@@ -337,8 +340,8 @@ void map_info_show(GameData *gameData) {
 		}
 	}
 
-	gfx_draw_text(5, 90, "press left to warp to starmap");
-	gfx_draw_text(170, 90, "press right to engage");
+	gfx_draw_text(9, 5, 90, "press left to warp to starmap");
+	gfx_draw_text(9, 170, 90, "press right to engage");
 }
 
 void map_info_update(int *mode, char *lastKey) {
