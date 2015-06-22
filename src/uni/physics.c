@@ -412,7 +412,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 }
 
 void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
-	int i, j, blockX, blockY, blockType, numBlock;
+	int i, j, k, blockX, blockY, blockType, numBlock;
 	for (i = 0; i < 5; ++i) {
 		if (animationData->projectileType[i] >= 0) {	// Bullet exists
 			if (animationData->projectilePos[i][1] <= 60 // Bullet is inside the block area
@@ -473,20 +473,24 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 						gameData->blockHit[numBlock] |= blockY << 4; // Stores y coordinate in bit 4-7
 						gameData->blockHit[numBlock] |= blockX; // Stores x coordinate in bit 0-3
 
-					} else {
+					} else if (animationData->projectileType[i] == 2) {
 
 						////////////
 						// Rocket //
 						////////////
 
-						animationData->rocketHit[0] = blockX - 1;
-						animationData->rocketHit[1] = blockY - 1;
+						animationData->rocketHit[0] = blockX;
+						animationData->rocketHit[1] = blockY;
 						animationData->rocketHit[2] = 1;
 
-						for (i = -1; i < 2; ++i) {
-							for (j = -1; j < 2; ++j) {
-								// Mark for demolition
-								gameData->blockData[(blockY + j)][(blockX + i) >> 1] &= ((blockX + i) & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
+						for (j = -1; j < 2; ++j) {
+							if (blockX + j >= 0 && blockX + j < 16) {
+								for (k = -1; k < 2; ++k) {
+									if (blockY + k >= 0 && blockY + k < 15) {
+										// Mark for demolition
+										gameData->blockData[(blockY + k)][(blockX + j) >> 1] &= ((blockX + j) & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
+									}
+								}
 							}
 						}
 					}
@@ -496,8 +500,7 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 					animationData->eraseProjectile[i] = 1;
 				}
 			}
-			if (animationData->projectilePos[i] < 2) {
-				animationData->projectileType[i] = -1;
+			if (animationData->projectilePos[i][1] < 2) {
 				animationData->eraseProjectile[i] = 1;
 			}
 			--animationData->projectilePos[i][1];
