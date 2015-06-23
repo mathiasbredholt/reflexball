@@ -12,6 +12,8 @@
 #include "hw_time.h"
 #include "hw_sound.h"
 #include "hw_flash.h"
+#include "story.h"
+#include "charset.h"
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
@@ -366,30 +368,53 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 
 void map_info_show(GameData *gameData) {
+	int i, y;
+	char str[49];
+
+
 	gfx_window(1, -1, -1, 257, 104);
 
+
+
+	y = 60;
 	if (gameData->level == 0) {
 
 		//dokuu
 		// gfx_draw_text(9, 119, 35, "dokuu");
+		hw_ROM_to_RAM(str, story[1]);
+		gfx_draw_text(9, 119, 35, str);
 		gfx_draw_thumb(122, 40, 0, 9);
 
-		gfx_draw_text(9, 57, 60, "oh no boss");
-		gfx_draw_text(9, 57, 63, "theres an asteroid field");
-		gfx_draw_text(9, 57, 66, "its blocking our way past dokuu");
-		gfx_draw_text(9, 57, 69, "prepare the balls for max bounciness");
+		for (i = 1; i < 5; ++i) {
+			hw_ROM_to_RAM(str, story[i]);
+			gfx_draw_text(9, 100, y + i * 3, str);
+		}
+		// gfx_draw_text(9, 57, 60, "oh no boss");
+		// gfx_draw_text(9, 57, 63, "theres an asteroid field");
+		// gfx_draw_text(9, 57, 66, "its blocking our way past dokuu");
+		// gfx_draw_text(9, 57, 69, "prepare the balls for max bounciness");
 
 	} else if (gameData->level == 1) {
 
 		// ALderan
 		// gfx_draw_text(9, 113, 35, "alderaan");
+
+		hw_ROM_to_RAM(str, story[4]);
+		gfx_draw_text(9, 113, 35, str);
 		gfx_draw_thumb(122, 40, 1, 10);
-		gfx_draw_text(9, 71, 60, "phew that was a close one");
-		gfx_draw_text(9, 71, 63, "we almost lost all our balls");
-		gfx_draw_text(9, 71, 66, "what is this");
-		gfx_draw_text(9, 71, 69, "oh no boss");
-		gfx_draw_text(9, 71, 12, "an evil alderaan has appeared");
-		gfx_draw_text(9, 71, 75, "what are your orders");
+
+
+
+		for (i = 1; i < 7; ++i) {
+			hw_ROM_to_RAM(str, story[i + 4]);
+			gfx_draw_text(9, 71, y + i * 3, str);
+		}
+		// gfx_draw_text(9, 71, 60, "phew that was a close one");
+		// gfx_draw_text(9, 71, 63, "we almost lost all our balls");
+		// gfx_draw_text(9, 71, 66, "what is this");
+		// gfx_draw_text(9, 71, 69, "oh no boss");
+		// gfx_draw_text(9, 71, 12, "an evil alderaan has appeared");
+		// gfx_draw_text(9, 71, 75, "what are your orders");
 
 
 	} else if (gameData->level == 2) {
@@ -397,52 +422,83 @@ void map_info_show(GameData *gameData) {
 		// tatoiine
 
 		// gfx_draw_text(9, 113, 35, "tatoiine");
+		hw_ROM_to_RAM(str, story[11]);
+		gfx_draw_text(9, 113, 35, str);
 		gfx_draw_thumb(122, 40, 2, 11);
-		gfx_draw_text(9, 77, 60, "finally");
-		gfx_draw_text(9, 77, 63, "lets hope were safe");
-		gfx_draw_text(9, 77, 66, "oh no boss");
-		gfx_draw_text(9, 77, 69, "a huge monster just jumped");
-		gfx_draw_text(9, 77, 72, "in to weapons range");
-		gfx_draw_text(9, 77, 65, "and its opening fire");
-		gfx_draw_text(9, 77, 78, "boss");
+
+
+		for (i = 1; i < 8; ++i) {
+			hw_ROM_to_RAM(str, story[i + 11]);
+			gfx_draw_text(9, 77, y + i * 3, str);
+		}
+		// gfx_draw_text(9, 77, 60, "finally");
+		// gfx_draw_text(9, 77, 63, "lets hope were safe");
+		// gfx_draw_text(9, 77, 66, "oh no boss");
+		// gfx_draw_text(9, 77, 69, "a huge monster just jumped");
+		// gfx_draw_text(9, 77, 72, "in to weapons range");
+		// gfx_draw_text(9, 77, 65, "and its opening fire");
+		// gfx_draw_text(9, 77, 78, "boss");
 
 	} else if (gameData->level == 3) {
 
 		// darth
 
 		// gfx_draw_text(9, 107, 35, "darth vader");
+		hw_ROM_to_RAM(str, story[i + 19]);
+		gfx_draw_text(9, 107, 35, str);
 		gfx_draw_thumb(122, 40, 3, 12);
 
-		gfx_draw_text(9, 75, 60, "the horrors of space travel");
-		gfx_draw_text(9, 75, 63, "surely we must be safe now");
-		gfx_draw_text(9, 75, 66, "oh no boss");
-		gfx_draw_text(9, 75, 69, "its the feared pirate queen");
-		gfx_draw_text(9, 75, 72, "darth vader");
+
+		for (i = 1; i < 6; ++i)	{
+			hw_ROM_to_RAM(str, story[i + 19]);
+			gfx_draw_text(9, 75, y + i * 3, str);
+		}
+		// gfx_draw_text(9, 75, 60, "the horrors of space travel");
+		// gfx_draw_text(9, 75, 63, "surely we must be safe now");
+		// gfx_draw_text(9, 75, 66, "oh no boss");
+		// gfx_draw_text(9, 75, 69, "its the feared pirate queen");
+		// gfx_draw_text(9, 75, 72, "darth vader");
 
 	} else if (gameData->level == 4) {
 		//	unknown
 
 		// gfx_draw_text(9, 95, 35, "somewhere unknown");
+		hw_ROM_to_RAM(str, story[25]);
+		gfx_draw_text(9, 95, 35, str);
 		gfx_draw_thumb(122, 40, 4, 13);
-		gfx_draw_text(9, 43, 60, "argh boss");
-		gfx_draw_text(9, 43, 63, "destroying vaders ship has");
-		gfx_draw_text(9, 43, 66, "warped the space time continuum");
-		gfx_draw_text(9, 43, 69, "were being sucked in to a new dimension");
-		gfx_draw_text(9, 43, 72, "and its filled with generic arkanoid levels");
-		gfx_draw_text(9, 43, 75, "good thing we brought our best balls");
+
+
+		for (i = 1; i < 7; ++i) {
+			hw_ROM_to_RAM(str, story[i + 25]);
+			gfx_draw_text(9, 53, y + i * 3, str);
+		}
+		// gfx_draw_text(9, 43, 60, "argh boss");
+		// gfx_draw_text(9, 43, 63, "destroying vaders ship has");
+		// gfx_draw_text(9, 43, 66, "warped the space time continuum");
+		// gfx_draw_text(9, 43, 69, "were being sucked in to a new dimension");
+		// gfx_draw_text(9, 43, 72, "and its filled with generic arkanoid levels");
+		// gfx_draw_text(9, 43, 75, "good thing we brought our best balls");
 
 	} else if (gameData->level == 5) {
 		// the pub
 
 		// gfx_draw_text(9, 70, 35, "pub at the end of the universe");
+		hw_ROM_to_RAM(str, story[i + 32]);
+		gfx_draw_text(9, 70, 35, str);
 		gfx_draw_thumb(122, 40, 5, 14);
-		gfx_draw_text(9, 33, 60, "wow boss we made it");
-		gfx_draw_text(9, 33, 63, "we safely returned to normal 2 dimensional space");
-		gfx_draw_text(9, 33, 66, "but where are we");
-		gfx_draw_text(9, 33, 69, "i sure could go for some food");
-		gfx_draw_text(9, 33, 72, "oh look its the pub at the end of the universe");
-		gfx_draw_text(9, 33, 75, "boss");
-		gfx_draw_text(9, 33, 78, "they refuse to serve us");
+
+
+		for (i = 1; i < 8; ++i) {
+			hw_ROM_to_RAM(str, story[i + 32]);
+			gfx_draw_text(9, 33, y + i * 3, str);
+		}
+		// gfx_draw_text(9, 33, 60, "wow boss we made it");
+		// gfx_draw_text(9, 33, 63, "we safely returned to normal 2 dimensional space");
+		// gfx_draw_text(9, 33, 66, "but where are we");
+		// gfx_draw_text(9, 33, 69, "i sure could go for some food");
+		// gfx_draw_text(9, 33, 72, "oh look its the pub at the end of the universe");
+		// gfx_draw_text(9, 33, 75, "boss");
+		// gfx_draw_text(9, 33, 78, "they refuse to serve us");
 
 	}
 	gfx_draw_text(9, 5, 90, "press left to warp to starmap");
