@@ -11,7 +11,6 @@
 #include "hw_input.h"
 #include "hw_time.h"
 #include "hw_sound.h"
-#include "story.h"
 #include "hw_flash.h"
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
