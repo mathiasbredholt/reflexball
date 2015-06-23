@@ -28,7 +28,7 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 
 	for (i = 0; i < 15; ++i) {
 		for (j = 0; j < 8; ++j) {
-			gameData->blockData[i][j] = levelData[(int) gameData->level][i][j];
+			gameData->blockData[i][j] = levelData[gameData->level][i][j];
 		}
 	}
 
@@ -95,7 +95,7 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 }
 
 void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
-	char key, i, lostBall = 0;
+	char key, i, won = 0, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
 	gameData->blockHit[1] = 0;	// Same as 0, used if two blocks are hit simultaneously
@@ -171,6 +171,12 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
 		gfx_update_animation(animationData);
+	} else {
+		// check for victory
+		for (i = 0; i < 15; ++i) {
+			won |= (gameData->blockData[i][0] || gameData->blockData[i][1]);
+		}
+		if (won) game_end(mode, 1, playerData);
 	}
 	//LED_update();
 }
@@ -187,7 +193,7 @@ void game_end(int *mode, int win, PlayerData *playerData) {
 		hw_sound_play(12);
 		gfx_window(1, 76, 45, 181, 60);
 		gfx_draw_victory();
-		LED_set_string("You found your way home!");
+		LED_set_string("You win!");
 	}
 	gfx_draw_text(9, 91, 54, "press to continue");
 	while (1) {

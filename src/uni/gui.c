@@ -11,16 +11,12 @@
 #include "hw_input.h"
 #include "hw_time.h"
 #include "hw_sound.h"
-<<< <<< < HEAD
 #include "story.h"
-== == == =
 #include "hw_flash.h"
-#include "lore.h"
-    >>> >>> > origin / master
 
-    char menuButtons[4][12] = { "play", "load game", "exit" };
+char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
-char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} };
+char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} , {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"} };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
@@ -107,12 +103,19 @@ void shop_show(PlayerData *playerData) {
 
 	gfx_draw_btn(212, 90, "exit", 0);
 
+	gfx_draw_text(9, 12, 24, shopDescriptions[0][0]);
+	gfx_draw_text(9, 12, 30, shopDescriptions[0][1]);
+	gfx_draw_text(9, 210, 24, "     ");
+	sprintf(str, "price  %4d", itemPrice[0]);
+	gfx_draw_text(9, 210, 30, str);
+
 	sprintf(str, "coins %8d", playerData->coins);
 	gfx_draw_text(9, 196, 2, str);
 }
 
 void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 	char key;
+	char str[15];
 
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
@@ -124,7 +127,6 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 			// select event
 			if (*lastKey & 4) {
 				if (*focus != 6) {
-					char str[15];
 
 					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
 						hw_sound_play(1);
@@ -154,8 +156,6 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 0);
 				} else {
-					gfx_draw_text(9, 12, 14, shopDescriptions[*focus][0]);
-					gfx_draw_text(9, 12, 17, shopDescriptions[*focus][1]);
 					gfx_draw_btn(
 					    36 + 64 * (*focus % 3),
 					    56  + 25 * (*focus / 3),
@@ -173,6 +173,19 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 1);
 				} else {
+					if (*focus == 3 || *focus == 4) {
+						gfx_draw_text(9, 12, 24, shopDescriptions[playerData->items[3] ? 4 : 3][0]);
+						gfx_draw_text(9, 12, 30, shopDescriptions[playerData->items[3] ? 4 : 3][1]);
+						gfx_draw_text(9, 210, 24, *focus == 3 ? "left " : "right");
+						sprintf(str, "price  %4d", itemPrice[playerData->items[3] ? 4 : 3]);
+						gfx_draw_text(9, 210, 30, str);
+					} else {
+						gfx_draw_text(9, 12, 24, shopDescriptions[*focus][0]);
+						gfx_draw_text(9, 12, 30, shopDescriptions[*focus][1]);
+						gfx_draw_text(9, 210, 24, "     ");
+						sprintf(str, "price  %4d", itemPrice[*focus]);
+						gfx_draw_text(9, 210, 30, str);
+					}
 					gfx_draw_btn(
 					    36 + 64 * (*focus % 3),
 					    56  + 25 * (*focus / 3),
@@ -237,6 +250,11 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 		if (key != *lastKey) {
 			*lastKey = key;
+
+			if (key & 8) {
+				// Cheat key
+				++playerData->progress;
+			}
 
 			if (*lastKey & 4) {
 				hw_sound_play(1);
@@ -328,7 +346,7 @@ void map_info_show(GameData *gameData) {
 
 		//dokuu
 		gfx_draw_text(9, 119, 35, story[0]);
-		gfx_draw_thumb(122, 40, 0);
+		gfx_draw_thumb(122, 40, 0, 9);
 
 		for (i = 1; i < 5; ++i) {
 			gfx_draw_text(9, 57, y + i * 3, story[i]);
@@ -339,7 +357,7 @@ void map_info_show(GameData *gameData) {
 		// ALderan
 
 		gfx_draw_text(9, 113, 35, story[5]);
-		gfx_draw_thumb(122, 40, 1);
+		gfx_draw_thumb(122, 40, 1, 10);
 
 		for (i = 1; i < 7; ++i) {
 			gfx_draw_text(9, 71, y + i * 3, story[i + 5]);
@@ -349,7 +367,7 @@ void map_info_show(GameData *gameData) {
 
 		// tatoiine
 		gfx_draw_text(9, 113, 35, story[12]);
-		gfx_draw_thumb(122, 40, 2);
+		gfx_draw_thumb(122, 40, 2, 11);
 
 
 		for (i = 1; i < 8; ++i) {
@@ -361,7 +379,7 @@ void map_info_show(GameData *gameData) {
 
 
 		gfx_draw_text(9, 107, 35, story[20]);
-		gfx_draw_thumb(122, 40, 3);
+		gfx_draw_thumb(122, 40, 3, 12);
 
 
 		for (i = 1; i < 6; ++i)	{
@@ -372,7 +390,7 @@ void map_info_show(GameData *gameData) {
 		//	unknown
 
 		gfx_draw_text(9, 95, 35, story[26]);
-		gfx_draw_thumb(122, 40, 4);
+		gfx_draw_thumb(122, 40, 4, 13);
 
 
 		for (i = 1; i < 7; ++i) {
@@ -383,7 +401,7 @@ void map_info_show(GameData *gameData) {
 		// the pub
 
 		gfx_draw_text(9, 70, 35, story[33]);
-		gfx_draw_thumb(122, 40, 5);
+		gfx_draw_thumb(122, 40, 5, 14);
 
 
 		for (i = 1; i < 8; ++i) {
