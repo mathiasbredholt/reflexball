@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-#define NUMBER_OF_ITEMS 8
+#define NUMBER_OF_ITEMS 6
 #define striker_height 92
 #define game_width 256
 #define game_height 96
@@ -25,7 +25,7 @@ typedef struct GameData {
 	unsigned int strikerOldPos, strikerPos;
 	char strikerSize, redraw, bouncedStriker, bouncedTop, bouncedSide;
 	int blockHit[3];
-	int ballSpeed;
+	int ballSpeed, strikerSpeed, bouncinessFactor;
 	char level;
 	char multiplier;
 } GameData;

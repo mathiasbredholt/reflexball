@@ -15,7 +15,7 @@
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
-char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} };
+char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} , {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"} };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
@@ -85,7 +85,6 @@ void shop_show(PlayerData *playerData) {
 	char str[15];
 
 	hw_sound_set_music(0);
-	hw_sound_play(1);	// Because a button was pressed to get here
 
 	gfx_window(1, -1, -1, 257, 104);
 
@@ -102,12 +101,20 @@ void shop_show(PlayerData *playerData) {
 
 	gfx_draw_btn(212, 90, "exit", 0);
 
+	gfx_draw_text(9, 12, 24, shopDescriptions[0][0]);
+	gfx_draw_text(9, 12, 30, shopDescriptions[0][1]);
+	gfx_draw_text(9, 210, 24, "     ");
+	sprintf(str, "price  %4d", itemPrice[0]);
+	gfx_draw_text(9, 210, 30, str);
+
 	sprintf(str, "coins %8d", playerData->coins);
 	gfx_draw_text(9, 196, 2, str);
 }
 
-void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
+void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, GameData *gameData) {
 	char key;
+	char str[15];
+	int price;
 
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
@@ -116,15 +123,32 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 		if (key != *lastKey) {
 			*lastKey = key;
 
+
 			// select event
 			if (*lastKey & 4) {
 				if (*focus != 6) {
-					char str[15];
-
-					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
+					price = itemPrice[*focus] << playerData->items[*focus];
+					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= price) {
 						hw_sound_play(1);
-						playerData->coins -= itemPrice[*focus];
+						playerData->coins -= price;
 						++playerData->items[*focus];
+						if (playerData->items[*focus] < itemMax[*focus]) {
+							sprintf(str, "price  %4d", price << 1);
+						} else {
+							sprintf(str, "maxed      ");
+						}
+						gfx_draw_text(9, 210, 30, str);
+						if ((*focus == 3 || *focus == 4) && playerData->items[*focus] == 1) {
+							gfx_draw_text(9, 12, 24, shopDescriptions[4][0]);
+							gfx_draw_text(9, 12, 30, shopDescriptions[4][1]);
+						}
+						if (*focus == 0) {
+							playerData->energyMax += 0x7FFF;
+						} else if (*focus == 1) {
+							gameData->strikerSpeed += 2;
+						} else if (*focus == 2) {
+							gameData->bouncinessFactor += 2;
+						}
 					} else {
 						hw_sound_play(0);
 					}
@@ -149,8 +173,6 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 0);
 				} else {
-					gfx_draw_text(9, 12, 14, shopDescriptions[*focus][0]);
-					gfx_draw_text(9, 12, 17, shopDescriptions[*focus][1]);
 					gfx_draw_btn(
 					    36 + 64 * (*focus % 3),
 					    56  + 25 * (*focus / 3),
@@ -164,10 +186,27 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 				*focus %= 7;
 				if (*focus < 0) *focus += 7;
-
 				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 1);
+					gfx_draw_text(9, 12, 24, "                                 ");
+					gfx_draw_text(9, 12, 30, "                                                             ");
 				} else {
+					price = itemPrice[*focus] << playerData->items[*focus];
+					if (*focus == 3 || *focus == 4) {
+						gfx_draw_text(9, 12, 24, shopDescriptions[playerData->items[*focus] ? 4 : 3][0]);
+						gfx_draw_text(9, 12, 30, shopDescriptions[playerData->items[*focus] ? 4 : 3][1]);
+						gfx_draw_text(9, 210, 24, *focus == 3 ? "left " : "right");
+					} else {
+						gfx_draw_text(9, 12, 24, shopDescriptions[*focus][0]);
+						gfx_draw_text(9, 12, 30, shopDescriptions[*focus][1]);
+						gfx_draw_text(9, 210, 24, "     ");
+					}
+					if (playerData->items[*focus] < itemMax[*focus]) {
+						sprintf(str, "price  %4d", price);
+					} else {
+						sprintf(str, "maxed      ");
+					}
+					gfx_draw_text(9, 210, 30, str);
 					gfx_draw_btn(
 					    36 + 64 * (*focus % 3),
 					    56  + 25 * (*focus / 3),
@@ -232,6 +271,11 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 
 		if (key != *lastKey) {
 			*lastKey = key;
+
+			if (key & 8) {
+				// Cheat key
+				++playerData->progress;
+			}
 
 			if (*lastKey & 4) {
 				hw_sound_play(1);
@@ -318,8 +362,9 @@ void map_info_show(GameData *gameData) {
 	if (gameData->level == 0) {
 
 		//dokuu
-		gfx_draw_text(9, 119, 35, "dokuu");
+		// gfx_draw_text(9, 119, 35, "dokuu");
 		gfx_draw_thumb(122, 40, 0, 9);
+
 		gfx_draw_text(9, 57, 60, "oh no boss");
 		gfx_draw_text(9, 57, 63, "theres an asteroid field");
 		gfx_draw_text(9, 57, 66, "its blocking our way past dokuu");
@@ -328,7 +373,7 @@ void map_info_show(GameData *gameData) {
 	} else if (gameData->level == 1) {
 
 		// ALderan
-		gfx_draw_text(9, 113, 35, "alderaan");
+		// gfx_draw_text(9, 113, 35, "alderaan");
 		gfx_draw_thumb(122, 40, 1, 10);
 		gfx_draw_text(9, 71, 60, "phew that was a close one");
 		gfx_draw_text(9, 71, 63, "we almost lost all our balls");
@@ -337,11 +382,12 @@ void map_info_show(GameData *gameData) {
 		gfx_draw_text(9, 71, 12, "an evil alderaan has appeared");
 		gfx_draw_text(9, 71, 75, "what are your orders");
 
+
 	} else if (gameData->level == 2) {
 
 		// tatoiine
 
-		gfx_draw_text(9, 113, 35, "tatoiine");
+		// gfx_draw_text(9, 113, 35, "tatoiine");
 		gfx_draw_thumb(122, 40, 2, 11);
 		gfx_draw_text(9, 77, 60, "finally");
 		gfx_draw_text(9, 77, 63, "lets hope were safe");
@@ -350,12 +396,14 @@ void map_info_show(GameData *gameData) {
 		gfx_draw_text(9, 77, 72, "in to weapons range");
 		gfx_draw_text(9, 77, 65, "and its opening fire");
 		gfx_draw_text(9, 77, 78, "boss");
+
 	} else if (gameData->level == 3) {
 
 		// darth
 
-		gfx_draw_text(9, 107, 35, "darth vader");
+		// gfx_draw_text(9, 107, 35, "darth vader");
 		gfx_draw_thumb(122, 40, 3, 12);
+
 		gfx_draw_text(9, 75, 60, "the horrors of space travel");
 		gfx_draw_text(9, 75, 63, "surely we must be safe now");
 		gfx_draw_text(9, 75, 66, "oh no boss");
@@ -365,7 +413,7 @@ void map_info_show(GameData *gameData) {
 	} else if (gameData->level == 4) {
 		//	unknown
 
-		gfx_draw_text(9, 95, 35, "somewhere unknown");
+		// gfx_draw_text(9, 95, 35, "somewhere unknown");
 		gfx_draw_thumb(122, 40, 4, 13);
 		gfx_draw_text(9, 43, 60, "argh boss");
 		gfx_draw_text(9, 43, 63, "destroying vaders ship has");
@@ -377,7 +425,7 @@ void map_info_show(GameData *gameData) {
 	} else if (gameData->level == 5) {
 		// the pub
 
-		gfx_draw_text(9, 70, 35, "pub at the end of the universe");
+		// gfx_draw_text(9, 70, 35, "pub at the end of the universe");
 		gfx_draw_thumb(122, 40, 5, 14);
 		gfx_draw_text(9, 33, 60, "wow boss we made it");
 		gfx_draw_text(9, 33, 63, "we safely returned to normal 2 dimensional space");

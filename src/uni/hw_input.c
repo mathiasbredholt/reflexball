@@ -1,6 +1,7 @@
 #ifdef __WIN32__
 #define GCC
 #include <conio.h>
+#include <stdio.h>
 void hw_init() {}
 #endif
 
@@ -182,8 +183,8 @@ char hw_wait_for_key() {
 void hw_ADC_init() {
 }
 
-char hw_read_analog() {
-	return 0;
+unsigned char hw_read_analog() {
+	return 175;
 }
 
 #endif

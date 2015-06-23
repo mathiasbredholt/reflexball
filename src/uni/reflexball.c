@@ -49,7 +49,7 @@ int main()
 		playerData.items[i] = 0;
 	}
 
-	playerData.coins = 0;
+	playerData.coins = 500;
 	playerData.progress = 0;
 	playerData.energyMax = 0x7FFF;
 
@@ -80,7 +80,7 @@ int main()
 		if (mode == 4) {
 			// Shop
 			shop_show(&playerData);
-			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData);
+			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData, &gameData);
 		}
 
 		if (mode == 5) {

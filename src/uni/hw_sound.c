@@ -127,7 +127,7 @@ void hw_sound_mute() {
 
 void hw_sound_set_music(int which) {
 	_musicId = which;
-	_fxMode = 0;
+	//_fxMode = 0;
 	_musicIndex = 0;
 	_mute = 0;
 }
