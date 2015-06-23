@@ -49,7 +49,6 @@ void menu_update(int *mode, char *lastKey, int *focus, int *animFrame1, int *ani
 				hw_sound_play(1);
 				*mode = 1;
 				if (*focus == 1) {
-					hw_flash_load(playerData);
 				} else if (*focus == 2) {
 					*mode = 6;
 				}
@@ -294,7 +293,6 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 					gameData->level = *focus;
 					*mode = 2;
 				} else if (*focus == 6) {
-					hw_flash_save(playerData);
 				} else if (*focus == 7) {
 					*mode = 4;
 					*focus = 0;

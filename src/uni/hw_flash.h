@@ -1,5 +1,11 @@
-#include "game_data.h"
+unsigned int UnlockFlash(void);
 
-void hw_flash_save(PlayerData *playerData);
+void LockFlash(void);
 
-void hw_flash_load(PlayerData *playerData);
+unsigned int EraseFlash(unsigned int pagenum);
+
+void WriteByteToFlash(int location, unsigned int value);
+
+void WriteByteToFlash1(int location, unsigned int value);
+
+unsigned int ReadByteFromFlash(int location);
