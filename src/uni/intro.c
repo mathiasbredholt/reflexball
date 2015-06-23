@@ -19,7 +19,7 @@ void intro_play() {
 	}
 	// Meta info,
 	gfx_window(0, 139, 16, 252, 101);
-	for (int i = 1; i < 14; ++i)
+	for (i = 1; i < 14; ++i)
 	{
 		gfx_draw_text(9, 146, 14 + i * 3, story[54 + i]);
 	}

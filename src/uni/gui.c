@@ -113,9 +113,10 @@ void shop_show(PlayerData *playerData) {
 	gfx_draw_text(9, 196, 2, str);
 }
 
-void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
+void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, GameData *gameData) {
 	char key;
 	char str[15];
+	int price;
 
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
@@ -124,14 +125,32 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 		if (key != *lastKey) {
 			*lastKey = key;
 
+
 			// select event
 			if (*lastKey & 4) {
 				if (*focus != 6) {
-
-					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= itemPrice[*focus]) {
+					price = itemPrice[*focus] << playerData->items[*focus];
+					if (playerData->items[*focus] < itemMax[*focus] && playerData->coins >= price) {
 						hw_sound_play(1);
-						playerData->coins -= itemPrice[*focus];
+						playerData->coins -= price;
 						++playerData->items[*focus];
+						if (playerData->items[*focus] < itemMax[*focus]) {
+							sprintf(str, "price  %4d", price << 1);
+						} else {
+							sprintf(str, "maxed      ");
+						}
+						gfx_draw_text(9, 210, 30, str);
+						if ((*focus == 3 || *focus == 4) && playerData->items[*focus] == 1) {
+							gfx_draw_text(9, 12, 24, shopDescriptions[4][0]);
+							gfx_draw_text(9, 12, 30, shopDescriptions[4][1]);
+						}
+						if (*focus == 0) {
+							playerData->energyMax += 0x7FFF;
+						} else if (*focus == 1) {
+							gameData->strikerSpeed += 2;
+						} else if (*focus == 2) {
+							gameData->bouncinessFactor += 2;
+						}
 					} else {
 						hw_sound_play(0);
 					}
@@ -169,23 +188,27 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData) {
 
 				*focus %= 7;
 				if (*focus < 0) *focus += 7;
-
 				if (*focus == 6) {
 					gfx_draw_btn_focus(212, 90, "exit", 1);
+					gfx_draw_text(9, 12, 24, "                                 ");
+					gfx_draw_text(9, 12, 30, "                                                             ");
 				} else {
+					price = itemPrice[*focus] << playerData->items[*focus];
 					if (*focus == 3 || *focus == 4) {
-						gfx_draw_text(9, 12, 24, shopDescriptions[playerData->items[3] ? 4 : 3][0]);
-						gfx_draw_text(9, 12, 30, shopDescriptions[playerData->items[3] ? 4 : 3][1]);
+						gfx_draw_text(9, 12, 24, shopDescriptions[playerData->items[*focus] ? 4 : 3][0]);
+						gfx_draw_text(9, 12, 30, shopDescriptions[playerData->items[*focus] ? 4 : 3][1]);
 						gfx_draw_text(9, 210, 24, *focus == 3 ? "left " : "right");
-						sprintf(str, "price  %4d", itemPrice[playerData->items[3] ? 4 : 3]);
-						gfx_draw_text(9, 210, 30, str);
 					} else {
 						gfx_draw_text(9, 12, 24, shopDescriptions[*focus][0]);
 						gfx_draw_text(9, 12, 30, shopDescriptions[*focus][1]);
 						gfx_draw_text(9, 210, 24, "     ");
-						sprintf(str, "price  %4d", itemPrice[*focus]);
-						gfx_draw_text(9, 210, 30, str);
 					}
+					if (playerData->items[*focus] < itemMax[*focus]) {
+						sprintf(str, "price  %4d", price);
+					} else {
+						sprintf(str, "maxed      ");
+					}
+					gfx_draw_text(9, 210, 30, str);
 					gfx_draw_btn(
 					    36 + 64 * (*focus % 3),
 					    56  + 25 * (*focus / 3),

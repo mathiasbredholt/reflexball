@@ -19,6 +19,6 @@ void map_info_update(int *mode, char *lastKey);
 
 void shop_show(PlayerData *playerData);
 
-void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData);
+void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, GameData *gameData);
 
 #endif

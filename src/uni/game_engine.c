@@ -88,7 +88,7 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 	}
 	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
 		hw_sound_play(9 + type);
-		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (side ? (gameData->strikerSize >> 1) : (-(gameData->strikerSize >> 1) + 1));
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (type == 2 ? 0 : (side ? (gameData->strikerSize >> 1) : (-(gameData->strikerSize >> 1) + 1)));
 		animationData->projectilePos[num][1] = striker_height - (type < 2 ? 1 : 3);
 		animationData->projectileType[num] = (char) type;
 	}
@@ -158,13 +158,34 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		if (key != *lastKey) {
 			*lastKey = key;
 			if (key & 1) {
-				create_bullet(gameData, animationData, 0, 1);
+				if (playerData->items[4] == 1) {
+					create_bullet(gameData, animationData, 0, 1);
+					playerData->oldEnergy = playerData->energy;
+					playerData->energy -= 0x1000;
+				} else if (playerData->items[4] == 2) {
+					create_bullet(gameData, animationData, 1, 1);
+					playerData->oldEnergy = playerData->energy;
+					playerData->energy -= 0x1800;
+				}
+				gfx_update_energy_meter(playerData);
 			}
 			if (key & 2) {
-				create_bullet(gameData, animationData, 1, 0);
+				if (playerData->items[3] == 1) {
+					create_bullet(gameData, animationData, 0, 0);
+					playerData->oldEnergy = playerData->energy;
+					playerData->energy -= 0x1000;
+				} else if (playerData->items[3] == 2) {
+					create_bullet(gameData, animationData, 1, 0);
+					playerData->oldEnergy = playerData->energy;
+					playerData->energy -= 0x1800;
+				}
+				gfx_update_energy_meter(playerData);
 			}
-			if (key & 4) {
+			if ((key & 8) && playerData->items[5]) {
 				create_bullet(gameData, animationData, 2, 0);
+				playerData->oldEnergy = playerData->energy;
+				playerData->energy -= 0x4000;
+				gfx_update_energy_meter(playerData);
 			}
 		}
 
