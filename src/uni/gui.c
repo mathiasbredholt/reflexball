@@ -385,7 +385,7 @@ void map_info_show(GameData *gameData) {
 
 		for (i = 1; i < 5; ++i) {
 			hw_ROM_to_RAM(str, story[i]);
-			gfx_draw_text(9, 100, y + i * 3, str);
+			gfx_draw_text(9, 57, y + i * 3, str);
 		}
 		// gfx_draw_text(9, 57, 60, "oh no boss");
 		// gfx_draw_text(9, 57, 63, "theres an asteroid field");
@@ -442,7 +442,7 @@ void map_info_show(GameData *gameData) {
 		// darth
 
 		// gfx_draw_text(9, 107, 35, "darth vader");
-		hw_ROM_to_RAM(str, story[i + 19]);
+		hw_ROM_to_RAM(str, story[19]);
 		gfx_draw_text(9, 107, 35, str);
 		gfx_draw_thumb(122, 40, 3, 12);
 
@@ -468,7 +468,7 @@ void map_info_show(GameData *gameData) {
 
 		for (i = 1; i < 7; ++i) {
 			hw_ROM_to_RAM(str, story[i + 25]);
-			gfx_draw_text(9, 53, y + i * 3, str);
+			gfx_draw_text(9, 43, y + i * 3, str);
 		}
 		// gfx_draw_text(9, 43, 60, "argh boss");
 		// gfx_draw_text(9, 43, 63, "destroying vaders ship has");
@@ -481,7 +481,7 @@ void map_info_show(GameData *gameData) {
 		// the pub
 
 		// gfx_draw_text(9, 70, 35, "pub at the end of the universe");
-		hw_ROM_to_RAM(str, story[i + 32]);
+		hw_ROM_to_RAM(str, story[32]);
 		gfx_draw_text(9, 70, 35, str);
 		gfx_draw_thumb(122, 40, 5, 14);
 
@@ -515,49 +515,59 @@ void map_info_update(int *mode, char *lastKey) {
 }
 
 void intro_play() {
+	int i;
+	char str[49];
 	gfx_window(1, 5, 36, 119 , 89);
 	gfx_window(0, 139, 36, 252 , 89);
 	gfx_draw_title();
 // story info, window to the left
 
-	gfx_draw_text(9, 8, 39, "welcome to the glorious");
-	gfx_draw_text(9, 8, 42, "tale of commander boss");
-	gfx_draw_text(9, 8, 45, "a grand adventurer");
-	gfx_draw_text(9, 8, 48, "pilot of the striker");
-	gfx_draw_text(9, 8, 51, "a ship capable of bouncing");
-	gfx_draw_text(9, 8, 54, "balls made of pure energy");
-	gfx_draw_text(9, 8, 57, "a ship that supports the ");
-	gfx_draw_text(9, 8, 60, "most advanced weaponry");
-	gfx_draw_text(9, 8, 63, "in the universe");
-	gfx_draw_text(9, 8, 66, "if you can pay");
-	gfx_draw_text(9, 8, 72, "unfortunately");
-	gfx_draw_text(9, 9, 75, "you are dirt poor");
-	gfx_draw_text(9, 9, 78, "better go mining and hope");
-	gfx_draw_text(9, 9, 81, "for some treasure");
-
-	gfx_draw_text(9, 9, 76, "theres gold in them blocks");
+	// gfx_draw_text(9, 8, 39, "welcome to the glorious");
+	// gfx_draw_text(9, 8, 42, "tale of commander boss");
+	// gfx_draw_text(9, 8, 45, "a grand adventurer");
+	// gfx_draw_text(9, 8, 48, "pilot of the striker");
+	// gfx_draw_text(9, 8, 51, "a ship capable of bouncing");
+	// gfx_draw_text(9, 8, 54, "balls made of pure energy");
+	// gfx_draw_text(9, 8, 57, "a ship that supports the ");
+	// gfx_draw_text(9, 8, 60, "most advanced weaponry");
+	// gfx_draw_text(9, 8, 63, "in the universe");
+	// gfx_draw_text(9, 8, 66, "if you can pay");
+	// gfx_draw_text(9, 8, 72, "unfortunately");
+	// gfx_draw_text(9, 9, 75, "you are dirt poor");
+	// gfx_draw_text(9, 9, 78, "better go mining and hope");
+	// gfx_draw_text(9, 9, 81, "for some treasure");
+	// gfx_draw_text(9, 9, 76, "theres gold in them blocks");
+	for (i = 0; i < 12; ++i) {
+		hw_ROM_to_RAM(str, story[40 + i]);
+		gfx_draw_text(9, 8, 39 + i * 3, str);
+	}
 
 // Meta info,
-#if defined(_Z8F6403)
-	gfx_draw_text(9, 143, 39, "use the command stick");
-#else
-	gfx_draw_text(9, 143, 39, "use a and d");
-#endif
+	for (i = 0; i < 11; ++i) {
+		hw_ROM_to_RAM(str, story[52 + i]);
+		gfx_draw_text(9, 143, 39 + i * 3, str);
+	}
 
-	gfx_draw_text(9, 143, 42, "to control the striker");
-	gfx_draw_text(9, 143, 45, "to navigate the menus");
-#if defined(_Z8F6403)
-	gfx_draw_text(9, 143, 48, "use the buttons");
-#else
-	gfx_draw_text(9, 143, 48, "use a and d");
-#endif
-	gfx_draw_text(9, 143, 51, "buy upgrades for the");
-	gfx_draw_text(9, 143, 54, "weapons and the striker");
-	gfx_draw_text(9, 143, 57, "in the shop");
-	gfx_draw_text(9, 143, 63, "be careful you dont");
-	gfx_draw_text(9, 143, 66, "run out of energy");
-	gfx_draw_text(9, 143, 72, "good luck");
-	gfx_draw_text(9, 143, 78, "press any key to continue");
+// #if defined(_Z8F6403)
+// 	gfx_draw_text(9, 143, 39, "use the command stick");
+// #else
+// 	gfx_draw_text(9, 143, 39, "use a and d");
+// #endif
+
+// 	gfx_draw_text(9, 143, 42, "to control the striker");
+// 	gfx_draw_text(9, 143, 45, "to navigate the menus");
+// #if defined(_Z8F6403)
+// 	gfx_draw_text(9, 143, 48, "use the buttons");
+// #else
+// 	gfx_draw_text(9, 143, 48, "use a and d");
+// #endif
+// 	gfx_draw_text(9, 143, 51, "buy upgrades for the");
+// 	gfx_draw_text(9, 143, 54, "weapons and the striker");
+// 	gfx_draw_text(9, 143, 57, "in the shop");
+// 	gfx_draw_text(9, 143, 63, "be careful you dont");
+// 	gfx_draw_text(9, 143, 66, "run out of energy");
+// 	gfx_draw_text(9, 143, 72, "good luck");
+// 	gfx_draw_text(9, 143, 78, "press any key to continue");
 }
 
 void intro_update(int *mode, char *lastKey) {
