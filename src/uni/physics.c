@@ -68,9 +68,9 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			// Give the ball a boost upwards
 			gameData->ballVel.y -= gameData->bouncinessFactor;
 
-			if (gameData->ballVel.y < -(char)100) {
+			if (gameData->ballVel.y < -(char)80) {
 				// Velocity should not become grater that 100 (ballVel can store a range of -127 to 128)
-				gameData->ballVel.y = -(char)100;
+				gameData->ballVel.y = -(char)80;
 			}
 
 			// Check striker zones:
@@ -380,7 +380,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 			if (type != 11) {	// Only if block is destructible
 
-				++gameData->multiplier;	// Increment multiplier
+				if (gameData->multiplier < 6) ++gameData->multiplier;	// Increment multiplier
 
 				if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
 

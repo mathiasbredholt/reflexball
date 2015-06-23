@@ -161,11 +161,11 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 				if (playerData->items[4] == 1) {
 					create_bullet(gameData, animationData, 0, 1);
 					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x1000;
+					playerData->energy -= 0x800;
 				} else if (playerData->items[4] == 2) {
 					create_bullet(gameData, animationData, 1, 1);
 					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x1800;
+					playerData->energy -= 0x400;
 				}
 				gfx_update_energy_meter(playerData);
 			}
@@ -173,18 +173,18 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 				if (playerData->items[3] == 1) {
 					create_bullet(gameData, animationData, 0, 0);
 					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x1000;
+					playerData->energy -= 0x800;
 				} else if (playerData->items[3] == 2) {
 					create_bullet(gameData, animationData, 1, 0);
 					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x1800;
+					playerData->energy -= 0x400;
 				}
 				gfx_update_energy_meter(playerData);
 			}
 			if ((key & 8) && playerData->items[5]) {
 				create_bullet(gameData, animationData, 2, 0);
 				playerData->oldEnergy = playerData->energy;
-				playerData->energy -= 0x4000;
+				playerData->energy -= 0x3000;
 				gfx_update_energy_meter(playerData);
 			}
 		}
