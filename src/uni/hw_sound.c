@@ -1,3 +1,12 @@
+/*
+ #  #     #    ###    ###    #   #    #    ###    ####           ##     ##    #  #   #  #   ###
+ #  #    # #   #  #   #  #   #   #   # #   #  #   #             #  #   #  #   #  #   ## #   #  #
+ ####   #   #  #  #   #  #   # # #  #   #  #  #   ###            #     #  #   #  #   # ##   #  #
+ #  #   #####  ###    #  #   # # #  #####  ###    #               #    #  #   #  #   #  #   #  #
+ #  #   #   #  #  #   #  #   ## ##  #   #  #  #   #             #  #   #  #   #  #   #  #   #  #
+ #  #   #   #  #  #   ###    #   #  #   #  #  #   ####           ##     ##     ##    #  #   ###
+*/
+
 #if defined(_Z8F6403)
 #include <ez8.h>
 #include "hw_time.h"
@@ -9,7 +18,7 @@ int _musicIndex;	// How far we are in playing the current background music track
 char _fxMode;	// Flag determining whether to play a sound effect (1) or the background music (0)
 char _soundId;		// Which sound effect to play
 char _musicId;		// Which music track to play
-char _mute;
+char _mute;         // Mutes music
 
 #pragma interrupt
 void ISR_T3() {
@@ -127,15 +136,12 @@ void hw_sound_mute() {
 
 void hw_sound_set_music(int which) {
 	_musicId = which;
-	//_fxMode = 0;
 	_musicIndex = 0;
 	_mute = 0;
 }
 
 #else
 void hw_sound_init() {};
-
-void hw_sound_update() {};
 
 void hw_sound_mute() {};
 

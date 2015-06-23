@@ -1,4 +1,11 @@
-// Copyright Daniel Mouritzen, Niels Bang and Mathias Bredholt 2015
+/*
+ #  #   #####  ###    #
+ #  #     #     #     #
+ #  #     #     #     #
+ #  #     #     #     #
+ #  #     #     #     #
+  ##      #    ###    ####
+*/
 
 #include <stdio.h>
 #include "util.h"
