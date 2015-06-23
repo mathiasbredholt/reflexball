@@ -56,10 +56,9 @@ int main()
 
 	gameData.strikerSize = 48;
 
-
+	mode = 5;
 	while (1) {
 		if (mode == 0) {
-			//	mode = 6;
 			// Start menu
 			menu_show();
 			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2, &playerData);
