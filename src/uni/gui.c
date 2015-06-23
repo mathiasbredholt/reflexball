@@ -11,14 +11,10 @@
 #include "hw_input.h"
 #include "hw_time.h"
 #include "hw_sound.h"
-<<< <<< < HEAD
 #include "story.h"
-== == == =
 #include "hw_flash.h"
-#include "lore.h"
-    >>> >>> > origin / master
 
-    char menuButtons[4][12] = { "play", "load game", "exit" };
+char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
 char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} };
 
@@ -328,7 +324,7 @@ void map_info_show(GameData *gameData) {
 
 		//dokuu
 		gfx_draw_text(9, 119, 35, story[0]);
-		gfx_draw_thumb(122, 40, 0);
+		gfx_draw_thumb(122, 40, 0, 9);
 
 		for (i = 1; i < 5; ++i) {
 			gfx_draw_text(9, 57, y + i * 3, story[i]);
@@ -339,7 +335,7 @@ void map_info_show(GameData *gameData) {
 		// ALderan
 
 		gfx_draw_text(9, 113, 35, story[5]);
-		gfx_draw_thumb(122, 40, 1);
+		gfx_draw_thumb(122, 40, 1, 10);
 
 		for (i = 1; i < 7; ++i) {
 			gfx_draw_text(9, 71, y + i * 3, story[i + 5]);
@@ -349,7 +345,7 @@ void map_info_show(GameData *gameData) {
 
 		// tatoiine
 		gfx_draw_text(9, 113, 35, story[12]);
-		gfx_draw_thumb(122, 40, 2);
+		gfx_draw_thumb(122, 40, 2, 11);
 
 
 		for (i = 1; i < 8; ++i) {
@@ -361,7 +357,7 @@ void map_info_show(GameData *gameData) {
 
 
 		gfx_draw_text(9, 107, 35, story[20]);
-		gfx_draw_thumb(122, 40, 3);
+		gfx_draw_thumb(122, 40, 3, 12);
 
 
 		for (i = 1; i < 6; ++i)	{
@@ -372,7 +368,7 @@ void map_info_show(GameData *gameData) {
 		//	unknown
 
 		gfx_draw_text(9, 95, 35, story[26]);
-		gfx_draw_thumb(122, 40, 4);
+		gfx_draw_thumb(122, 40, 4, 13 );
 
 
 		for (i = 1; i < 7; ++i) {
@@ -383,7 +379,7 @@ void map_info_show(GameData *gameData) {
 		// the pub
 
 		gfx_draw_text(9, 70, 35, story[33]);
-		gfx_draw_thumb(122, 40, 5);
+		gfx_draw_thumb(122, 40, 5, 14);
 
 
 		for (i = 1; i < 8; ++i) {

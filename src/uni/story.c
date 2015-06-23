@@ -1,10 +1,10 @@
 #if defined(_Z8F6403)
 
-rom char story[63][49] =
+rom char story[68][49] =
 
 #else
 
-char story[63][49] =
+char story[68][49] =
 
 #endif
 {
@@ -49,26 +49,39 @@ char story[63][49] =
 	"oh look its the pub at the end of the universe",
 	"boss",
 	"they are out of hotdogs",
-	"you are commander boss",
-	"your ship is the striker",
-	"capable of boucing balls",
-	"created by pure energy",
-	"equipped with powerful",
-	"weaponry",
-	"lasers more powerful than",
-	"the sun",
-	"rockets capable of removing",
-	"entire planets in a second",
+	"welcome to the glorious",
+	"tale of commander boss",
+	"the pilot of the amazing",
+	"striker",
+	"a ship capable of bouncing",
+	"a ball made of pure energy",
+	"a ship that supports the ",
+	"best weaponry the universe",
 	" ",
-	"your only weakness",
-	"is  your incompetent minion",
-	"who just sold your weapons",
-	"to the local hotdog vendor",
-	"luckily he did not know how",
-	"to remove the ultra 11",
-	"elite ball bouncer",
+	"if you can pay",
 	" ",
-	"the only way is to search for",
-	"glorious treasure"
-
+	"unfortunately you are poor",
+	"better search for some loot",
+	"theres gold in them blocks",
+#if defined(_Z8F6403)
+	"use the command stick",
+#else
+	"use the command keys",
+#endif
+	"to control the striker",
+#if defined(_Z8F6403)
+	"and use the buttons to",
+#else
+	"use a and d to",
+#endif
+	"navigate the menus",
+	" ",
+	"buy upgrades in the shop",
+	" ",
+	"be careful you dont",
+	"run out of energy",
+	" ",
+	"good luck",
+	" ",
+	"press any key to continue"
 };
