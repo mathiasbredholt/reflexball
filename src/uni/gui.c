@@ -124,6 +124,13 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, G
 			*lastKey = key;
 
 
+			if (key & 0x10) {
+				// Cheat key
+				playerData->coins += 1000;
+				sprintf(str, "coins %8d", playerData->coins);
+				gfx_draw_text(9, 196, 2, str);
+			}
+
 			// select event
 			if (*lastKey & 4) {
 				if (*focus != 6) {
@@ -273,9 +280,10 @@ void map_update(int *mode, char *lastKey, int *focus, GameData *gameData, Player
 		if (key != *lastKey) {
 			*lastKey = key;
 
-			if (key & 8) {
+			if (key & 0x10) {
 				// Cheat key
 				++playerData->progress;
+				map_show(playerData, focus);
 			}
 
 			if (*lastKey & 4) {
