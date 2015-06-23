@@ -21,4 +21,8 @@ void shop_show(PlayerData *playerData);
 
 void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData);
 
+void intro_play();
+
+void intro_update(int *mode, char *lastKey);
+
 #endif
