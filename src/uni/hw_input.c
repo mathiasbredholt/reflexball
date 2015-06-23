@@ -187,4 +187,10 @@ unsigned char hw_read_analog() {
 	return 175;
 }
 
+void hw_ROM_to_RAM(char *dest, const char *src) {
+	while (*src) *dest++ = *src++;
+	*dest = '\0';
+}
+
+
 #endif

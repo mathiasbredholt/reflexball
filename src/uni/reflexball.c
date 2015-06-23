@@ -7,6 +7,8 @@
 #include "hw_sound.h"
 #include "hw_LED.h"
 #include "gui.h"
+#include "hw_flash.h"
+#include <sio.h>
 
 #if defined(_Z8F6403)
 void main()
@@ -51,6 +53,9 @@ int main()
 	playerData.coins = 500;
 	playerData.progress = 0;
 	playerData.energyMax = 0x7FFF;
+
+	//WriteByteToFlash1(0, playerData.coins);
+	// 	printf("LOADED %d", ReadByteFromFlash(0));
 
 	gameData.strikerSize = 48;
 
