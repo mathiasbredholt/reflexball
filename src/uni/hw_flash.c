@@ -8,6 +8,10 @@
 char far Flash_Page[PAGE_SIZE];				// Far is used so this variable is placed in Edata
 char near RamByte;
 
+void hw_flash_init() {
+	init_flash();
+}
+
 /****************************************************************/
 /* This function unlocks Flash for Flash Programming 			*/
 /****************************************************************/

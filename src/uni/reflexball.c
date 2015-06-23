@@ -39,6 +39,7 @@ int main()
 	hw_time_init();
 	hw_ADC_init();
 	hw_sound_init();
+	hw_flash_init();
 	LED_init();
 	//LED_display_column(0xFF, 0, 0);
 	//LED_set_string("Welcome");
@@ -54,7 +55,7 @@ int main()
 	playerData.progress = 0;
 	playerData.energyMax = 0x7FFF;
 
-	WriteByteToFlash(128, 11);
+	WriteByteToFlash(128, playerData.coins);
 
 	printf("WRITTEN\n");
 

@@ -1,3 +1,5 @@
+void hw_flash_init();
+
 unsigned int UnlockFlash(void);
 
 void LockFlash(void);
