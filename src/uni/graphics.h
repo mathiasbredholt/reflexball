@@ -50,6 +50,6 @@ void gfx_draw_score(PlayerData *playerData);
 
 void gfx_draw_thumb(int x, int y, int thumb, int col);
 
-void gfx_draw_title(int x, int y);
+void gfx_draw_title();
 
 #endif

@@ -682,10 +682,10 @@ void gfx_draw_small_title(int x, int y) {
 #endif
 }
 
-void gfx_draw_title(int x, int y) {
+void gfx_draw_title() {
 	int i, j;
 	fg_color(6);
-	go_to_xy(x, y);
+	go_to_xy(47, 25);
 	for (i = 0; i < 164 ; ++i) {
 		for (j = 0; j <= 8; ++j) {
 			printf("%c", title[j][i]);
