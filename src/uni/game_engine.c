@@ -78,23 +78,7 @@ void init(int *mode, int *focus, int *lastKey, int *animFrame1, int *animFrame2,
 	gfx_window(1, 5, 36, 119 , 89);
 	gfx_window(0, 139, 36, 252 , 89);
 	gfx_draw_title();
-	// story info, window to the left
 
-	// gfx_draw_text(9, 8, 39, "welcome to the glorious");
-	// gfx_draw_text(9, 8, 42, "tale of commander boss");
-	// gfx_draw_text(9, 8, 45, "a grand adventurer");
-	// gfx_draw_text(9, 8, 48, "pilot of the striker");
-	// gfx_draw_text(9, 8, 51, "a ship capable of bouncing");
-	// gfx_draw_text(9, 8, 54, "balls made of pure energy");
-	// gfx_draw_text(9, 8, 57, "a ship that supports the ");
-	// gfx_draw_text(9, 8, 60, "most advanced weaponry");
-	// gfx_draw_text(9, 8, 63, "in the universe");
-	// gfx_draw_text(9, 8, 66, "if you can pay");
-	// gfx_draw_text(9, 8, 72, "unfortunately");
-	// gfx_draw_text(9, 9, 75, "you are dirt poor");
-	// gfx_draw_text(9, 9, 78, "better go mining and hope");
-	// gfx_draw_text(9, 9, 81, "for some treasure");
-	// gfx_draw_text(9, 9, 76, "theres gold in them blocks");
 	for (i = 0; i < 12; ++i) {
 		hw_ROM_to_RAM(str, story[40 + i]);
 		gfx_draw_text(9, 8, 39 + i * 3, str);
@@ -105,27 +89,6 @@ void init(int *mode, int *focus, int *lastKey, int *animFrame1, int *animFrame2,
 		hw_ROM_to_RAM(str, story[52 + i]);
 		gfx_draw_text(9, 143, 39 + i * 3, str);
 	}
-
-	// #if defined(_Z8F6403)
-	// 	gfx_draw_text(9, 143, 39, "use the command stick");
-	// #else
-	// 	gfx_draw_text(9, 143, 39, "use a and d");
-	// #endif
-
-	// 	gfx_draw_text(9, 143, 42, "to control the striker");
-	// 	gfx_draw_text(9, 143, 45, "to navigate the menus");
-	// #if defined(_Z8F6403)
-	// 	gfx_draw_text(9, 143, 48, "use the buttons");
-	// #else
-	// 	gfx_draw_text(9, 143, 48, "use a and d");
-	// #endif
-	// 	gfx_draw_text(9, 143, 51, "buy upgrades for the");
-	// 	gfx_draw_text(9, 143, 54, "weapons and the striker");
-	// 	gfx_draw_text(9, 143, 57, "in the shop");
-	// 	gfx_draw_text(9, 143, 63, "be careful you dont");
-	// 	gfx_draw_text(9, 143, 66, "run out of energy");
-	// 	gfx_draw_text(9, 143, 72, "good luck");
-	// 	gfx_draw_text(9, 143, 78, "press any key to continue");
 
 	while (hw_read_key() == 0x00);
 }
