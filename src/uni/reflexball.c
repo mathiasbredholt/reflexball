@@ -64,6 +64,8 @@ int main()
 	while (1);
 
 	gameData.strikerSize = 48;
+	gameData.strikerSpeed = 4;
+	gameData.bouncinessFactor = 4;
 
 	mode = 5;
 	while (1) {
