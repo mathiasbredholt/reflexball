@@ -8,7 +8,7 @@
 #include "hw_sound.h"
 #include "levels.h"
 #include "graphics.h"
-#include "util.h"
+// #include "util.h"
 #include "physics.h"
 // #include "sounds.h"
 // #include <sio.h>
@@ -26,6 +26,7 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 	gfx_draw_score(playerData);
 	gfx_draw_energy_meter(playerData);
 
+	// Load level data
 	for (i = 0; i < 15; ++i) {
 		for (j = 0; j < 8; ++j) {
 			gameData->blockData[i][j] = levelData[gameData->level][i][j];

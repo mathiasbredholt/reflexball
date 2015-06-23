@@ -6,7 +6,6 @@
 #include "hw_input.h"
 #include "hw_sound.h"
 #include "hw_LED.h"
-#include "graphics.h"
 #include "gui.h"
 
 #if defined(_Z8F6403)
