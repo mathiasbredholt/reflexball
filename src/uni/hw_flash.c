@@ -3,7 +3,7 @@
 #if defined(_Z8F6403)
 #include <ez8.h>
 
-#define PAGE_SIZE	512
+#define PAGE_SIZE 512
 
 char far Flash_Page[PAGE_SIZE];				// Far is used so this variable is placed in Edata
 char near RamByte;
