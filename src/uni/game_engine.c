@@ -16,26 +16,16 @@
 #include "hw_flash.h"
 #include "levels.h"
 #include "graphics.h"
-// #include "util.h"
 #include "physics.h"
-// #include "sounds.h"
-// #include <sio.h>
-// #include "ansi.h"
+#include "story.h"
+#include "charset.h"
+
 
 #if defined(_Z8F6403)
 #include <sio.h>
 #else
 #include <stdio.h>
 #endif
-
-#include "game_data.h"
-#include "graphics.h"
-#include "hw_input.h"
-#include "hw_time.h"
-#include "hw_sound.h"
-#include "hw_flash.h"
-#include "story.h"
-#include "charset.h"
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };

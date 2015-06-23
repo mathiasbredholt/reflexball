@@ -42,7 +42,7 @@ int main()
 	playerData.strikerSpeed = 4;
 
 	gameData.strikerSize = 48;
-	gameData.bouncinessFactor = 6;
+	gameData.bouncinessFactor = 10;
 
 	init();
 
