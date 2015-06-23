@@ -171,7 +171,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 					if (phy_hit_block(gameData, x >> 4, (y >> 2) - 1, &justHitBlock)) {
 
 						go_to_xy(200, 30);
-						printf("Lower                          ");
+						// printf("Lower                          ");
 
 						// Hitting block
 
@@ -179,7 +179,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 						if ((x & 15) == 15) {
 							go_to_xy(200, 30);
-							printf("Lower overlap both corners           ");
+							// printf("Lower overlap both corners           ");
 
 							// Also hitting corner of right block because ball is two pixels wide
 
@@ -187,7 +187,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 						}
 					} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock)) {
 						go_to_xy(200, 30);
-						printf("Lower overlap to right                          ");
+						// printf("Lower overlap to right                          ");
 
 						// Hitting corner of right block because ball is two pixels wide
 
@@ -196,13 +196,13 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 					if ((x & 15) == 1) {
 						go_to_xy(200, 30);
-						printf("Lower corner to left                          ");
+						// printf("Lower corner to left                          ");
 
 						// Left corner
 
 						if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
 							go_to_xy(200, 30);
-							printf("Lower corner to left - hit                          ");
+							// printf("Lower corner to left - hit                          ");
 
 							// Hitting left block
 
@@ -210,13 +210,13 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 						}
 					} else if ((x & 15) == 14) {
 						go_to_xy(200, 30);
-						printf("Lower corner to right                          ");
+						// printf("Lower corner to right                          ");
 
 						// Right corner
 
 						if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 							go_to_xy(200, 30);
-							printf("Lower corner to right - hit                          ");
+							// printf("Lower corner to right - hit                          ");
 
 							// Hitting right block
 
@@ -239,7 +239,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 					if (phy_hit_block(gameData, x >> 4, (y >> 2) + 1, &justHitBlock)) {
 						go_to_xy(200, 30);
-						printf("Upper                          ");
+						// printf("Upper                          ");
 
 						// Hitting block
 
@@ -247,7 +247,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 						if ((x & 15) == 15) {
 							go_to_xy(200, 30);
-							printf("Upper overlap both corners                          ");
+							// printf("Upper overlap both corners                          ");
 
 							// Also hitting corner of right block because ball is two pixels wide
 
@@ -256,7 +256,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 					} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) + 1, &justHitBlock)) {
 						go_to_xy(200, 30);
-						printf("Upper overlap to right                          ");
+						// printf("Upper overlap to right                          ");
 
 						// Hitting corner of right block because ball is two pixels wide
 
@@ -265,25 +265,25 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 					if ((x & 15) == 1) {
 						go_to_xy(200, 30);
-						printf("Upper corner to left                         ");
+						// printf("Upper corner to left                         ");
 
 						// Left corner
 
 						if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
 							go_to_xy(200, 30);
-							printf("Upper corner to left - hit                         ");
+							// printf("Upper corner to left - hit                         ");
 							reverseX = 1;
 						}
 
 					} else if ((x & 15) == 14) {
 						go_to_xy(200, 30);
-						printf("Upper corner to right                         ");
+						// printf("Upper corner to right                         ");
 
 						// Right corner
 
 						if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 							go_to_xy(200, 30);
-							printf("Upper corner to right - hit                         ");
+							// printf("Upper corner to right - hit                         ");
 							reverseX = 1;
 						}
 
@@ -291,25 +291,25 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 
 				} else if ((x & 15) == 1) {
 					go_to_xy(200, 30);
-					printf("Right edge                         ");
+					// printf("Right edge                         ");
 
 					// Right edge
 
 					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
 						go_to_xy(200, 30);
-						printf("Right edge - hit                         ");
+						// printf("Right edge - hit                         ");
 						reverseX = 1;
 					}
 
 				} else if ((x & 15) == 14) {
 					go_to_xy(200, 30);
-					printf("Left edge                         ");
+					// printf("Left edge                         ");
 
 					// Left edge
 
 					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
 						go_to_xy(200, 30);
-						printf("Left edge - hit                         ");
+						// printf("Left edge - hit                         ");
 						reverseX = 1;
 					}
 
