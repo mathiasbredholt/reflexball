@@ -5,29 +5,31 @@
 
 
 void hw_flash_save(PlayerData *playerData) {
-	OCDCTL |= 0xA0; // Enable On-Chip Debugger and disable read protection
+	asm (" LDE r0, (\playerData->coins)");
+	// OCDCTL |= 0xA0; // Enable On-Chip Debugger and disable read protection
 
-	DBG = 0x0C; // Data write mode
-	DBG = 0x00; // Data memory address 15:8
-	DBG = 0x00; // Data memory address 7:0
-	DBG = 0x00; // Size in bytes 15:8
-	DBG = 0x02; // Size in bytes 7:0
-	DBG = playerData->coin;
+	// DBG = 0x0C; // Data write mode
+	// DBG = 0x00; // Data memory address 15:8
+	// DBG = 0x00; // Data memory address 7:0
+	// DBG = 0x00; // Size in bytes 15:8
+	// DBG = 0x02; // Size in bytes 7:0
+	// DBG = playerData->coin;
 
-	OCDCTL &= 0x5F; // Disable On-Chip Debugger and enable read protection
+	// OCDCTL &= 0x5F; // Disable On-Chip Debugger and enable read protection
 }
 
 void hw_flash_load(PlayerData *playerData) {
-	OCDCTL |= 0x80; // Enable On-Chip Debugger
+	asm (" LDE (\playerData->coins), r0");
+	// OCDCTL |= 0x80; // Enable On-Chip Debugger
 
-	DBG = 0x0D; // Data read mode
-	DBG = 0x00; // Data memory address 15:8
-	DBG = 0x00; // Data memory address 7:0
-	DBG = 0x00; // Size in bytes 15:8
-	DBG = 0x02; // Size in bytes 7:0
-	playerData->coin = DBG;
+	// DBG = 0x0D; // Data read mode
+	// DBG = 0x00; // Data memory address 15:8
+	// DBG = 0x00; // Data memory address 7:0
+	// DBG = 0x00; // Size in bytes 15:8
+	// DBG = 0x02; // Size in bytes 7:0
+	// playerData->coin = DBG;
 
-	OCDCTL &= 0x7F; // Disable On-Chip Debugger
+	// OCDCTL &= 0x7F; // Disable On-Chip Debugger
 }
 
 #endif
