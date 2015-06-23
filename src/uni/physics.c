@@ -12,7 +12,7 @@
 #include "game_data.h"
 #include "hw_sound.h"
 
-void phy_simulate(GameData *gameData, char *lostBall) {
+void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 	unsigned char x, y, sp;
 	char justHitBlock, reverseX, reverseY;
 	int dx, dy, halfSize;
@@ -66,7 +66,7 @@ void phy_simulate(GameData *gameData, char *lostBall) {
 			gameData->ballVel.y = -gameData->ballVel.y;
 
 			// Give the ball a boost upwards
-			gameData->ballVel.y -= gameData->bouncinessFactor;
+			gameData->ballVel.y -= playerData->bouncinessFactor;
 
 			if (gameData->ballVel.y < -(char)80) {
 				// Velocity should not become grater that 100 (ballVel can store a range of -127 to 128)
@@ -509,7 +509,7 @@ void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned cha
 	int analog = (((int) input - 127) << 1) - 96;
 	if (analog < -(int)160) analog = -(int)160;
 	else if (analog > -5 && analog < 5) analog = 0;
-	analog *= gameData->strikerSpeed;
+	analog *= playerData->strikerSpeed;
 	if (gameData->strikerPos < ((unsigned int) gameData->strikerSize << 7) - analog) {
 		gameData->strikerPos = (unsigned int) (gameData->strikerSize - 1) << 7;
 	} else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (gameData->strikerSize) << 7)) {

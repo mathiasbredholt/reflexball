@@ -4,7 +4,7 @@
 #include "util.h"
 #include "game_data.h"
 
-void phy_simulate(GameData *gameData, char *lostBall);
+void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall);
 
 void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char input);
 

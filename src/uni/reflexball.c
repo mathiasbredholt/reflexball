@@ -1,14 +1,7 @@
 // reflexball.c
 
-#include "game_engine.h"
 #include "game_data.h"
-#include "hw_time.h"
-#include "hw_input.h"
-#include "hw_sound.h"
-#include "hw_LED.h"
-#include "gui.h"
-#include "hw_flash.h"
-#include <sio.h>
+#include "game_engine.h"
 
 #if defined(_Z8F6403)
 void main()
@@ -16,6 +9,8 @@ void main()
 int main()
 #endif
 {
+	int i;
+
 	///////////////////
 	// gui variables //
 	///////////////////
@@ -31,16 +26,6 @@ int main()
 	GameData gameData;
 	AnimationData animationData;
 
-	/////////////////////////
-	// Hardware initialize //
-	/////////////////////////
-	int i;
-	hw_init();
-	hw_time_init();
-	hw_ADC_init();
-	hw_sound_init();
-	hw_flash_init();
-	LED_init();
 	//LED_display_column(0xFF, 0, 0);
 	//LED_set_string("Welcome");
 
@@ -51,37 +36,30 @@ int main()
 		playerData.items[i] = 0;
 	}
 
-	playerData.coins = 133;
+	playerData.coins = 0;
 	playerData.progress = 0;
 	playerData.energyMax = 0x7FFF;
-
-	WriteByteToFlash(128, playerData.coins);
-
-	printf("WRITTEN\n");
-
-	printf("LOADED %d", ReadByteFromFlash(128));
-
-	while (1);
+	playerData.strikerSpeed = 4;
 
 	gameData.strikerSize = 48;
-	gameData.strikerSpeed = 4;
-	gameData.bouncinessFactor = 4;
+	gameData.bouncinessFactor = 6;
 
-	mode = 5;
+	init();
+
 	while (1) {
 		if (mode == 0) {
 			// Start menu
-			menu_show();
+			menu_init();
 			while (mode == 0) menu_update(&mode, &lastKey, &focus, &animFrame1, &animFrame2, &playerData);
 		}
 		if (mode == 1) {
 			// Level select
-			map_show(&playerData, &focus);
+			map_init(&playerData, &focus);
 			while (mode == 1) map_update(&mode, &lastKey, &focus, &gameData, &playerData);
 		}
 		if (mode == 2) {
 			// Level info page
-			map_info_show(&gameData);
+			map_info_init(&gameData);
 			while (mode == 2) map_info_update(&mode, &lastKey);
 		}
 		if (mode == 3) {
@@ -91,13 +69,8 @@ int main()
 		}
 		if (mode == 4) {
 			// Shop
-			shop_show(&playerData);
+			shop_init(&playerData);
 			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData, &gameData);
-		}
-
-		if (mode == 5) {
-			intro_play();
-			while (mode == 5) intro_update(&mode, &lastKey);
 		}
 
 #if defined(__APPLE__) || defined(__WIN32__)
