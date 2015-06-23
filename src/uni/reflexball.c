@@ -49,13 +49,11 @@ int main()
 		playerData.items[i] = 0;
 	}
 
-	playerData.coins = 50;
+	playerData.coins = 500;
 	playerData.progress = 0;
 	playerData.energyMax = 0x7FFF;
 
 	gameData.strikerSize = 48;
-	gameData.strikerSpeed = 4;
-	gameData.bouncinessFactor = 4;
 
 	mode = 5;
 	while (1) {
