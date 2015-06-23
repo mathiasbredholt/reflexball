@@ -15,7 +15,7 @@
 
 char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
-char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"upgraded thrusters                   ", "give your ship ninja reflexes                "} , {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"} };
+char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"new ship                             ", "bigger and faster ship                       "} , {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"} };
 
 void menu_show() {
 	// Call drawing functions for GUI creation
@@ -145,7 +145,8 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, G
 						if (*focus == 0) {
 							playerData->energyMax += 0x7FFF;
 						} else if (*focus == 1) {
-							gameData->strikerSpeed += 2;
+							gameData->strikerSpeed += 1;
+							gameData->strikerSize += 4;
 						} else if (*focus == 2) {
 							gameData->bouncinessFactor += 2;
 						}

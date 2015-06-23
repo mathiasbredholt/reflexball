@@ -520,7 +520,7 @@ void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned cha
 	// printf("%8d", (((int) input - 127) << 1) - 96);
 	// gameData->strikerPos += (((int) input - 127) << 1) - 96;
 	playerData->oldEnergy = playerData->energy;
-	playerData->energy -= analog < 0 ? -analog >> 5 : analog >> 5;
+	playerData->energy -= analog < 0 ? -analog >> 6 : analog >> 6;
 }
 
 // char phy_hit_block(GameData *gameData, int x, int y) {

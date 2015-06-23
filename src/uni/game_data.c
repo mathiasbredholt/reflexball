@@ -8,7 +8,7 @@ const unsigned char itemMax[NUMBER_OF_ITEMS] =
 {
 	3,	// battery
 	3,	// bounce
-	3,	// move speed
+	3,	// ship upgrade
 	2,	// left laser
 	2,	// right laser
 	1	// rocket
@@ -22,7 +22,7 @@ const unsigned char itemPrice[NUMBER_OF_ITEMS] =
 {
 	1,	// battery
 	2,	// bounce
-	3,	// move speed
+	3,	// ship upgrade
 	4,	// left laser
 	4,	// right laser
 	5	// rocket
