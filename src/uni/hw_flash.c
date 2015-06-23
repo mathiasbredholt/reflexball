@@ -3,9 +3,15 @@
 #if defined(_Z8F6403)
 #include <ez8.h>
 
+unsigned char val1;
+unsigned char val2;
 
 void hw_flash_save(PlayerData *playerData) {
-	asm (" LDE r0, (\playerData->coins)");
+	val1 = (playerData->coins >> 8);
+	val2 = (playerData->coins & 0xFF);
+	asm("LDX r0, _val1");
+	asm("LDX r1, _val2");
+	asm("LDE r0, @rr0");
 	// OCDCTL |= 0xA0; // Enable On-Chip Debugger and disable read protection
 
 	// DBG = 0x0C; // Data write mode
@@ -19,7 +25,12 @@ void hw_flash_save(PlayerData *playerData) {
 }
 
 void hw_flash_load(PlayerData *playerData) {
-	asm (" LDE (\playerData->coins), r0");
+	asm("LDE r0, @rr0");
+	asm("LDX r0, _val1");
+	asm("LDX r1, _val2");
+	playerData->coins = val1 << 8 || val2;
+	//playerData->coins = val;
+	//asm(" LDE (\c), r0");
 	// OCDCTL |= 0x80; // Enable On-Chip Debugger
 
 	// DBG = 0x0D; // Data read mode
