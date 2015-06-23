@@ -111,7 +111,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 
 		gfx_update_energy_meter(playerData);
 
-		if (playerData->energy <= 0) game_end(mode, 0, playerData);
+		if (playerData->energy <= 0) game_end(mode, 0, playerData, gameData);
 
 		// sprintf(debug, "%d", (int) hw_read_analog());
 		// gfx_draw_text(9, 200, 80, debug);
@@ -194,15 +194,18 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		gfx_update_animation(animationData);
 	} else {
 		// check for victory
+		won = 1;
 		for (i = 0; i < 15; ++i) {
-			won |= (gameData->blockData[i][0] || gameData->blockData[i][1]);
+			if (gameData->blockData[i][0] || gameData->blockData[i][1]) {
+				won = 0;
+			}
 		}
-		if (won) game_end(mode, 1, playerData);
+		if (won) game_end(mode, 1, playerData, gameData);
 	}
 	//LED_update();
 }
 
-void game_end(int *mode, int win, PlayerData *playerData) {
+void game_end(int *mode, int win, PlayerData *playerData, GameData *gameData) {
 	hw_sound_mute();
 	if (win == 0) {
 		hw_sound_play(13);
@@ -210,7 +213,7 @@ void game_end(int *mode, int win, PlayerData *playerData) {
 		gfx_draw_game_over();
 		LED_set_string("YOU DEAD");
 	} else {
-		if (playerData->progress < 6) ++playerData->progress;
+		if (playerData->progress < 6 && gameData->level == playerData->progress) ++playerData->progress;
 		hw_sound_play(12);
 		gfx_window(1, 76, 45, 181, 60);
 		gfx_draw_victory();

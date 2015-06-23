@@ -85,7 +85,6 @@ void shop_show(PlayerData *playerData) {
 	char str[15];
 
 	hw_sound_set_music(0);
-	hw_sound_play(1);	// Because a button was pressed to get here
 
 	gfx_window(1, -1, -1, 257, 104);
 
