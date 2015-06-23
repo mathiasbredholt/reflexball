@@ -50,12 +50,17 @@ int main()
 		playerData.items[i] = 0;
 	}
 
-	playerData.coins = 500;
+	playerData.coins = 133;
 	playerData.progress = 0;
 	playerData.energyMax = 0x7FFF;
 
-	//WriteByteToFlash1(0, playerData.coins);
-	// 	printf("LOADED %d", ReadByteFromFlash(0));
+	WriteByteToFlash(128, 11);
+
+	printf("WRITTEN\n");
+
+	printf("LOADED %d", ReadByteFromFlash(128));
+
+	while (1);
 
 	gameData.strikerSize = 48;
 
