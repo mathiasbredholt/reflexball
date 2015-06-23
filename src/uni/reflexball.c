@@ -21,37 +21,19 @@ int main()
 	///////////////////
 	// gui variables //
 	///////////////////
-	int mode = 0;
-	int focus = 0;
-	char lastKey = 0;
+	int mode;
+	int focus;
+	char lastKey;
 
 	// Counters for star animation in start menu
-	int animFrame1 = 0;
-	int animFrame2 = 104;
+	int animFrame1;
+	int animFrame2;
 
 	PlayerData playerData;
 	GameData gameData;
 	AnimationData animationData;
 
-	//LED_display_column(0xFF, 0, 0);
-	//LED_set_string("Welcome");
-
-	///////////////////////
-	// Reset player data //
-	///////////////////////
-	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
-		playerData.items[i] = 0;
-	}
-
-	playerData.coins = 0;
-	playerData.progress = 0;
-	playerData.energyMax = 0x7FFF;
-	playerData.strikerSpeed = 4;
-
-	gameData.strikerSize = 48;
-	gameData.bouncinessFactor = 10;
-
-	init();
+	init(&mode, &focus, &lastKey, &animFrame1, &animFrame2, &playerData, &gameData);
 
 	while (1) {
 		if (mode == 0) {
