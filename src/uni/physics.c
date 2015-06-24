@@ -78,7 +78,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			gameData->ballVel.y -= playerData->bouncinessFactor;
 
 			// Boost / slow in x direction depending on striker speed
-			gameData->ballVel.x += (gameData->strikerPos - gameData->strikerOldPos) >> 6;
+			gameData->ballVel.x += (gameData->strikerPos - gameData->strikerOldPos) >> 5;
 
 			if (gameData->ballVel.y < -(char)80) {
 				// Velocity should not become grater that 100 (ballVel can store a range of -127 to 128)

@@ -483,6 +483,7 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 	gfx_draw_all_blocks(gameData);
 
 	gameData->strikerPos = 127 << 8;
+	gameData->strikerOldPos = 127 << 8;
 
 	gameData->ballPos.x = 127 << 8;
 	gameData->ballPos.y = 90 << 8;
