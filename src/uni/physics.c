@@ -147,7 +147,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 			// Reset position to striker and decrease velocity
 			gameData->ballPos.x = gameData->strikerPos;
-			gameData->ballPos.y = 90 << 8;
+			gameData->ballPos.y = (striker_height - 2) << 8;
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
 
 			// Only decrease y velocity to a minumum of 32
@@ -162,7 +162,8 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 		} else {
 
 			// Reset bouncedStriker flag if ball is above striker
-			gameData->bouncedStriker = y >= striker_height - 1;
+			if (y < striker_height - 1)
+				gameData->bouncedStriker = 0;
 
 			//////////////////////////
 			// Check for block hits //
@@ -174,6 +175,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 			justHitBlock = 0;	// Flag to see if a block is touched in this iteration
 
+
 			if (y <= 60) {	// Ball is inside the block area
 				if ((y & 3) == 0) {
 
@@ -181,7 +183,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 					if (phy_hit_block(gameData, x >> 4, (y >> 2) - 1, &justHitBlock)) {
 
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Lower                          ");
 
 						// Hitting block
@@ -189,30 +191,30 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 						reverseY = 1;
 
 						if ((x & 15) == 15) {
-							go_to_xy(200, 30);
+							// go_to_xy(200, 30);
 							// printf("Lower overlap both corners           ");
 
-							// Also hitting corner of right block because ball is two pixels wide
+							// Also hitting bottom of right block because ball is two pixels wide
 
 							phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock);
 						}
 					} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock)) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Lower overlap to right                          ");
 
-						// Hitting corner of right block because ball is two pixels wide
+						// Hitting bottom of right block because ball is two pixels wide
 
 						reverseY = 1;
 					}
 
 					if ((x & 15) == 1) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Lower corner to left                          ");
 
 						// Left corner
 
 						if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
-							go_to_xy(200, 30);
+							// go_to_xy(200, 30);
 							// printf("Lower corner to left - hit                          ");
 
 							// Hitting left block
@@ -220,13 +222,13 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 							reverseX = 1;
 						}
 					} else if ((x & 15) == 14) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Lower corner to right                          ");
 
 						// Right corner
 
 						if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-							go_to_xy(200, 30);
+							// go_to_xy(200, 30);
 							// printf("Lower corner to right - hit                          ");
 
 							// Hitting right block
@@ -249,7 +251,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 					// Potentially touching upper edge of block
 
 					if (phy_hit_block(gameData, x >> 4, (y >> 2) + 1, &justHitBlock)) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Upper                          ");
 
 						// Hitting block
@@ -257,7 +259,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 						reverseY = 1;
 
 						if ((x & 15) == 15) {
-							go_to_xy(200, 30);
+							// go_to_xy(200, 30);
 							// printf("Upper overlap both corners                          ");
 
 							// Also hitting corner of right block because ball is two pixels wide
@@ -266,7 +268,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 						}
 
 					} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) + 1, &justHitBlock)) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Upper overlap to right                          ");
 
 						// Hitting corner of right block because ball is two pixels wide
@@ -275,25 +277,25 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 					}
 
 					if ((x & 15) == 1) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Upper corner to left                         ");
 
 						// Left corner
 
 						if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
-							go_to_xy(200, 30);
+							// go_to_xy(200, 30);
 							// printf("Upper corner to left - hit                         ");
 							reverseX = 1;
 						}
 
 					} else if ((x & 15) == 14) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Upper corner to right                         ");
 
 						// Right corner
 
 						if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-							go_to_xy(200, 30);
+							// go_to_xy(200, 30);
 							// printf("Upper corner to right - hit                         ");
 							reverseX = 1;
 						}
@@ -301,25 +303,25 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 					}
 
 				} else if ((x & 15) == 1) {
-					go_to_xy(200, 30);
+					// go_to_xy(200, 30);
 					// printf("Right edge                         ");
 
 					// Right edge
 
 					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Right edge - hit                         ");
 						reverseX = 1;
 					}
 
 				} else if ((x & 15) == 14) {
-					go_to_xy(200, 30);
+					// go_to_xy(200, 30);
 					// printf("Left edge                         ");
 
 					// Left edge
 
 					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-						go_to_xy(200, 30);
+						// go_to_xy(200, 30);
 						// printf("Left edge - hit                         ");
 						reverseX = 1;
 					}
