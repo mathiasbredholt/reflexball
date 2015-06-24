@@ -541,9 +541,21 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 	}
 }
 
+unsigned char game_check_block(int blockHit) {
+	int x = blockHit & 0x000F,
+	    y = blockHit >> 4 & 0x000F,
+	    type = blockHit >> 8;
+
+	if (blockHit) {
+		type ? gfx_draw_block(x, y, type) : gfx_erase_block(x, y);
+		return 1;
+	}
+	return 0;
+}
+
 void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
-	int blockHitData[16];
-	char key, i, won = 0, lostBall = 0;
+	int i, blockHitData[16];
+	char key, won = 0, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
 	gameData->blockHit[1] = 0;	// Same as 0, used if two blocks are hit simultaneously
@@ -554,11 +566,12 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		/////////////////////////
 		// Check for key input //
 		/////////////////////////
+		key = hw_read_key();
 
 		// If key is rising edge
 		if (key != *lastKey) {
 			*lastKey = key;
-			key = hw_read_key();
+
 			if (key & 1) {
 				if (playerData->items[4] == 1) {
 					create_bullet(gameData, animationData, 0, 1);
@@ -649,18 +662,6 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		if (won)
 			game_end(mode, 1, playerData, gameData);
 	}
-}
-
-unsigned char game_check_block(int blockHit) {
-	int x = blockHit & 0x000F,
-	    y = blockHit >> 4 & 0x000F,
-	    type = gameData->blockHit[0] >> 8;
-
-	if (blockHit) {
-		type ? gfx_draw_block(x, y, type) : gfx_erase_block(x, y);
-		return 1;
-	}
-	return 0;
 }
 
 void game_end(int *mode, int win, PlayerData *playerData, GameData *gameData) {
