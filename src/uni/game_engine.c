@@ -14,7 +14,7 @@
 #include "hw_sound.h"
 #include "hw_LED.h"
 #include "hw_flash.h"
-#include "levels.h"
+#include "levels_lib.h"
 #include "graphics.h"
 #include "physics.h"
 #include "story_lib.h"
