@@ -542,114 +542,123 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 }
 
 void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
+	int blockHitData[16];
 	char key, i, won = 0, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
 	gameData->blockHit[1] = 0;	// Same as 0, used if two blocks are hit simultaneously
 
-	// if (hw_read_key() && hw_time_get_next_frame()) {
 	if (hw_time_get_next_frame()) {
 		hw_time_set_next_frame(0);
 
-		gameData->strikerOldPos = gameData->strikerPos;
-		gameData->ballOldPos = gameData->ballPos;
+		/////////////////////////
+		// Check for key input //
+		/////////////////////////
+
+		// If key is rising edge
+		if (key != *lastKey) {
+			*lastKey = key;
+			key = hw_read_key();
+			if (key & 1) {
+				if (playerData->items[4] == 1) {
+					create_bullet(gameData, animationData, 0, 1);
+					playerData->energy -= 0x800;
+				} else if (playerData->items[4] == 2) {
+					create_bullet(gameData, animationData, 1, 1);
+					playerData->energy -= 0x400;
+				}
+			}
+			if (key & 2) {
+				if (playerData->items[3] == 1) {
+					create_bullet(gameData, animationData, 0, 0);
+					playerData->energy -= 0x800;
+				} else if (playerData->items[3] == 2) {
+					create_bullet(gameData, animationData, 1, 0);
+					playerData->energy -= 0x400;
+				}
+			}
+			if ((key & 8) && playerData->items[5]) {
+				create_bullet(gameData, animationData, 2, 0);
+				playerData->energy -= 0x3000;
+			}
+		}
+
+		///////////////////////////
+		// Do physics simulation //
+		///////////////////////////
 
 		phy_move_striker(gameData, playerData, hw_read_analog());
 
-		gfx_update_energy_meter(playerData);
-
-		if (playerData->energy <= 0) game_end(mode, 0, playerData, gameData);
-
-		// sprintf(debug, "%d", (int) hw_read_analog());
-		// gfx_draw_text(9, 200, 80, debug);
-
-		// if (key & 4) *mode = 0;
 
 		phy_update_bullets(gameData, animationData);
 
 		// Calculate new ball position
 		for (i = 0; i < 8; ++i) {
 			phy_simulate(gameData, playerData, &lostBall);
-			if (gameData->blockHit[0]) {
-				(gameData->blockHit[0] >> 8) ? gfx_draw_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F, gameData->blockHit[0] >> 8) : gfx_erase_block(gameData->blockHit[0] & 0x000F, gameData->blockHit[0] >> 4 & 0x000F);
-				gameData->blockHit[0] = 0;
-				if (gameData->blockHit[1]) {
-					(gameData->blockHit[1] >> 8) ? gfx_draw_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F, gameData->blockHit[1] >> 8) : gfx_erase_block(gameData->blockHit[1] & 0x000F, gameData->blockHit[1] >> 4 & 0x000F);
-					gameData->blockHit[1] = 0;
-					playerData->coins += 5 * gameData->multiplier;
-				}
 
-				// update score
-				playerData->coins += 5 * gameData->multiplier;
-				gfx_draw_score(playerData);
-			}
+			blockHitData[i << 1] = gameData->blockHit[0];
+			blockHitData[(i << 1) + 1] = gameData->blockHit[1];
+			gameData->blockHit[0] = 0;
+			gameData->blockHit[1] = 0;
+
 			if (gameData->redraw) {
 				gameData->redraw = 0;
 				gfx_draw_ball(gameData);
-				gameData->ballOldPos = gameData->ballPos;
 			}
-			if (lostBall) {
-				gfx_update_energy_meter(playerData);
-				playerData->oldEnergy = playerData->energy;
-				playerData->energy -= 0x1000;
-				gfx_update_energy_meter(playerData);
-				lostBall = 0;
 
+			if (lostBall) {
+				playerData->energy -= 0x1000;
+				lostBall = 0;
 			}
 		}
 
 		gameData->ballVel.y++;	// Gravity
 
-		key = hw_read_key();
-		// If key is rising edge
-		if (key != *lastKey) {
-			*lastKey = key;
-			if (key & 1) {
-				if (playerData->items[4] == 1) {
-					create_bullet(gameData, animationData, 0, 1);
-					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x800;
-				} else if (playerData->items[4] == 2) {
-					create_bullet(gameData, animationData, 1, 1);
-					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x400;
-				}
-				gfx_update_energy_meter(playerData);
-			}
-			if (key & 2) {
-				if (playerData->items[3] == 1) {
-					create_bullet(gameData, animationData, 0, 0);
-					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x800;
-				} else if (playerData->items[3] == 2) {
-					create_bullet(gameData, animationData, 1, 0);
-					playerData->oldEnergy = playerData->energy;
-					playerData->energy -= 0x400;
-				}
-				gfx_update_energy_meter(playerData);
-			}
-			if ((key & 8) && playerData->items[5]) {
-				create_bullet(gameData, animationData, 2, 0);
-				playerData->oldEnergy = playerData->energy;
-				playerData->energy -= 0x3000;
-				gfx_update_energy_meter(playerData);
-			}
+
+		////////////
+		// Redraw //
+		////////////
+
+		for (i = 0; i < 16; ++i) {
+			if (game_check_block(blockHitData[i]))
+				playerData->coins += 5 * gameData->multiplier;
 		}
 
 		gfx_draw_striker(gameData);
 		gfx_draw_ball(gameData);
+
+		gfx_update_energy_meter(playerData);
 		gfx_update_animation(animationData);
+		gfx_draw_score(playerData);
+
+		// If out of energy goto game over
+		if (playerData->energy <= 0)
+			game_end(mode, 0, playerData, gameData);
+
 	} else {
+
+		// TODO check if game loop is too long
 		// check for victory
 		won = 1;
 		for (i = 0; i < 15; ++i) {
-			if (gameData->blockData[i][0] || gameData->blockData[i][1]) {
+			if (gameData->blockData[i][0] || gameData->blockData[i][1])
 				won = 0;
-			}
 		}
-		if (won) game_end(mode, 1, playerData, gameData);
+		if (won)
+			game_end(mode, 1, playerData, gameData);
 	}
-	//LED_update();
+}
+
+unsigned char game_check_block(int blockHit) {
+	int x = blockHit & 0x000F,
+	    y = blockHit >> 4 & 0x000F,
+	    type = gameData->blockHit[0] >> 8;
+
+	if (blockHit) {
+		type ? gfx_draw_block(x, y, type) : gfx_erase_block(x, y);
+		return 1;
+	}
+	return 0;
 }
 
 void game_end(int *mode, int win, PlayerData *playerData, GameData *gameData) {

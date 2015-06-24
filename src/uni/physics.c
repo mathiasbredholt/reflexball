@@ -516,57 +516,24 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 
 void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned char input) {
 	int analog = (((int) input - 127) << 1) - 96;
-	if (analog < -(int)160) analog = -(int)160;
-	else if (analog > -5 && analog < 5) analog = 0;
+
+	if (analog < -(int)160)
+		analog = -(int)160;
+
+	else if (analog > -5 && analog < 5)
+		analog = 0;
+
 	analog *= playerData->strikerSpeed;
-	if (gameData->strikerPos < ((unsigned int) gameData->strikerSize << 7) - analog) {
+
+	if (gameData->strikerPos < ((unsigned int) gameData->strikerSize << 7) - analog)
 		gameData->strikerPos = (unsigned int) (gameData->strikerSize - 1) << 7;
-	} else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (gameData->strikerSize) << 7)) {
+
+	else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (gameData->strikerSize) << 7))
 		gameData->strikerPos = 0xFFFF - ((unsigned int) (gameData->strikerSize) << 7);
-	} else {
+
+	else
 		gameData->strikerPos += analog;
-	}
-	// printf("%8d", (((int) input - 127) << 1) - 96);
-	// gameData->strikerPos += (((int) input - 127) << 1) - 96;
-	playerData->oldEnergy = playerData->energy;
+
+
 	playerData->energy -= analog < 0 ? -analog >> 6 : analog >> 6;
 }
-
-// char phy_hit_block(GameData *gameData, int x, int y) {
-// 	int type, numBlock;
-
-// 	if (x > 15 || x < 0 || y > 14 || y < 0) {
-// 		return 0;
-// 	}
-
-// 	numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
-
-// 	for (type = 10; type >= 0; --type) {
-// 		if (gameData->blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)) {
-// 			// if (type == 3)
-// 			// {
-// 			// 	printf("Type = %d   x & 0x07 = %d   0x80 >> (x & 0x07) = %d   gameData->blockData[type][y][x >> 3] = %d   gameData->blockData[type][y][x >> 3] & 0x80 >> (x & 0x07) = %d", type, (int) (x & 0x07), (int) (0x80 >> (x & 0x07)), (int) gameData->blockData[type][y][x >> 3], (int) (gameData->blockData[type][y][x >> 3] & 0x80 >> (x & 0x07)));
-// 			// }
-// 			// Block exists
-// 			// printf("type=%d", type);
-// 			if (type != 10) {
-// 				gameData->blockData[type][y][x >> 3] &= ~(0x80 >> (x & 0x07));	// Delete block
-// 				if (type != 0 && type != 1 && type != 3 && type != 6) {	// type != 0
-// 					gameData->blockData[type - 1][y][x >> 3] |= 0x80 >> (x & 0x07);	// Add block with lower type
-// 				} else {
-// 					type = 0;
-// 				}
-// 				gameData->blockHit[numBlock] = type << 8;
-// 				// printf("     %d", gameData->blockHit[numBlock]);
-// 				gameData->blockHit[numBlock] |= y << 4;
-// 				// printf("          %d", gameData->blockHit[numBlock]);
-// 				gameData->blockHit[numBlock] |= x;
-// 				// printf("               %d", gameData->blockHit[numBlock]);
-// 			}
-
-// 			gameData->redraw = 1;
-// 			return 1;
-// 		}
-// 	}
-// 	return 0;
-// }

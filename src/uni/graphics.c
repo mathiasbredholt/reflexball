@@ -51,6 +51,8 @@ void gfx_draw_ball(GameData *gameData) {
 		}
 	}
 
+	gameData->ballOldPos = gameData->ballPos;
+
 
 #ifdef GCC
 	fflush(stdout);
@@ -86,6 +88,8 @@ void gfx_draw_striker(GameData *gameData) 	{
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
+
+	gameData->strikerOldPos = gameData->strikerPos;
 
 #ifdef GCC
 	fflush(stdout);
@@ -549,6 +553,8 @@ void gfx_update_energy_meter(PlayerData *playerData) {
 			--level;
 		}
 	}
+	playerData->oldEnergy = playerData->energy;
+
 #ifdef GCC
 	fflush(stdout);
 #endif
