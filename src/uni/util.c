@@ -47,11 +47,6 @@ signed short util_cos(int x) {
     return util_sin(x + 128);
 }
 
-// void initVector(struct TVector * v) {
-
-//     v.y = 20;
-// }
-
 void util_rotate(TVector_0_7 *v, int angle) {
     int cosine, sine, x, y;
     cosine = shift_fix_int_right(util_cos(angle), 7);   // 0.7 representation

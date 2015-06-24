@@ -97,7 +97,7 @@ char hw_read_key() {    // Returns state of push buttons on bit 0-2
 	char input = 0;
 	PFDD |= 0xC0;
 	PHDD |= 0x0F;
-	PDDD |= 4;
+	PDDD |= 8;
 	input |= PHIN & 0xF;
 	input |= ~PFIN >> 3 & 0x10;
 	input |= ~PFIN & 0x20;
