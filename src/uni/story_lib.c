@@ -8,9 +8,9 @@
 */
 
 #if defined(_Z8F6403)
-rom char story[63][49] =
+rom char story[64][49] =
 #else
-const char story[63][49] =
+const char story[64][49] =
 #endif
 {
 	"dokuu",
@@ -33,6 +33,7 @@ const char story[63][49] =
 	"in to weapons range",
 	"and its opening fire",
 	"boss",
+	"darth vader",
 	"the horrors of space travel",
 	"surely we must be safe now",
 	"oh no boss",

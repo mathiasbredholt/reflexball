@@ -64,7 +64,7 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	}
 
 	playerData->coins = 0;
-	playerData->progress = 0;
+	playerData->progress = 6;
 	playerData->energyMax = 0x7FFF;
 	playerData->strikerSpeed = 4;
 	playerData->bouncinessFactor = 10;
@@ -388,13 +388,13 @@ void map_info_init(GameData *gameData) {
 
 		// tatoiine
 
-		hw_ROM_to_RAM(str, story[11]);
+		hw_ROM_to_RAM(str, story[12]);
 		gfx_draw_text(9, 113, 35, str);
 		gfx_draw_thumb(122, 40, 2, 11);
 
 
 		for (i = 1; i < 8; ++i) {
-			hw_ROM_to_RAM(str, story[i + 11]);
+			hw_ROM_to_RAM(str, story[i + 12]);
 			gfx_draw_text(9, 77, y + i * 3, str);
 		}
 
@@ -402,39 +402,39 @@ void map_info_init(GameData *gameData) {
 
 		// darth
 
-		hw_ROM_to_RAM(str, story[19]);
+		hw_ROM_to_RAM(str, story[20]);
 		gfx_draw_text(9, 107, 35, str);
 		gfx_draw_thumb(122, 40, 3, 12);
 
 
 		for (i = 1; i < 6; ++i)	{
-			hw_ROM_to_RAM(str, story[i + 19]);
+			hw_ROM_to_RAM(str, story[i + 20]);
 			gfx_draw_text(9, 75, y + i * 3, str);
 		}
 
 	} else if (gameData->level == 4) {
 		//	unknown
 
-		hw_ROM_to_RAM(str, story[25]);
+		hw_ROM_to_RAM(str, story[26]);
 		gfx_draw_text(9, 95, 35, str);
 		gfx_draw_thumb(122, 40, 4, 13);
 
 
 		for (i = 1; i < 7; ++i) {
-			hw_ROM_to_RAM(str, story[i + 25]);
+			hw_ROM_to_RAM(str, story[i + 26]);
 			gfx_draw_text(9, 43, y + i * 3, str);
 		}
 
 	} else if (gameData->level == 5) {
 		// the pub
 
-		hw_ROM_to_RAM(str, story[32]);
+		hw_ROM_to_RAM(str, story[33]);
 		gfx_draw_text(9, 70, 35, str);
 		gfx_draw_thumb(122, 40, 5, 14);
 
 
 		for (i = 1; i < 8; ++i) {
-			hw_ROM_to_RAM(str, story[i + 32]);
+			hw_ROM_to_RAM(str, story[i + 33]);
 			gfx_draw_text(9, 33, y + i * 3, str);
 		}
 

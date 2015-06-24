@@ -163,9 +163,10 @@ unsigned int ReadByteFromFlash(int location)
 }
 
 #endif
-
 #if defined(__APPLE__) || defined(__WIN32__)
-void hw_flash_save(PlayerData *playerData) {}
+void hw_flash_init() {}
 
-void hw_flash_load(PlayerData *playerData) {}
+void WriteByteToFlash(int location, unsigned int value) {}
+
+unsigned int ReadByteFromFlash(int location) {}
 #endif
