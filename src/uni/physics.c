@@ -392,7 +392,8 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 			if (type != 11) {	// Only if block is destructible
 
-				if (gameData->multiplier < 6) ++gameData->multiplier;	// Increment multiplier
+				if (gameData->multiplier < 6)
+					++gameData->multiplier;	// Increment multiplier
 
 				if (type != 1 && type != 2 && type != 5 && type != 8) {	// Block has a hardened surface (only gets damaged)
 
