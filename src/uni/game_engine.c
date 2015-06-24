@@ -574,19 +574,19 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 			if (key & 1) {
 				if (playerData->items[4] == 1) {
 					create_bullet(gameData, playerData, animationData, 0, 1);
-					playerData->energy -= 0x800;
+					playerData->energy -= 0x400;
 				} else if (playerData->items[4] == 2) {
 					create_bullet(gameData, playerData, animationData, 1, 1);
-					playerData->energy -= 0x400;
+					playerData->energy -= 0x800;
 				}
 			}
 			if (key & 2) {
 				if (playerData->items[3] == 1) {
 					create_bullet(gameData, playerData, animationData, 0, 0);
-					playerData->energy -= 0x800;
+					playerData->energy -= 0x400;
 				} else if (playerData->items[3] == 2) {
 					create_bullet(gameData, playerData, animationData, 1, 0);
-					playerData->energy -= 0x400;
+					playerData->energy -= 0x800;
 				}
 			}
 			if ((key & 8) && playerData->items[5]) {
@@ -648,9 +648,6 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 			game_end(mode, 0, playerData, gameData);
 
 	} else {
-
-		// TODO check if game loop is too long
-		// check for victory
 		won = 1;
 
 		for (i = 0; i < 15; ++i) {
