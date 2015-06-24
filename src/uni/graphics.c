@@ -274,7 +274,7 @@ void gfx_draw_block(int x, int y, int type) {
 }
 
 void gfx_erase_block(int x, int y) {
-	if (x >= 0 && x < 16 && y >= 0 && x < 15) {
+	if (x >= 0 && x < 16 && y >= 0 && y < 15) {
 		x = x << 4;
 		y = y << 2;
 
