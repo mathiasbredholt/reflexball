@@ -38,8 +38,6 @@ void gfx_draw_energy_meter(PlayerData *playerData);
 
 void gfx_update_energy_meter(PlayerData *playerData);
 
-void gfx_draw_bullet(int x, int newY, int oldY, int type);
-
 void gfx_draw_stars(int frame);
 
 void gfx_draw_game_over();

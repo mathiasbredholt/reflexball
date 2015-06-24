@@ -543,18 +543,6 @@ void create_bullet(GameData *gameData, PlayerData *playerData, AnimationData *an
 	}
 }
 
-unsigned char game_check_block(int blockHit) {
-	int x = blockHit & 0x000F,
-	    y = blockHit >> 4 & 0x000F,
-	    type = blockHit >> 8;
-
-	if (blockHit) {
-		type ? gfx_draw_block(x, y, type) : gfx_erase_block(x, y);
-		return 1;
-	}
-	return 0;
-}
-
 void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
 	int i, j, blockHitData[16];
 	char key, won = 0, lostBall = 0;
@@ -633,8 +621,14 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		////////////
 
 		for (i = 0; i < 16; ++i) {
-			if (game_check_block(blockHitData[i]))
+			int x = blockHitData[i] & 0x000F,
+			    y = blockHitData[i] >> 4 & 0x000F,
+			    type = blockHitData[i] >> 8;
+
+			if (blockHitData[i]) {
+				type ? gfx_draw_block(x, y, type) : gfx_erase_block(x, y);
 				playerData->coins += 5 * gameData->multiplier;
+			}
 		}
 
 		gfx_draw_striker(gameData, playerData);
@@ -652,9 +646,11 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		won = 1;
 
 		for (i = 0; i < 15; ++i) {
-			for (j = 0; j < 8; ++j) {
-				if (gameData->blockData[i][j])
+			for (j = 0; j < 16; ++j) {
+				if (j & 1 ? gameData->blockData[i][j >> 1] & 0xF : gameData->blockData[i][j >> 1] >> 4) {
 					won = 0;
+					break;
+				}
 			}
 		}
 
