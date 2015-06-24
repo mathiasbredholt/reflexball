@@ -64,7 +64,7 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	}
 
 	playerData->coins = 0;
-	playerData->progress = 6;
+	playerData->progress = 0;
 	playerData->energyMax = 0x7FFF;
 	playerData->strikerSpeed = 4;
 	playerData->bouncinessFactor = 10;
