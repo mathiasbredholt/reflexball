@@ -31,7 +31,7 @@ char menuButtons[4][12] = { "play", "load game", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
 char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"new ship                             ", "bigger and faster ship                       "} , {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"} };
 
-void init() {
+void init(int *mode, int *focus, int *lastKey, int *animFrame1, int *animFrame2, PlayerData *playerData, GameData *gameData) {
 	int i;
 	char str[49];
 
@@ -45,6 +45,31 @@ void init() {
 	hw_sound_init();
 	hw_flash_init();
 	LED_init();
+
+	///////////////////
+	// gui variables //
+	///////////////////
+	*mode = 0;
+	*focus = 0;
+	*lastKey = 0;
+
+	*animFrame1 = 0;
+	*animFrame2 = 104;
+
+	///////////////////////
+	// Reset player data //
+	///////////////////////
+	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
+		playerData->items[i] = 0;
+	}
+
+	playerData->coins = 0;
+	playerData->progress = 0;
+	playerData->energyMax = 0x7FFF;
+	playerData->strikerSpeed = 4;
+	playerData->bouncinessFactor = 10;
+
+	gameData->strikerSize = 48;
 
 	///////////////////////
 	// Show intro screen //

@@ -12,6 +12,20 @@
 #if defined(_Z8F6403)
 #include <ez8.h>
 
+/*************************************************
+ *  Copyright (C) 1999-2004 by  ZiLOG, Inc.
+ *  All Rights Reserved
+ *
+ *  File Name: flash_io.c
+ *
+ *  Last modified:
+ *  Pavan Ramarapu		10/02/2002
+ *  Adam Tucholski		10/02/2002
+ *  Thyagaraj Murthy    Aug 2004
+ *
+ * 	Change log: Replaced sio.h with uart.h
+ *************************************************/
+
 #define PAGE_SIZE 512
 
 char far Flash_Page[PAGE_SIZE];				// Far is used so this variable is placed in Edata

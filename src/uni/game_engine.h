@@ -3,7 +3,7 @@
 #ifndef _GAME_ENGINE_H_
 #define _GAME_ENGINE_H_
 
-void init();
+void init(int *mode, int *focus, int *lastKey, int *animFrame1, int *animFrame2, PlayerData *playerData, GameData *gameData);
 
 void menu_init();
 
