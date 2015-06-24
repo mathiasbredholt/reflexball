@@ -391,7 +391,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 				if (gameData->multiplier < 6) ++gameData->multiplier;	// Increment multiplier
 
-				if (type != 1 && type != 2 && type != 4 && type != 7) {	// Block has a hardened surface (only gets damaged)
+				if (type != 1 && type != 2 && type != 4 && type != 8) {	// Block has a hardened surface (only gets damaged)
 
 					gameData->blockData[y][x >> 1] -= (x & 1) ? 0x01 : 0x10; 	// Decrements value on left or right block
 					--type;
@@ -442,7 +442,7 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 
 							// Only if block is destructible
 
-							if (blockType != 1 && blockType != 2 && blockType != 4 && blockType != 7) {
+							if (blockType != 1 && blockType != 2 && blockType != 4 && blockType != 8) {
 
 								// Block has a hardened surface (only gets damaged)
 

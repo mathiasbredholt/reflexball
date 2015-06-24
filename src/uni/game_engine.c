@@ -774,10 +774,10 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, G
 						if (*focus == 0) {
 							playerData->energyMax += 0x7FFF;
 						} else if (*focus == 1) {
+							playerData->bouncinessFactor += 2;
+						} else if (*focus == 2) {
 							playerData->strikerSpeed += 1;
 							playerData->strikerSize += 4;
-						} else if (*focus == 2) {
-							playerData->bouncinessFactor += 2;
 						}
 					} else {
 						hw_sound_play(0);
