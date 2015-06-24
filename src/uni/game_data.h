@@ -10,13 +10,10 @@
 #define game_height 96
 
 typedef struct PlayerData {
-	long energy;
-	long energyMax;
-	long oldEnergy;
-	int coins;
-	unsigned char items[NUMBER_OF_ITEMS];
-	unsigned char progress;
-	int strikerSpeed, bouncinessFactor;
+	long energy, energyMax, oldEnergy;
+	int coins, strikerSpeed, bouncinessFactor;
+	unsigned char items[NUMBER_OF_ITEMS], progress;
+	char strikerSize;
 } PlayerData;
 
 typedef struct GameData {
@@ -24,7 +21,7 @@ typedef struct GameData {
 	TVector_8_8 ballOldPos, ballPos;
 	TVector_0_7 ballVel;
 	unsigned int strikerOldPos, strikerPos;
-	char strikerSize, redraw, bouncedStriker, bouncedTop, bouncedSide;
+	char redraw, bouncedStriker, bouncedTop, bouncedSide;
 	int blockHit[3];
 	int ballSpeed;
 	char level;
@@ -46,9 +43,9 @@ extern const unsigned char itemMax[NUMBER_OF_ITEMS];
 #endif
 
 #if defined(_Z8F6403)
-extern rom unsigned char itemPrice[NUMBER_OF_ITEMS];
+extern rom int itemPrice[NUMBER_OF_ITEMS];
 #else
-extern const unsigned char itemPrice[NUMBER_OF_ITEMS];
+extern const int itemPrice[NUMBER_OF_ITEMS];
 #endif
 
 #endif

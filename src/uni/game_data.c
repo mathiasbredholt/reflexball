@@ -24,15 +24,15 @@ const unsigned char itemMax[NUMBER_OF_ITEMS] =
 };
 
 #if defined(_Z8F6403)
-rom unsigned char itemPrice[NUMBER_OF_ITEMS] =
+rom int itemPrice[NUMBER_OF_ITEMS] =
 #else
-const unsigned char itemPrice[NUMBER_OF_ITEMS] =
+const int itemPrice[NUMBER_OF_ITEMS] =
 #endif
 {
-	1,	// battery
-	2,	// bounce
-	3,	// ship upgrade
-	4,	// left laser
-	4,	// right laser
-	5	// rocket
+	1200,	// battery
+	1500,	// bounce
+	2250,	// ship upgrade
+	4375,	// left laser
+	4375,	// right laser
+	15000	// rocket
 };

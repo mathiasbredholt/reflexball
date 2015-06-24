@@ -56,7 +56,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 		gameData->bouncedTop = 0;
 
-		if (!gameData->bouncedStriker && y == striker_height - 1 && x >= (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
+		if (!gameData->bouncedStriker && y == striker_height - 1 && x >= (gameData->strikerPos >> 8) - (playerData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (playerData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
 
 			/////////////////////
 			// Bounced striker //
@@ -69,7 +69,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			gameData->redraw = 1;
 
 			sp = (unsigned char) (gameData->strikerPos >> 8);	// Round striker position to nearest pixel
-			halfSize = gameData->strikerSize >> 1;	// Half of the total striker length - this value is used a lot, so calculated here for efficiency and brevity
+			halfSize = playerData->strikerSize >> 1;	// Half of the total striker length - this value is used a lot, so calculated here for efficiency and brevity
 
 			// Bounce ball by reversing y coordinate
 			gameData->ballVel.y = -gameData->ballVel.y;
@@ -131,7 +131,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 			// Check if ball hit the striker on the side, and bounce it away - this can't save the ball but looks more realistic
 
-			if (x == (gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) || x == (gameData->strikerPos >> 8) + (gameData->strikerSize >> 1) + 1) {
+			if (x == (gameData->strikerPos >> 8) - (playerData->strikerSize >> 1) || x == (gameData->strikerPos >> 8) + (playerData->strikerSize >> 1) + 1) {
 				// Hit side of striker
 				gameData->ballVel.x = -gameData->ballVel.x;
 			}
@@ -525,11 +525,11 @@ void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned cha
 
 	analog *= playerData->strikerSpeed;
 
-	if (gameData->strikerPos < ((unsigned int) gameData->strikerSize << 7) - analog)
-		gameData->strikerPos = (unsigned int) (gameData->strikerSize - 1) << 7;
+	if (gameData->strikerPos < ((unsigned int) playerData->strikerSize << 7) - analog)
+		gameData->strikerPos = (unsigned int) (playerData->strikerSize - 1) << 7;
 
-	else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (gameData->strikerSize) << 7))
-		gameData->strikerPos = 0xFFFF - ((unsigned int) (gameData->strikerSize) << 7);
+	else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (playerData->strikerSize) << 7))
+		gameData->strikerPos = 0xFFFF - ((unsigned int) (playerData->strikerSize) << 7);
 
 	else
 		gameData->strikerPos += analog;

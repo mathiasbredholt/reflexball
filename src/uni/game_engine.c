@@ -9,14 +9,14 @@
 
 #include "game_engine.h"
 #include "game_data.h"
+#include "graphics.h"
+#include "physics.h"
 #include "hw_time.h"
 #include "hw_io.h"
 #include "hw_sound.h"
 #include "hw_LED.h"
 #include "hw_flash.h"
 #include "levels_lib.h"
-#include "graphics.h"
-#include "physics.h"
 #include "story_lib.h"
 #include "gfx_lib.h"
 
@@ -68,8 +68,7 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	playerData->energyMax = 0x7FFF;
 	playerData->strikerSpeed = 4;
 	playerData->bouncinessFactor = 10;
-
-	gameData->strikerSize = 48;
+	playerData->strikerSize = 24;
 
 	///////////////////////
 	// Show intro screen //
@@ -110,6 +109,7 @@ void game_save(PlayerData *playerData) {
 	WriteByteToFlash(loc + 11, (playerData->energyMax >> 16) & 0xFF);
 	WriteByteToFlash(loc + 12, playerData->strikerSpeed & 0xFF);
 	WriteByteToFlash(loc + 13, playerData->bouncinessFactor & 0xFF);
+	WriteByteToFlash(loc + 14, playerData->strikerSize);
 }
 
 void game_load(PlayerData *playerData) {
@@ -127,6 +127,7 @@ void game_load(PlayerData *playerData) {
 	playerData->energyMax        |= ((long) ReadByteFromFlash(loc + 11)) << 16;
 	playerData->strikerSpeed     = ((int) ReadByteFromFlash(loc + 12)) & 0xFF;
 	playerData->bouncinessFactor = ((int) ReadByteFromFlash(loc + 13)) & 0xFF;
+	playerData->strikerSize      = ReadByteFromFlash(loc + 14);
 }
 
 /*
@@ -488,16 +489,14 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 	gameData->ballOldPos.x = gameData->ballPos.x;
 	gameData->ballOldPos.y = gameData->ballPos.y;
 
-	gameData->ballVel.x = 0;
-	gameData->ballVel.y = -(int)32;
+	gameData->ballVel.x = 20;
+	gameData->ballVel.y = -(int)20;
 
 	gameData->ballSpeed = 3;
 
 	gameData->multiplier = 0;
 
-	gameData->strikerSize = 24;
-
-	gfx_init_striker(gameData);
+	gfx_init_striker(gameData, playerData);
 	gfx_init_ball(gameData);
 
 	for (i = 0; i < 5; ++i) {
@@ -526,7 +525,7 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 	}
 }
 
-void create_bullet(GameData *gameData, AnimationData *animationData, int type, int side) {	// side: 0 = left, 1 = right
+void create_bullet(GameData *gameData, PlayerData *playerData, AnimationData *animationData, int type, int side) {	// side: 0 = left, 1 = right
 	int num;
 
 	// Find available slot in animationData->projectilePos
@@ -535,7 +534,7 @@ void create_bullet(GameData *gameData, AnimationData *animationData, int type, i
 	}
 	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
 		hw_sound_play(9 + type);
-		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (type == 2 ? 0 : (side ? (gameData->strikerSize >> 1) : (-(gameData->strikerSize >> 1) + 1)));
+		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (type == 2 ? 0 : (side ? (playerData->strikerSize >> 1) : (-(playerData->strikerSize >> 1) + 1)));
 		animationData->projectilePos[num][1] = striker_height - (type < 2 ? 1 : 3);
 		animationData->projectileType[num] = (char) type;
 	}
@@ -574,24 +573,24 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 
 			if (key & 1) {
 				if (playerData->items[4] == 1) {
-					create_bullet(gameData, animationData, 0, 1);
+					create_bullet(gameData, playerData, animationData, 0, 1);
 					playerData->energy -= 0x800;
 				} else if (playerData->items[4] == 2) {
-					create_bullet(gameData, animationData, 1, 1);
+					create_bullet(gameData, playerData, animationData, 1, 1);
 					playerData->energy -= 0x400;
 				}
 			}
 			if (key & 2) {
 				if (playerData->items[3] == 1) {
-					create_bullet(gameData, animationData, 0, 0);
+					create_bullet(gameData, playerData, animationData, 0, 0);
 					playerData->energy -= 0x800;
 				} else if (playerData->items[3] == 2) {
-					create_bullet(gameData, animationData, 1, 0);
+					create_bullet(gameData, playerData, animationData, 1, 0);
 					playerData->energy -= 0x400;
 				}
 			}
 			if ((key & 8) && playerData->items[5]) {
-				create_bullet(gameData, animationData, 2, 0);
+				create_bullet(gameData, playerData, animationData, 2, 0);
 				playerData->energy -= 0x3000;
 			}
 		}
@@ -637,7 +636,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 				playerData->coins += 5 * gameData->multiplier;
 		}
 
-		gfx_draw_striker(gameData);
+		gfx_draw_striker(gameData, playerData);
 		gfx_draw_ball(gameData);
 
 		gfx_update_energy_meter(playerData);
@@ -713,7 +712,12 @@ void shop_init(PlayerData *playerData) {
 		for (j = 0; j < 3; j++) {
 			gfx_draw_meter(37 + 64 * j, 40 + 25 * i, playerData->items[j + i * 3]);
 			gfx_draw_item(48 + 64 * j, 42 + 25 * i, j + i * 3);
-			gfx_draw_btn(36 + 64 * j, 56  + 25 * i, playerData->items[j + i * 3] == itemMax[j + i * 3] ? "max" : "buy", j + i * 3 == 0);
+			gfx_draw_btn(
+			    36 + 64 * j,
+			    56  + 25 * i,
+			    playerData->items[j + i * 3] == itemMax[j + i * 3] ? "max" : "buy",
+			    j + i * 3 == 0
+			);
 		}
 	}
 
@@ -771,7 +775,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, G
 							playerData->energyMax += 0x7FFF;
 						} else if (*focus == 1) {
 							playerData->strikerSpeed += 1;
-							gameData->strikerSize += 4;
+							playerData->strikerSize += 4;
 						} else if (*focus == 2) {
 							playerData->bouncinessFactor += 2;
 						}

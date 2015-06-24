@@ -62,23 +62,23 @@ void gfx_init_ball(GameData *gameData) {
 	printf("%c%c", 219, 219);
 }
 
-void gfx_draw_striker(GameData *gameData) 	{
+void gfx_draw_striker(GameData *gameData, PlayerData *playerData) 	{
 	unsigned char oldX = (char) (gameData->strikerOldPos >> 8);
 	unsigned char newX = (char) (gameData->strikerPos >> 8);
 	char dX = (char) newX - (char) oldX;
 	fg_color(10);
 	if (dX > 0) {
-		go_to_xy(oldX - (gameData->strikerSize >> 1) + 1, striker_height);
+		go_to_xy(oldX - (playerData->strikerSize >> 1) + 1, striker_height);
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
-		go_right(gameData->strikerSize - dX - 2);
+		go_right(playerData->strikerSize - dX - 2);
 		spacer(dX, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
-		go_to_xy(newX - (gameData->strikerSize >> 1) + 1, striker_height);
+		go_to_xy(newX - (playerData->strikerSize >> 1) + 1, striker_height);
 		printf("%c", 204);
 		spacer(-dX, 205);
-		go_right(gameData->strikerSize + dX - 2);
+		go_right(playerData->strikerSize + dX - 2);
 		printf("%c", 185);
 		spacer(-dX, (int) ' ');
 	}
@@ -90,17 +90,17 @@ void gfx_draw_striker(GameData *gameData) 	{
 #endif
 }
 
-void gfx_init_striker(GameData *gameData) {
+void gfx_init_striker(GameData *gameData, PlayerData *playerData) {
 	fg_color(10);
-	go_to_xy((gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1, striker_height);
+	go_to_xy((gameData->strikerPos >> 8) - (playerData->strikerSize >> 1) + 1, striker_height);
 	printf("%c", 204);
-	spacer(gameData->strikerSize - 2, 205);
+	spacer(playerData->strikerSize - 2, 205);
 	printf("%c", 185);
 }
 
-void gfx_erase_striker(GameData *gameData) {
-	go_to_xy((int) ((gameData->strikerPos >> 8) - (gameData->strikerSize >> 1) + 1), striker_height);
-	spacer(gameData->strikerSize, (int) ' ');
+void gfx_erase_striker(GameData *gameData, PlayerData *playerData) {
+	go_to_xy((int) ((gameData->strikerPos >> 8) - (playerData->strikerSize >> 1) + 1), striker_height);
+	spacer(playerData->strikerSize, (int) ' ');
 
 #ifdef GCC
 	fflush(stdout);

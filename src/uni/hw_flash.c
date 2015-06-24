@@ -97,6 +97,24 @@ unsigned int EraseFlash(unsigned int pagenum)
 }
 
 /****************************************************************/
+void WriteByteToFlash1(int location, unsigned int value)
+{
+	UnlockFlash();
+
+	RamByte = (location >> 8);
+	asm("LD R8, _RamByte");
+
+	RamByte = (location & 0x00FF);
+	asm("LD R9, _RamByte");
+
+	RamByte = value;
+	asm("LD R10, _RamByte");
+
+	asm("LDC @RR8, R10");						// Load Byte into Flash location
+
+}
+
+/****************************************************************/
 void WriteByteToFlash(int location, unsigned int value)
 {
 	unsigned int pagenum;
@@ -125,24 +143,6 @@ void WriteByteToFlash(int location, unsigned int value)
 
 	IRQCTL = Interrupts;
 //	EI();
-}
-
-/****************************************************************/
-void WriteByteToFlash1(int location, unsigned int value)
-{
-	UnlockFlash();
-
-	RamByte = (location >> 8);
-	asm("LD R8, _RamByte");
-
-	RamByte = (location & 0x00FF);
-	asm("LD R9, _RamByte");
-
-	RamByte = value;
-	asm("LD R10, _RamByte");
-
-	asm("LDC @RR8, R10");						// Load Byte into Flash location
-
 }
 
 unsigned int ReadByteFromFlash(int location)

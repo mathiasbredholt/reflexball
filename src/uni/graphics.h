@@ -8,11 +8,11 @@ void gfx_draw_ball(GameData *gameData);
 
 void gfx_init_ball(GameData *gameData);
 
-void gfx_draw_striker(GameData *gameData);
+void gfx_draw_striker(GameData *gameData, PlayerData *playerData);
 
-void gfx_init_striker(GameData *gameData);
+void gfx_init_striker(GameData *gameData, PlayerData *playerData);
 
-void gfx_erase_striker(GameData *gameData);
+void gfx_erase_striker(GameData *gameData, PlayerData *playerData); // Not used
 
 void gfx_update_animation(AnimationData *animationData);
 
