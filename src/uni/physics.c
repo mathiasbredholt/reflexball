@@ -77,6 +77,9 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			// Give the ball a boost upwards
 			gameData->ballVel.y -= playerData->bouncinessFactor;
 
+			// Boost / slow in x direction depending on striker speed
+			gameData->ballVel.x += (gameData->strikerPos - gameData->strikerOldPos) >> 6;
+
 			if (gameData->ballVel.y < -(char)80) {
 				// Velocity should not become grater that 100 (ballVel can store a range of -127 to 128)
 				gameData->ballVel.y = -(char)80;
@@ -391,7 +394,7 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
 
 				if (gameData->multiplier < 6) ++gameData->multiplier;	// Increment multiplier
 
-				if (type != 1 && type != 2 && type != 4 && type != 8) {	// Block has a hardened surface (only gets damaged)
+				if (type != 1 && type != 2 && type != 5 && type != 8) {	// Block has a hardened surface (only gets damaged)
 
 					gameData->blockData[y][x >> 1] -= (x & 1) ? 0x01 : 0x10; 	// Decrements value on left or right block
 					--type;
@@ -442,7 +445,7 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 
 							// Only if block is destructible
 
-							if (blockType != 1 && blockType != 2 && blockType != 4 && blockType != 8) {
+							if (blockType != 1 && blockType != 2 && blockType != 5 && blockType != 8) {
 
 								// Block has a hardened surface (only gets damaged)
 

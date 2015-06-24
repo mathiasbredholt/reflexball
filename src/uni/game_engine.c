@@ -489,8 +489,8 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 	gameData->ballOldPos.x = gameData->ballPos.x;
 	gameData->ballOldPos.y = gameData->ballPos.y;
 
-	gameData->ballVel.x = 20;
-	gameData->ballVel.y = -(int)20;
+	gameData->ballVel.x = 15;
+	gameData->ballVel.y = -(int)26;
 
 	gameData->ballSpeed = 3;
 
@@ -591,7 +591,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 			}
 			if ((key & 8) && playerData->items[5]) {
 				create_bullet(gameData, playerData, animationData, 2, 0);
-				playerData->energy -= 0x3000;
+				playerData->energy -= 0x2000;
 			}
 		}
 
@@ -776,7 +776,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData * playerData, 
 							playerData->bouncinessFactor += 2;
 						} else if (*focus == 2) {
 							playerData->strikerSpeed += 1;
-							playerData->strikerSize += 4;
+							playerData->strikerSize += 6;
 						}
 					} else {
 						hw_sound_play(0);
