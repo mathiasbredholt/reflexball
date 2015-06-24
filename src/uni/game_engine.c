@@ -586,7 +586,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 					playerData->energy -= 0x400;
 				} else if (playerData->items[3] == 2) {
 					create_bullet(gameData, playerData, animationData, 1, 0);
-					playerData->energy -= 0x800;
+					playerData->energy -= 0x8	00;
 				}
 			}
 			if ((key & 8) && playerData->items[5]) {
@@ -600,8 +600,6 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		///////////////////////////
 
 		phy_move_striker(gameData, playerData, hw_read_analog());
-
-
 		phy_update_bullets(gameData, animationData);
 
 		// Calculate new ball position
