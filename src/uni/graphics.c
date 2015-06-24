@@ -14,8 +14,6 @@
 #include <stdio.h>
 #endif
 
-// graphics.c
-
 #include "ansi.h"
 #include "util.h"
 #include "graphics.h"
@@ -46,7 +44,6 @@ void gfx_draw_ball(GameData *gameData) {
 			// Draw new ball
 			go_horiz((int) (char) (newX - oldX) - 2);
 			go_vert((int) (char) (newY - oldY));
-			// go_to_xy((int) newX, (int) newY);
 			printf("%c%c", 219, 219);
 		}
 	}
@@ -75,14 +72,11 @@ void gfx_draw_striker(GameData *gameData) 	{
 		spacer(dX, (int) ' ');
 		printf("%c", 204);
 		go_right(gameData->strikerSize - dX - 2);
-		//go_to_xy(oldX + (gameData->strikerSize >> 1), striker_height);
-		// spacer(gameData->strikerSize - 2, 205);
 		spacer(dX, 205);
 		printf("%c", 185);
 	} else if (dX < 0) {
 		go_to_xy(newX - (gameData->strikerSize >> 1) + 1, striker_height);
 		printf("%c", 204);
-		// spacer(gameData->strikerSize - 2, 205);
 		spacer(-dX, 205);
 		go_right(gameData->strikerSize + dX - 2);
 		printf("%c", 185);
@@ -289,15 +283,12 @@ void gfx_erase_block(int x, int y) {
 		ansi_save();
 
 		spacer(16, (int) ' '); // top line
-		// go_to_xy(x, y + 1);
 		ansi_load();
 		go_down(1);
 		spacer(16, (int) ' '); // middle line
-		// go_to_xy(x, y + 2);
 		ansi_load();
 		go_down(2);
 		spacer(16, (int) ' '); // middle line
-		// go_to_xy(x, y + 3);
 		ansi_load();
 		go_down(3);
 		spacer(16, (int) ' '); // bottom line
@@ -536,8 +527,6 @@ void gfx_draw_energy_meter(PlayerData *playerData) {
 void gfx_update_energy_meter(PlayerData *playerData) {
 	int newLevel = (playerData->energy >> 10), level;
 	int i;
-	// go_to_xy(200, 10);
-	// printf("%8d  %8d", level, playerData->energy);
 	if (newLevel >= 0 && (playerData->oldEnergy >> 10) - newLevel > 0) {
 		level = (playerData->oldEnergy >> 10) - 1;
 		go_to_xy(level, 98 - 1);
@@ -559,17 +548,6 @@ void gfx_update_energy_meter(PlayerData *playerData) {
 	fflush(stdout);
 #endif
 }
-
-// void gfx_draw_bullet(int x, int newY, int oldY, int type) {
-// 	int i;
-// 	fg_color(1);
-// 	go_to_xy(x >> 8, 90);
-// 	for (i = 0; i < 80; ++i) {
-// 		go_up(1);
-// 		printf("|");
-// 		go_left(1);
-// 	}
-// }
 
 void gfx_draw_stars(int frame) {
 	int i, j;
