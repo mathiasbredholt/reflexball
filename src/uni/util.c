@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include "util.h"
-#include "lut.h"
+#include "sin_lib.h"
 
 int util_strlen(char * str) {
     int i;

@@ -10,15 +10,15 @@
 #include "game_engine.h"
 #include "game_data.h"
 #include "hw_time.h"
-#include "hw_input.h"
+#include "hw_io.h"
 #include "hw_sound.h"
 #include "hw_LED.h"
 #include "hw_flash.h"
 #include "levels.h"
 #include "graphics.h"
 #include "physics.h"
-#include "story.h"
-#include "charset.h"
+#include "story_lib.h"
+#include "gfx_lib.h"
 
 
 #if defined(_Z8F6403)

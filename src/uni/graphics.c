@@ -19,7 +19,7 @@
 #include "ansi.h"
 #include "util.h"
 #include "graphics.h"
-#include "charset.h"
+#include "gfx_lib.h"
 #include "game_data.h"
 
 #define BTN_WIDTH 40

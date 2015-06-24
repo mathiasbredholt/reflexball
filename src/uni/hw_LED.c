@@ -13,7 +13,7 @@
 
 #include <eZ8.h>             // special encore constants, macros and flash routines
 #include <sio.h>
-#include "charset.h"
+#include "gfx_lib.h"
 #include "util.h"
 #include "hw_time.h"
 #include "hw_LED.h"
