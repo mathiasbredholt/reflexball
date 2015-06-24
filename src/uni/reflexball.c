@@ -16,8 +16,6 @@ void main()
 int main()
 #endif
 {
-	int i;
-
 	///////////////////
 	// gui variables //
 	///////////////////
