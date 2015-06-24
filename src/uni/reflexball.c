@@ -17,7 +17,7 @@ int main()
 #endif
 {
 	///////////////////
-	// gui variables //
+	// GUI variables //
 	///////////////////
 	int mode;
 	int focus;
