@@ -553,7 +553,7 @@ unsigned char game_check_block(int blockHit) {
 }
 
 void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
-	int i, blockHitData[16];
+	int i, j, blockHitData[16];
 	char key, won = 0, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
@@ -654,8 +654,10 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		won = 1;
 
 		for (i = 0; i < 15; ++i) {
-			if (gameData->blockData[i][0] || gameData->blockData[i][1])
-				won = 0;
+			for (j = 0; j < 8; ++j) {
+				if (gameData->blockData[i][j])
+					won = 0;
+			}
 		}
 
 		if (won)
@@ -663,7 +665,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 	}
 }
 
-void game_end(int *mode, int win, PlayerData *playerData, GameData *gameData) {
+void game_end(int *mode, int win, PlayerData * playerData, GameData * gameData) {
 	hw_sound_mute();
 	if (win == 0) {
 		hw_sound_play(13);
@@ -697,7 +699,7 @@ void game_end(int *mode, int win, PlayerData *playerData, GameData *gameData) {
 
 */
 
-void shop_init(PlayerData *playerData) {
+void shop_init(PlayerData * playerData) {
 	int i, j;
 	char str[15];
 
@@ -733,7 +735,7 @@ void shop_init(PlayerData *playerData) {
 	gfx_draw_text(9, 196, 2, str);
 }
 
-void shop_update(int *mode, char *lastKey, int *focus, PlayerData *playerData, GameData *gameData) {
+void shop_update(int *mode, char *lastKey, int *focus, PlayerData * playerData, GameData * gameData) {
 	char key;
 	char str[15];
 	int price;
