@@ -373,14 +373,14 @@ void map_info_init(GameData *gameData) {
 
 		// ALderan
 
-		hw_ROM_to_RAM(str, story[4]);
+		hw_ROM_to_RAM(str, story[5]);
 		gfx_draw_text(9, 113, 35, str);
 		gfx_draw_thumb(122, 40, 1, 10);
 
 
 
 		for (i = 1; i < 7; ++i) {
-			hw_ROM_to_RAM(str, story[i + 4]);
+			hw_ROM_to_RAM(str, story[i + 5]);
 			gfx_draw_text(9, 71, y + i * 3, str);
 		}
 
