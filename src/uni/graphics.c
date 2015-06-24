@@ -693,3 +693,18 @@ void gfx_draw_title() {
 	fflush(stdout);
 #endif
 }
+
+
+void gfx_draw_ufo(int x, int y, int col) {
+	int i, j;
+
+	fg_color(col);
+
+	for (i = 0; i < 22; ++i) {
+		go_to_xy(x, y + i);
+		for (j = 0; j < 52; ++j) {
+			printf("%c", image[i][j]);
+
+		}
+	}
+}

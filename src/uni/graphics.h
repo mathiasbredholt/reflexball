@@ -50,6 +50,10 @@ void gfx_draw_score(PlayerData *playerData);
 
 void gfx_draw_thumb(int x, int y, int thumb, int col);
 
+void gfx_draw_small_title(int x, int y);
+
 void gfx_draw_title();
+
+void gfx_draw_ufo(int x, int y, int col);
 
 #endif

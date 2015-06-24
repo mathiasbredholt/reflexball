@@ -27,7 +27,7 @@
 #include <stdio.h>
 #endif
 
-char menuButtons[4][12] = { "play", "load game", "exit" };
+char menuButtons[4][6] = { "start", "load", "exit" };
 char mapButtons[9][9] = { "dokuu", "alderaan", "tatoiine", "darth", "unknown", "the pub", "save", "shop", "menu" };
 char shopDescriptions[6][2][50] = { {"battery                              ", "more power for your ship                     "}, {"high power superconductor force field", "gives the ball an extra push                 "}, {"new ship                             ", "bigger and faster ship                       "} , {"photonic laser blaster               ", "low power laser cannon                       "}, {"intergalactic laser annihilator      ", "annihilates any obstacle                     "}, {"hyper-density black hole launcher    ", "a black hole strapped to a rocket   nuff said"} };
 
@@ -143,7 +143,9 @@ void menu_init() {
 	// Call drawing functions for GUI creation
 	hw_sound_set_music(0);
 	gfx_window(1, 64, 16, 192, 80);
-	gfx_draw_text(9, 68, 18, "reflexball");
+	// gfx_draw_text(9, 68, 18, "reflexball");
+	gfx_draw_small_title(86, 19);
+	gfx_draw_ufo(103, 35, 13);
 
 	gfx_draw_btn(66, 73, menuButtons[0], 1);
 	gfx_draw_btn(108, 73, menuButtons[1], 0);
@@ -360,7 +362,7 @@ void map_info_init(GameData *gameData) {
 
 		//dokuu
 
-		hw_ROM_to_RAM(str, story[1]);
+		hw_ROM_to_RAM(str, story[0]);
 		gfx_draw_text(9, 119, 35, str);
 		gfx_draw_thumb(122, 40, 0, 9);
 
@@ -587,7 +589,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 					playerData->energy -= 0x400;
 				} else if (playerData->items[3] == 2) {
 					create_bullet(gameData, playerData, animationData, 1, 0);
-					playerData->energy -= 0x8	00;
+					playerData->energy -= 0x800;
 				}
 			}
 			if ((key & 8) && playerData->items[5]) {
