@@ -24,7 +24,7 @@
 void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 	unsigned char x, y, sp;
 	char justHitBlock, reverseX, reverseY;
-	int dx, dy, halfSize;
+	int dx, dy;
 
 	// Correct ball velocity by speed factor
 	dx = (int) (gameData->ballSpeed * gameData->ballVel.x);
@@ -69,7 +69,6 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			gameData->redraw = 1;
 
 			sp = (unsigned char) (gameData->strikerPos >> 8);	// Round striker position to nearest pixel
-			halfSize = playerData->strikerSize >> 1;	// Half of the total striker length - this value is used a lot, so calculated here for efficiency and brevity
 
 			// Bounce ball by reversing y coordinate
 			gameData->ballVel.y = -gameData->ballVel.y;
@@ -86,23 +85,23 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			}
 
 			// Check striker zones:
-			if (x <= sp - halfSize + (halfSize >> 2) + 1) {
+			if (x < sp - (playerData->strikerSize << 2) / 5 + 1) {
 
 				// Far left
 
 				util_rotate(&gameData->ballVel, -43);	// rotate ~30 deg left
 
-			} else if (x <= sp - halfSize + (halfSize >> 1) + 1) {
+			} else if (x < sp - (playerData->strikerSize << 1) / 5 + 1) {
 
 				// Middle left
 
 				util_rotate(&gameData->ballVel, -21);	// rotate ~15 deg left
 
-			} else if (x < sp + halfSize - (halfSize >> 1) + 1) {
+			} else if (x <= sp + (playerData->strikerSize << 1) / 5 + 1) {
 
 				// Center - just bounce
 
-			} else if (x < sp + halfSize - (halfSize >> 2) + 1) {
+			} else if (x <= sp + (playerData->strikerSize << 2) / 5 + 1) {
 
 				// Middle right
 
