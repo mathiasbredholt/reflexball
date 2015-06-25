@@ -537,7 +537,7 @@ void create_bullet(GameData *gameData, PlayerData *playerData, AnimationData *an
 	if (num < 5) {	// If num == 5, it means that there was no available slot - bullet will not be created
 		hw_sound_play(9 + type);
 		animationData->projectilePos[num][0] = (gameData->strikerPos >> 8) + (type == 2 ? 0 : (side ? (playerData->strikerSize >> 1) : (-(playerData->strikerSize >> 1) + 1)));
-		animationData->projectilePos[num][1] = striker_height - (type < 2 ? 1 : 3);
+		animationData->projectilePos[num][1] = STRIKER_HEIGHT - (type < 2 ? 1 : 3);
 		animationData->projectileType[num] = (char) type;
 	}
 }

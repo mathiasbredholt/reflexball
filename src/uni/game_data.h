@@ -6,9 +6,9 @@
 
 #define MEMORY_LOCATION 0xFF00
 #define NUMBER_OF_ITEMS 6
-#define striker_height 92
-#define game_width 256
-#define game_height 96
+#define STRIKER_HEIGHT 92
+#define GAME_WIDTH 256
+#define GAME_HEIGHT 96
 
 typedef struct PlayerData {
 	long energy, energyMax, oldEnergy;
