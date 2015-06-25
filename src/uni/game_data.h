@@ -4,6 +4,7 @@
 
 #include "util.h"
 
+#define MEMORY_LOCATION 0xFF00
 #define NUMBER_OF_ITEMS 6
 #define striker_height 92
 #define game_width 256

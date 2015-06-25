@@ -20,9 +20,6 @@
 #include "story_lib.h"
 #include "gfx_lib.h"
 
-#define MEMORY_LOCATION 0xFF00
-
-
 #if defined(_Z8F6403)
 #include <sio.h>
 #else
