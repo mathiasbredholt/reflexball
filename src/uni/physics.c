@@ -296,13 +296,11 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 				// Reverse ball velocity in x and y directions according to the respective flags,
 				// but only if the ball was not touching a block in the last iteration
-				if (!gameData->blockHit[2]) {
-					if (reverseY) {
-						gameData->ballVel.y = -gameData->ballVel.y;
-					}
-					if (reverseX) {
-						gameData->ballVel.x = -gameData->ballVel.x;
-					}
+				if (reverseX && !gameData->blockHit[2]) {
+					gameData->ballVel.x = -gameData->ballVel.x;
+				}
+				if (reverseY && !gameData->blockHit[3]) {
+					gameData->ballVel.y = -gameData->ballVel.y;
 				}
 
 				// Set the blockHit flag according to whether or not the ball was touching a block in this iteration
