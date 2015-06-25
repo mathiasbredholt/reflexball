@@ -20,6 +20,8 @@
 #include "story_lib.h"
 #include "gfx_lib.h"
 
+#define MEMORY_LOCATION 0xFF00
+
 
 #if defined(_Z8F6403)
 #include <sio.h>
@@ -95,39 +97,39 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 }
 
 void game_save(PlayerData *playerData) {
-	int i, loc = 0xFF00;
+	int i;
 
-	WriteByteToFlash(loc + 0,  playerData->progress);
-	WriteByteToFlash(loc + 1,  playerData->coins & 0xFF);
-	WriteByteToFlash(loc + 2,  (playerData->coins >> 8) & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 0,  playerData->progress);
+	WriteByteToFlash(MEMORY_LOCATION + 1,  playerData->coins & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 2,  (playerData->coins >> 8) & 0xFF);
 
 	for (i = 0; i < NUMBER_OF_ITEMS; ++i)
-		WriteByteToFlash(loc + 3 + i, playerData->items[i]);
+		WriteByteToFlash(MEMORY_LOCATION + 3 + i, playerData->items[i]);
 
-	WriteByteToFlash(loc + 9,  playerData->energyMax & 0xFF);
-	WriteByteToFlash(loc + 10, (playerData->energyMax >> 8) & 0xFF);
-	WriteByteToFlash(loc + 11, (playerData->energyMax >> 16) & 0xFF);
-	WriteByteToFlash(loc + 12, playerData->strikerSpeed & 0xFF);
-	WriteByteToFlash(loc + 13, playerData->bouncinessFactor & 0xFF);
-	WriteByteToFlash(loc + 14, playerData->strikerSize);
+	WriteByteToFlash(MEMORY_LOCATION + 9,  playerData->energyMax & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 10, (playerData->energyMax >> 8) & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 11, (playerData->energyMax >> 16) & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 12, playerData->strikerSpeed & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 13, playerData->bouncinessFactor & 0xFF);
+	WriteByteToFlash(MEMORY_LOCATION + 14, playerData->strikerSize);
 }
 
 void game_load(PlayerData *playerData) {
 	int i, loc = 0xFF00;
 
-	playerData->progress         = ReadByteFromFlash(loc + 0);
-	playerData->coins            = (int) ReadByteFromFlash(loc + 1);
-	playerData->coins            |= ((int) ReadByteFromFlash(loc + 2)) << 8;
+	playerData->progress         = ReadByteFromFlash(MEMORY_LOCATION + 0);
+	playerData->coins            = (int) ReadByteFromFlash(MEMORY_LOCATION + 1);
+	playerData->coins            |= ((int) ReadByteFromFlash(MEMORY_LOCATION + 2)) << 8;
 
 	for (i = 0; i < NUMBER_OF_ITEMS; ++i)
-		playerData->items[i]     = ReadByteFromFlash(loc + 3 + i);
+		playerData->items[i]     = ReadByteFromFlash(MEMORY_LOCATION + 3 + i);
 
-	playerData->energyMax        = (long) ReadByteFromFlash(loc + 9);
-	playerData->energyMax        |= ((long) ReadByteFromFlash(loc + 10)) << 8;
-	playerData->energyMax        |= ((long) ReadByteFromFlash(loc + 11)) << 16;
-	playerData->strikerSpeed     = ((int) ReadByteFromFlash(loc + 12)) & 0xFF;
-	playerData->bouncinessFactor = ((int) ReadByteFromFlash(loc + 13)) & 0xFF;
-	playerData->strikerSize      = ReadByteFromFlash(loc + 14);
+	playerData->energyMax        = (long) ReadByteFromFlash(MEMORY_LOCATION + 9);
+	playerData->energyMax        |= ((long) ReadByteFromFlash(MEMORY_LOCATION + 10)) << 8;
+	playerData->energyMax        |= ((long) ReadByteFromFlash(MEMORY_LOCATION + 11)) << 16;
+	playerData->strikerSpeed     = ((int) ReadByteFromFlash(MEMORY_LOCATION + 12)) & 0xFF;
+	playerData->bouncinessFactor = ((int) ReadByteFromFlash(MEMORY_LOCATION + 13)) & 0xFF;
+	playerData->strikerSize      = ReadByteFromFlash(MEMORY_LOCATION + 14);
 }
 
 /*
