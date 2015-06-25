@@ -234,8 +234,8 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			reverseX = 0;
 			reverseY = 0;
 
-			justHitBlockX = 0;	// Flag to see if a block is touched in this iteration
-			justHitBlockY = 0;	// Flag to see if a block is touched in this iteration
+			justHitBlockX = 0;	// Flag to see if a block is being hit on the short side in this iteration
+			justHitBlockY = 0;	// Flag to see if a block is being hit on the long side in this iteration
 
 
 			if (y <= 60) {	// Ball is inside the block area
@@ -269,7 +269,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 					}
 					if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) + 1, &justHitBlockY, gameData->blockHit[3])) {
 
-						// Hitting corner of right block because ball is two pixels wide
+						// Hitting top of right block because ball is two pixels wide
 
 						reverseY = 1;
 					}
