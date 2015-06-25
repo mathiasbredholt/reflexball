@@ -45,7 +45,6 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHit, int hit) {
 
 	if (type) {	// Block exists - damage or remove
 
-		// if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
 		if (!hit) {	// Only if a block was not hit last iteration
 
 			hw_sound_play(2 + (gameData->multiplier > 6 ? 6 : gameData->multiplier));
@@ -76,7 +75,6 @@ char phy_hit_block(GameData *gameData, int x, int y, char *justHit, int hit) {
 		}
 
 		*justHit = 1;
-		// return !gameData->blockHit[2];
 		return !hit;
 	}
 	return 0;
