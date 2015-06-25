@@ -311,7 +311,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			}
 		}
 
-		if (x == 0 || x == game_width - 2) {
+		if (x == 0 || x == GAME_WIDTH - 2) {
 
 			///////////////////////
 			// Bounced side wall //
