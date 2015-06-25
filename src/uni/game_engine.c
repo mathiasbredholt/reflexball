@@ -80,14 +80,14 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	// story info, window to the left
 
 	for (i = 0; i < 12; ++i) {
-		hw_ROM_to_RAM(str, story[40 + i]);
+		hw_ROM_to_RAM(str, story[41 + i]);
 		gfx_draw_text(9, 8, 39 + i * 3, str);
 	}
 
 	// Meta info,
 
 	for (i = 0; i < 11; ++i) {
-		hw_ROM_to_RAM(str, story[52 + i]);
+		hw_ROM_to_RAM(str, story[53 + i]);
 		gfx_draw_text(9, 143, 39 + i * 3, str);
 	}
 	while (hw_read_key() == 0x00);
