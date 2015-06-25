@@ -724,7 +724,7 @@ void shop_init(PlayerData * playerData) {
 	sprintf(str, "price  %4d", itemPrice[0]);
 	gfx_draw_text(9, 210, 30, str);
 
-	sprintf(str, "coins %8d", playerData->coins);
+	sprintf(str, "coins %8u", playerData->coins);
 	gfx_draw_text(9, 196, 2, str);
 }
 
@@ -744,7 +744,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData * playerData, 
 			if (key & 0x10) {
 				// Cheat key
 				playerData->coins += 1000;
-				sprintf(str, "coins %8d", playerData->coins);
+				sprintf(str, "coins %8u", playerData->coins);
 				gfx_draw_text(9, 196, 2, str);
 			}
 
@@ -778,7 +778,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData * playerData, 
 						hw_sound_play(0);
 					}
 
-					sprintf(str, "coins %8d", playerData->coins);
+					sprintf(str, "coins %8u", playerData->coins);
 					gfx_draw_text(9, 196, 2, str);
 
 					gfx_draw_meter(37 + 64 * (*focus % 3), 40 + 25 * (*focus / 3), playerData->items[*focus]);

@@ -629,7 +629,7 @@ void gfx_draw_victory() {
 
 void gfx_draw_score(PlayerData *playerData) {
 	char str[9];;
-	sprintf(str, "%8d", playerData->coins);
+	sprintf(str, "%8u", playerData->coins);
 	gfx_draw_text(11, 224, 98, str);
 
 #ifdef GCC

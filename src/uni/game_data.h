@@ -12,7 +12,8 @@
 
 typedef struct PlayerData {
 	long energy, energyMax, oldEnergy;
-	int coins, strikerSpeed, bouncinessFactor;
+	int strikerSpeed, bouncinessFactor;
+	unsigned int coins;
 	unsigned char items[NUMBER_OF_ITEMS], progress;
 	char strikerSize;
 } PlayerData;
