@@ -48,6 +48,7 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	///////////////////
 	// gui variables //
 	///////////////////
+
 	*mode = 0;
 	*focus = 0;
 	*lastKey = 0;
@@ -58,6 +59,7 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	///////////////////////
 	// Reset player data //
 	///////////////////////
+
 	for (i = 0; i < NUMBER_OF_ITEMS; ++i) {
 		playerData->items[i] = 0;
 	}
@@ -142,7 +144,6 @@ void menu_init() {
 	// Call drawing functions for GUI creation
 	hw_sound_set_music(0);
 	gfx_window(1, 64, 16, 192, 80);
-	// gfx_draw_text(9, 68, 18, "reflexball");
 	gfx_draw_small_title(86, 19);
 	gfx_draw_ufo(103, 35, 13);
 

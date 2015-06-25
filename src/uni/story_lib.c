@@ -85,35 +85,4 @@ const char story[64][49] =
 	"run out of energy",
 	" ",
 	"good luck"
-
-
-	// "welcome to the glorious",
-	// "tale of commander boss",
-	// "a grand adventurer",
-	// "pilot of the striker",
-	// "a ship capable of bouncing",
-	// "balls made of pure energy",
-	// "a ship that supports the ",
-	// "most advanced weaponry",
-	// "in the universe",
-	// "if you can pay",
-	// "unfortunately",
-	// "you are dirt poor",
-	// "better go mining and hope",
-	// "for some treasure",
-	// "theres gold in them blocks",
-	// "use the command stick",
-	// "use a and d",
-	// "to control the striker",
-	// "to navigate the menus",
-	// "use the buttons",
-	// "use a and d",
-	// "buy upgrades for the",
-	// "weapons and the striker",
-	// "in the shop",
-	// "be careful you dont",
-	// "run out of energy",
-	// "good luck",
-	// "press any key to continue"
-
 };

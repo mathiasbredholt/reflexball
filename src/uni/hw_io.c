@@ -81,9 +81,6 @@ void hw_init() {
 #endif
 
 #if defined(_Z8F6403)
-
-// hw_input.c
-
 #include <eZ8.h>             // special encore constants, macros and flash routines
 #include <sio.h>
 #include "hw_io.h"
@@ -95,7 +92,7 @@ void hw_init() {
 char _debounce_flag, _keys, _lastInput;
 
 void hw_init() {
-	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1 bør flyttes
+	init_uart(_UART0, _DEFFREQ, 115200);  // set-up UART0 to 115200, 8n1
 	_debounce_flag = 1;
 }
 
@@ -163,8 +160,6 @@ unsigned char hw_read_analog() {
 
 #ifdef GCC
 
-// void hw_ROM_to_RAM(char *dest, rom char *src) {}
-
 char hw_read_key() {    // Returns state of push buttons on bit 0-2
 	char input = 0;
 	if (kbhit()) {	// A key is pressed
@@ -178,10 +173,6 @@ char hw_read_key() {    // Returns state of push buttons on bit 0-2
 			// arrow right
 			input = 1;
 			break;
-		//} else {
-		// Any other key is 3rd key
-		//	input = 4;
-		//}
 		default:
 			input = 4;
 			break;
@@ -211,6 +202,5 @@ void hw_ROM_to_RAM(char *dest, const char *src) {
 	while (*src) *dest++ = *src++;
 	*dest = '\0';
 }
-
 
 #endif

@@ -3,14 +3,11 @@
 
 void hw_init();
 
-void hw_ROM_to_RAM(char *dest,
-
 #if defined(_Z8F6403)
-                   rom
+void hw_ROM_to_RAM(char *dest, rom char *src);
 #else
-                   const
+void hw_ROM_to_RAM(char *dest, const char *src);
 #endif
-                   char *src);
 
 char hw_read_key();
 

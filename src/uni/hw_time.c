@@ -29,8 +29,6 @@ void mySleep(int sleepMs) {
 
 #endif
 
-// hw_time.c
-
 #if defined(_Z8F6403)
 #include <eZ8.h>
 
@@ -54,7 +52,6 @@ void hw_time_init() {
     // Setup timer 0 (millis)
     // TEN: 0, TPOL: 0, PRES: 0 (1), TMODE: 1 (cont.)
     T0CTL = 0x01;
-    // T0CTL = 0x39;
 
     // Begin timer at 0
     T0H = 0;
@@ -63,9 +60,6 @@ void hw_time_init() {
     // End timer at 1843 (1 kHz)
     T0RH = 0x48;
     T0RL = 0x00;
-
-    // Enable TIMER0 interrupt
-    //IRQ0 |= 0x20;
 
     // Set priority to HIGH
     IRQ0ENH |= 0x20;

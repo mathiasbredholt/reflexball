@@ -35,24 +35,17 @@ void fg_color(int foreground) {
 
 // Set background color
 void bg_color(int background) {
-  /* IMPORTANT:   When you first use this function you cannot get back to true white background in HyperTerminal.
-     Why is that? Because ANSI does not support true white background (ANSI white is gray to most human eyes).
-                  The designers of HyperTerminal, however, preferred black text on white background, which is why
-                  the colors are initially like that, but when the background color is first changed there is no
-                  way comming back.
-     Hint:        Use reset_bg_color(); clr_scr(); to force HyperTerminal into gray text on black background.
-
-      Value      Color
-      ------------------
-        0        Black
-        1        Red
-        2        Green
-        3        Brown
-        4        Blue
-        5        Purple
-        6        Cyan
-        7        Gray
-  */
+  /*Value      Color
+   ------------------
+     0        Black
+     1        Red
+     2        Green
+     3        Brown
+     4        Blue
+     5        Purple
+     6        Cyan
+     7        Gray
+   */
   printf("%c[%dm", ESC, background + 40);
 }
 
@@ -152,7 +145,5 @@ void spacer(int n, int c) {
   int i;
   char str[259];
   for (i = 0; i < n; i++) printf("%c", (char) c);
-  // for (i = 0; i < n; i++) str[i] = (char) c;
-  // str[n] = '\0';
-  // printf("%s", str);
+
 }
