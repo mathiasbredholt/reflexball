@@ -60,8 +60,11 @@ int main()
 			while (mode == 4) shop_update(&mode, &lastKey, &focus, &playerData, &gameData);
 		}
 
+		if (mode == 6)
 #if defined(__APPLE__) || defined(__WIN32__)
-		if (mode == 6) break;	// Exit
+			break;	// Exit
+#else
+			init(&mode, &focus, &lastKey, &animFrame1, &animFrame2, &playerData, &gameData);
 #endif
 	}
 #if defined(__APPLE__) || defined(__WIN32__)
