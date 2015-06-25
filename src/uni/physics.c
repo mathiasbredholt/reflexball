@@ -425,26 +425,18 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 	}
 }
 
-void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned char input) {
-	int analog = (((int) input - 127) << 1) - 96;
+void phy_move_striker(GameData * gameData, PlayerData * playerData, int input) {
+	input *= playerData->strikerSpeed;
 
-	if (analog < -(int)160)
-		analog = -(int)160;
-
-	else if (analog > -5 && analog < 5)
-		analog = 0;
-
-	analog *= playerData->strikerSpeed;
-
-	if (gameData->strikerPos < ((unsigned int) playerData->strikerSize << 7) - analog)
+	if (gameData->strikerPos < ((unsigned int) playerData->strikerSize << 7) - input)
 		gameData->strikerPos = (unsigned int) (playerData->strikerSize - 1) << 7;
 
-	else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (playerData->strikerSize) << 7))
+	else if (gameData->strikerPos > 0xFFFF - input - ((unsigned int) (playerData->strikerSize) << 7))
 		gameData->strikerPos = 0xFFFF - ((unsigned int) (playerData->strikerSize) << 7);
 
 	else
-		gameData->strikerPos += analog;
+		gameData->strikerPos += input;
 
 
-	playerData->energy -= analog < 0 ? -analog >> 6 : analog >> 6;
+	playerData->energy -= input < 0 ? -input >> 6 : input >> 6;
 }
