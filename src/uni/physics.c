@@ -117,7 +117,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 		gameData->bouncedTop = 0;
 
-		if (!gameData->bouncedStriker && y == striker_height - 1 && x >= (gameData->strikerPos >> 8) - (playerData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (playerData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
+		if (!gameData->bouncedStriker && y == STRIKER_HEIGHT - 1 && x >= (gameData->strikerPos >> 8) - (playerData->strikerSize >> 1) + 1 && x <= (gameData->strikerPos >> 8) + (playerData->strikerSize >> 1) && !(gameData->ballVel.y & 0x80)) {
 
 			/////////////////////
 			// Bounced striker //
@@ -190,7 +190,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 				gameData->ballVel.x = gameData->ballVel.y << 2; // set x vel to 4 times y vel
 			}
 
-		} else if (y == striker_height) {
+		} else if (y == STRIKER_HEIGHT) {
 
 			// Check if ball hit the striker on the side, and bounce it away - this can't save the ball but looks more realistic
 
@@ -198,7 +198,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 				// Hit side of striker
 				gameData->ballVel.x = -gameData->ballVel.x;
 			}
-		} else if (y > striker_height + 2) {
+		} else if (y > STRIKER_HEIGHT + 2) {
 
 			///////////////
 			// Lost ball //
@@ -208,7 +208,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 			// Reset position to striker and decrease velocity
 			gameData->ballPos.x = gameData->strikerPos;
-			gameData->ballPos.y = (striker_height - 2) << 8;
+			gameData->ballPos.y = (STRIKER_HEIGHT - 2) << 8;
 			gameData->ballVel.x = gameData->ballVel.x >> 1;
 
 			// Only decrease y velocity to a minumum of 32
@@ -223,7 +223,7 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 		} else {
 
 			// Reset bouncedStriker flag if ball is above striker
-			if (y < striker_height - 1)
+			if (y < STRIKER_HEIGHT - 1)
 				gameData->bouncedStriker = 0;
 
 			//////////////////////////
