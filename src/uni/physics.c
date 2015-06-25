@@ -309,22 +309,22 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			}
 		}
 
-		if (x == 0 || x == GAME_WIDTH - 2) {
+	}
+	if (x == 0 || x == GAME_WIDTH - 2) {
 
-			///////////////////////
-			// Bounced side wall //
-			///////////////////////
+		///////////////////////
+		// Bounced side wall //
+		///////////////////////
 
-			hw_sound_play(0);
+		hw_sound_play(0);
 
-			if (!gameData->bouncedSide) {	// Only if it didn't already bounce a side wall in the last iteration
-				gameData->ballVel.x = -gameData->ballVel.x;
-				gameData->redraw = 1;	// Forces ball to be redrawn at current position, to make sure it is seen as close enough to the wall
-				gameData->bouncedSide = 1;
-			}
-		} else {
-			gameData->bouncedSide = 0;
+		if (!gameData->bouncedSide) {	// Only if it didn't already bounce a side wall in the last iteration
+			gameData->ballVel.x = -gameData->ballVel.x;
+			gameData->redraw = 1;	// Forces ball to be redrawn at current position, to make sure it is seen as close enough to the wall
+			gameData->bouncedSide = 1;
 		}
+	} else {
+		gameData->bouncedSide = 0;
 	}
 }
 
