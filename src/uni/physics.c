@@ -309,22 +309,22 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			}
 		}
 
-	}
-	if (x == 0 || x == GAME_WIDTH - 2) {
+		if (x == 0 || x == GAME_WIDTH - 2) {
 
-		///////////////////////
-		// Bounced side wall //
-		///////////////////////
+			///////////////////////
+			// Bounced side wall //
+			///////////////////////
 
-		hw_sound_play(0);
+			hw_sound_play(0);
 
-		if (!gameData->bouncedSide) {	// Only if it didn't already bounce a side wall in the last iteration
-			gameData->ballVel.x = -gameData->ballVel.x;
-			gameData->redraw = 1;	// Forces ball to be redrawn at current position, to make sure it is seen as close enough to the wall
-			gameData->bouncedSide = 1;
+			if (!gameData->bouncedSide) {	// Only if it didn't already bounce a side wall in the last iteration
+				gameData->ballVel.x = -gameData->ballVel.x;
+				gameData->redraw = 1;	// Forces ball to be redrawn at current position, to make sure it is seen as close enough to the wall
+				gameData->bouncedSide = 1;
+			}
+		} else {
+			gameData->bouncedSide = 0;
 		}
-	} else {
-		gameData->bouncedSide = 0;
 	}
 }
 
@@ -425,18 +425,26 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 	}
 }
 
-void phy_move_striker(GameData * gameData, PlayerData * playerData, int input) {
-	input *= playerData->strikerSpeed;
+void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned char input) {
+	int analog = (((int) input - 127) << 1) - 96;
 
-	if (gameData->strikerPos < ((unsigned int) playerData->strikerSize << 7) - input)
+	if (analog < -(int)160)
+		analog = -(int)160;
+
+	else if (analog > -5 && analog < 5)
+		analog = 0;
+
+	analog *= playerData->strikerSpeed;
+
+	if (gameData->strikerPos < ((unsigned int) playerData->strikerSize << 7) - analog)
 		gameData->strikerPos = (unsigned int) (playerData->strikerSize - 1) << 7;
 
-	else if (gameData->strikerPos > 0xFFFF - input - ((unsigned int) (playerData->strikerSize) << 7))
+	else if (gameData->strikerPos > 0xFFFF - analog - ((unsigned int) (playerData->strikerSize) << 7))
 		gameData->strikerPos = 0xFFFF - ((unsigned int) (playerData->strikerSize) << 7);
 
 	else
-		gameData->strikerPos += input;
+		gameData->strikerPos += analog;
 
 
-	playerData->energy -= input < 0 ? -input >> 6 : input >> 6;
+	playerData->energy -= analog < 0 ? -analog >> 6 : analog >> 6;
 }
