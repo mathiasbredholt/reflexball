@@ -23,6 +23,11 @@ void hw_init() {}
 #include <sys/select.h>
 #include <termios.h>
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// This code below is from http://stackoverflow.com/questions/448944/c-non-blocking-keyboard-input //
+// for making a UNIX compatible version of conio.h functions which is MS Windows specific          //
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 struct termios orig_termios;	// Used for emulating the way buttons work on the board
 
 void reset_terminal_mode()
@@ -64,9 +69,15 @@ int getch()
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// The code above is from http://stackoverflow.com/questions/448944/c-non-blocking-keyboard-input //
+// for making a UNIX compatible version of conio.h functions which is MS Windows specific         //
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void hw_init() {
 	set_conio_terminal_mode();
 }
+
 #endif
 
 #if defined(_Z8F6403)
