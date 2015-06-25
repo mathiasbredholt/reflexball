@@ -66,7 +66,7 @@ void init(int *mode, int *focus, char *lastKey, int *animFrame1, int *animFrame2
 	playerData->progress = 0;
 	playerData->energyMax = 0x7FFF;
 	playerData->strikerSpeed = 4;
-	playerData->bouncinessFactor = 10;
+	playerData->bouncinessFactor = 5;
 	playerData->strikerSize = 24;
 
 	///////////////////////
@@ -494,7 +494,7 @@ void game_init(GameData *gameData, PlayerData *playerData, AnimationData *animat
 	gameData->ballVel.x = 15;
 	gameData->ballVel.y = -(int)26;
 
-	gameData->ballSpeed = 3;
+	gameData->ballSpeed = 2;
 
 	gameData->multiplier = 0;
 
@@ -543,7 +543,7 @@ void create_bullet(GameData *gameData, PlayerData *playerData, AnimationData *an
 }
 
 void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playerData, AnimationData *animationData) {
-	int i, j, blockHitData[16];
+	int i, j, blockHitData[32];
 	char key, won = 0, lostBall = 0;
 	gameData->redraw = 0;
 	gameData->blockHit[0] = 0;	// Data of last block hit, used to update graphics
@@ -593,7 +593,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		phy_update_bullets(gameData, animationData);
 
 		// Calculate new ball position
-		for (i = 0; i < 8; ++i) {
+		for (i = 0; i < 16; ++i) {
 			phy_simulate(gameData, playerData, &lostBall);
 
 			blockHitData[i << 1] = gameData->blockHit[0];
@@ -619,7 +619,7 @@ void game_update(int *mode, char *lastKey, GameData *gameData, PlayerData *playe
 		// Redraw //
 		////////////
 
-		for (i = 0; i < 16; ++i) {
+		for (i = 0; i < 32; ++i) {
 			int x = blockHitData[i] & 0x000F,
 			    y = blockHitData[i] >> 4 & 0x000F,
 			    type = blockHitData[i] >> 8;
@@ -769,7 +769,7 @@ void shop_update(int *mode, char *lastKey, int *focus, PlayerData * playerData, 
 						if (*focus == 0) {
 							playerData->energyMax += 0x7FFF;
 						} else if (*focus == 1) {
-							playerData->bouncinessFactor += 2;
+							playerData->bouncinessFactor += 1;
 						} else if (*focus == 2) {
 							playerData->strikerSpeed += 1;
 							playerData->strikerSize += 6;

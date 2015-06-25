@@ -10,6 +10,4 @@ void phy_move_striker(GameData *gameData, PlayerData *playerData, unsigned char 
 
 void phy_update_bullets(GameData *gameData, AnimationData *animationData);
 
-char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock);
-
 #endif

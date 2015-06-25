@@ -21,9 +21,70 @@
 #include "game_data.h"
 #include "hw_sound.h"
 
+char phy_hit_block(GameData *gameData, int x, int y, char *justHit, int hit) {
+
+	// Takes the x and y position of a block in column/row format (i.e. not pixel position).
+	// Returns 1 if the block exists, unless blockHis[2] from blockData is 1,
+	// which means that a block was touched in the last iteration, so the function always returns 0.
+	// If a block exists at the specified position, it is decremented (damaged) or destoyed,
+	// according to its type, and the value of justHitBlock is set to 1,
+	// indicating that at least one block was touched in this iteration.
+	// Furthermore, one of the first two values in blockHit is encoded with the block data,
+	// marking the block for removal/redrawing.
+
+	int type, numBlock;
+
+	if (x > 15 || x < 0 || y > 14 || y < 0) {
+		// Outside block area
+		return 0;
+	}
+
+	numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
+
+	type = (x & 1) ? gameData->blockData[y][x >> 1] & 0xF : gameData->blockData[y][x >> 1] >> 4;	// Value corresponding to current block in blockData (each blockData byte stores two blocks, one in each nibble)
+
+	if (type) {	// Block exists - damage or remove
+
+		// if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
+		if (!hit) {	// Only if a block was not hit last iteration
+
+			hw_sound_play(2 + (gameData->multiplier > 6 ? 6 : gameData->multiplier));
+
+			if (type != 11) {	// Only if block is destructible
+
+				if (gameData->multiplier < 6)
+					++gameData->multiplier;	// Increment multiplier
+
+				if (type != 1 && type != 2 && type != 5 && type != 8) {	// Block has a hardened surface (only gets damaged)
+
+					gameData->blockData[y][x >> 1] -= (x & 1) ? 0x01 : 0x10; 	// Decrements value on left or right block
+					--type;
+
+				} else {	// Mark for demolition
+
+					gameData->blockData[y][x >> 1] &= (x & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
+					type = 0;
+
+				}
+
+				// Encode block data in blockHit
+				gameData->blockHit[numBlock] = type << 8; // Stores type value in blockHit bit 8-11
+				gameData->blockHit[numBlock] |= y << 4; // Stores y coordinate in bit 4-7
+				gameData->blockHit[numBlock] |= x; // Stores x coordinate in bit 0-3
+			}
+			gameData->redraw = 1; // Redraw ball for nice gfx!
+		}
+
+		*justHit = 1;
+		// return !gameData->blockHit[2];
+		return !hit;
+	}
+	return 0;
+}
+
 void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 	unsigned char x, y, sp;
-	char justHitBlock, reverseX, reverseY;
+	char justHitBlockX, justHitBlockY, reverseX, reverseY;
 	int dx, dy;
 
 	// Correct ball velocity by speed factor
@@ -79,9 +140,9 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			// Boost / slow in x direction depending on striker speed
 			gameData->ballVel.x += (gameData->strikerPos - gameData->strikerOldPos) >> 5;
 
-			if (gameData->ballVel.y < -(char)80) {
-				// Velocity should not become grater that 100 (ballVel can store a range of -127 to 128)
-				gameData->ballVel.y = -(char)80;
+			if (gameData->ballVel.y < -(char)70) {
+				// Velocity should not become grater that 70 (ballVel can store a range of -127 to 128)
+				gameData->ballVel.y = -(char)70;
 			}
 
 			// Check striker zones:
@@ -173,7 +234,8 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			reverseX = 0;
 			reverseY = 0;
 
-			justHitBlock = 0;	// Flag to see if a block is touched in this iteration
+			justHitBlockX = 0;	// Flag to see if a block is touched in this iteration
+			justHitBlockY = 0;	// Flag to see if a block is touched in this iteration
 
 
 			if (y <= 60) {	// Ball is inside the block area
@@ -181,148 +243,52 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 
 					// Potentially touching lower edge of block
 
-					if (phy_hit_block(gameData, x >> 4, (y >> 2) - 1, &justHitBlock)) {
-
-						// go_to_xy(200, 30);
-						// printf("Lower                          ");
+					if (phy_hit_block(gameData, x >> 4, (y >> 2) - 1, &justHitBlockY, gameData->blockHit[3])) {
 
 						// Hitting block
 
 						reverseY = 1;
-
-						if ((x & 15) == 15) {
-							// go_to_xy(200, 30);
-							// printf("Lower overlap both corners           ");
-
-							// Also hitting bottom of right block because ball is two pixels wide
-
-							phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock);
-						}
-					} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlock)) {
-						// go_to_xy(200, 30);
-						// printf("Lower overlap to right                          ");
+					}
+					if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) - 1, &justHitBlockY, gameData->blockHit[3])) {
 
 						// Hitting bottom of right block because ball is two pixels wide
 
 						reverseY = 1;
 					}
 
-					if ((x & 15) == 1) {
-						// go_to_xy(200, 30);
-						// printf("Lower corner to left                          ");
-
-						// Left corner
-
-						if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
-							// go_to_xy(200, 30);
-							// printf("Lower corner to left - hit                          ");
-
-							// Hitting left block
-
-							reverseX = 1;
-						}
-					} else if ((x & 15) == 14) {
-						// go_to_xy(200, 30);
-						// printf("Lower corner to right                          ");
-
-						// Right corner
-
-						if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-							// go_to_xy(200, 30);
-							// printf("Lower corner to right - hit                          ");
-
-							// Hitting right block
-
-							reverseX = 1;
-						}
-					}
-
-					//  else if ((x & 15) == 15) {
-
-					// 	//
-
-					// 	if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-					// 		reverseX = 1;
-					// 	}
-					// }
-
 				} else if ((y & 3) == 3) {
 
 					// Potentially touching upper edge of block
 
-					if (phy_hit_block(gameData, x >> 4, (y >> 2) + 1, &justHitBlock)) {
-						// go_to_xy(200, 30);
-						// printf("Upper                          ");
+					if (phy_hit_block(gameData, x >> 4, (y >> 2) + 1, &justHitBlockY, gameData->blockHit[3])) {
 
 						// Hitting block
 
 						reverseY = 1;
 
-						if ((x & 15) == 15) {
-							// go_to_xy(200, 30);
-							// printf("Upper overlap both corners                          ");
-
-							// Also hitting corner of right block because ball is two pixels wide
-
-							phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) + 1, &justHitBlock);
-						}
-
-					} else if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) + 1, &justHitBlock)) {
-						// go_to_xy(200, 30);
-						// printf("Upper overlap to right                          ");
+					}
+					if ((x & 15) == 15 && phy_hit_block(gameData, (x >> 4) + 1, (y >> 2) + 1, &justHitBlockY, gameData->blockHit[3])) {
 
 						// Hitting corner of right block because ball is two pixels wide
 
 						reverseY = 1;
 					}
 
-					if ((x & 15) == 1) {
-						// go_to_xy(200, 30);
-						// printf("Upper corner to left                         ");
+				}
 
-						// Left corner
-
-						if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
-							// go_to_xy(200, 30);
-							// printf("Upper corner to left - hit                         ");
-							reverseX = 1;
-						}
-
-					} else if ((x & 15) == 14) {
-						// go_to_xy(200, 30);
-						// printf("Upper corner to right                         ");
-
-						// Right corner
-
-						if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-							// go_to_xy(200, 30);
-							// printf("Upper corner to right - hit                         ");
-							reverseX = 1;
-						}
-
-					}
-
-				} else if ((x & 15) == 1) {
-					// go_to_xy(200, 30);
-					// printf("Right edge                         ");
+				if ((x & 15) == 1) {
 
 					// Right edge
 
-					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlock)) {
-						// go_to_xy(200, 30);
-						// printf("Right edge - hit                         ");
+					if (phy_hit_block(gameData, (x >> 4) - 1, y >> 2, &justHitBlockX, gameData->blockHit[2])) {
 						reverseX = 1;
 					}
 
 				} else if ((x & 15) == 14) {
-					// go_to_xy(200, 30);
-					// printf("Left edge                         ");
 
 					// Left edge
 
-					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlock)) {
-						// go_to_xy(200, 30);
-						// printf("Left edge - hit                         ");
+					if (phy_hit_block(gameData, (x >> 4) + 1, y >> 2, &justHitBlockX, gameData->blockHit[2])) {
 						reverseX = 1;
 					}
 
@@ -340,7 +306,8 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 				}
 
 				// Set the blockHit flag according to whether or not the ball was touching a block in this iteration
-				gameData->blockHit[2] = justHitBlock;
+				gameData->blockHit[2] = justHitBlockX;
+				gameData->blockHit[3] = justHitBlockY;
 			}
 		}
 
@@ -361,65 +328,6 @@ void phy_simulate(GameData *gameData, PlayerData *playerData, char *lostBall) {
 			gameData->bouncedSide = 0;
 		}
 	}
-}
-
-char phy_hit_block(GameData *gameData, int x, int y, char *justHitBlock) {
-
-	// Takes the x and y position of a block in column/row format (i.e. not pixel position).
-	// Returns 1 if the block exists, unless blockHis[2] from blockData is 1,
-	// which means that a block was touched in the last iteration, so the function always returns 0.
-	// If a block exists at the specified position, it is decremented (damaged) or destoyed,
-	// according to its type, and the value of justHitBlock is set to 1,
-	// indicating that at least one block was touched in this iteration.
-	// Furthermore, one of the first two values in blockHit is encoded with the block data,
-	// marking the block for removal/redrawing.
-
-	int type, numBlock;
-
-	if (x > 15 || x < 0 || y > 14 || y < 0) {
-		// Outside block area
-		return 0;
-	}
-
-	numBlock = gameData->blockHit[0] > 0;	// If there's already a block in blockHit[0] use index 1
-
-	type = (x & 1) ? gameData->blockData[y][x >> 1] & 0xF : gameData->blockData[y][x >> 1] >> 4;	// Value corresponding to current block in blockData (each blockData byte stores two blocks, one in each nibble)
-
-	if (type) {	// Block exists - damage or remove
-
-		if (!gameData->blockHit[2]) {	// Only if a block was not hit last iteration
-
-			hw_sound_play(2 + (gameData->multiplier > 6 ? 6 : gameData->multiplier));
-
-			if (type != 11) {	// Only if block is destructible
-
-				if (gameData->multiplier < 6)
-					++gameData->multiplier;	// Increment multiplier
-
-				if (type != 1 && type != 2 && type != 5 && type != 8) {	// Block has a hardened surface (only gets damaged)
-
-					gameData->blockData[y][x >> 1] -= (x & 1) ? 0x01 : 0x10; 	// Decrements value on left or right block
-					--type;
-
-				} else {	// Mark for demolition
-
-					gameData->blockData[y][x >> 1] &= (x & 1) ? 0xF0 : 0x0F; 	// Sets value on left or right block to zero (no block)
-					type = 0;
-
-				}
-
-				// Encode block data in blockHit
-				gameData->blockHit[numBlock] = type << 8; // Stores type value in blockHit bit 8-11
-				gameData->blockHit[numBlock] |= y << 4; // Stores y coordinate in bit 4-7
-				gameData->blockHit[numBlock] |= x; // Stores x coordinate in bit 0-3
-			}
-			gameData->redraw = 1; // Redraw ball for nice gfx!
-		}
-
-		*justHitBlock = 1;
-		return !gameData->blockHit[2];
-	}
-	return 0;
 }
 
 void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
