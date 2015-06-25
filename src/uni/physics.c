@@ -424,12 +424,12 @@ void phy_update_bullets(GameData *gameData, AnimationData *animationData) {
 }
 
 void phy_move_striker(GameData * gameData, PlayerData * playerData, unsigned char input) {
-	int analog = (((int) input - 127) << 1) - 96;
+	int analog = (((int) input - 127) << 1) - 96;	// Correct offset
 
-	if (analog < -(int)160)
+	if (analog < -(int)160)		// Maximum after offset correction is 160. Makes sure minimum is no bigger
 		analog = -(int)160;
 
-	else if (analog > -5 && analog < 5)
+	else if (analog > -5 && analog < 5)		// Add small dead zone
 		analog = 0;
 
 	analog *= playerData->strikerSpeed;
